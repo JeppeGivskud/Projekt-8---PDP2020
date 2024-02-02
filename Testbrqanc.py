@@ -1,2 +1,0 @@
-ostehaps = "Ostehaps"
-print(ostehaps)
