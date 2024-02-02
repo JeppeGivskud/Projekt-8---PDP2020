@@ -5,3 +5,5 @@ There will be:
 1. A react native program
 2. A server client thing
 3. A Arduino thing
+
+Maybe normal react?
