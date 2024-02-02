@@ -12,3 +12,5 @@ Maybe normal react?
 - Ostehaps
 1. Ost
 
+TODO: beslut om vi skal bruge React eller React Native
+
