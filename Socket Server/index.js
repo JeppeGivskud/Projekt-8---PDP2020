@@ -13,7 +13,8 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
   connectionStateRecovery: {},
-  cors: { origin: "http://localhost:8081 " },
+
+  cors: { origin: "http://localhost:8081" },
 });
 
 app.get("/", (req, res) => {
@@ -22,17 +23,22 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   console.log(`${socket.id} connected`);
-  socket.broadcast.emit("newClient", {
-    description: `${socket.id} connected`,
+
+  socket.join("room1");
+  socket.broadcast.to("room1").emit("newClient", {
+    description: `${socket.id} has connected`,
   });
 
   socket.on("disconnect", () => {
-    socket.disconnect();
     console.log(`${socket.io} user disconnected`);
+    io.to("room1").emit("disconnection", {
+      description: `${socket.id} has disconnected`,
+    });
   });
 
   socket.on("message sent", (msg) => {
-    io.emit("message sent", `${socket.id} said: ${msg}`);
+
+    io.to("room1").emit("message sent", `${socket.id} said: ${msg}`);
     console.log("Message: " + msg);
   });
 });
