@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`${socket.io} user disconnected`);
-    io.emit.to("room1").emit("disconnection", {
+    io.to("room1").emit("disconnection", {
       description: `${socket.id} has disconnected`,
     });
   });
