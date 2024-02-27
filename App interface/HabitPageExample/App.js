@@ -7,7 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import Ellipsis from "./components/ellipsis";
+//import Ellipsis from "./components/ellipsis";
 
 export default function App() {
   return (
