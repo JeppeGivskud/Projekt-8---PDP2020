@@ -1,46 +1,57 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  SafeAreaView,
+} from "react-native";
 import Ellipsis from "./components/ellipsis";
 
 export default function App() {
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.column}>
-          <Button style={styles.box} title={"1"}></Button>
-          <Button style={styles.box} title={"2"}></Button>
-          <Button style={styles.box} title={"3"}></Button>
-          <Button style={styles.box} title={"4"}></Button>
-        </View>
-        <View style={styles.column}>
-          <Button style={styles.box} title={"5"}></Button>
-          <Button style={styles.box} title={"6"}></Button>
-          <Button style={styles.box} title={"7"}></Button>
-          <Button style={styles.box} title={"8"}></Button>
-          <Text>
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
-            Looooooooooooo Looooooooooooo Looooooooooooo
-          </Text>
-        </View>
-      </View>
-    </ScrollView>
+    <View styles={{ backgroundColor: "pink" }}>
+      <SafeAreaView>
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.column}>
+              <Button style={styles.box} title={"1"}></Button>
+              <Button style={styles.box} title={"2"}></Button>
+              <Button style={styles.box} title={"3"}></Button>
+              <Button style={styles.box} title={"4"}></Button>
+            </View>
+            <View style={styles.column}>
+              <Button style={styles.box} title={"5"}></Button>
+              <Button style={styles.box} title={"6"}></Button>
+              <Button style={styles.box} title={"7"}></Button>
+              <Button style={styles.box} title={"8"}></Button>
+              <Text>
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+                Looooooooooooo Looooooooooooo Looooooooooooo
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   );
 }
 
