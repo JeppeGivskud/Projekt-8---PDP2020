@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import {
     Button,
     StyleSheet,
@@ -6,6 +5,7 @@ import {
     View,
     ScrollView,
     SafeAreaView,
+    StatusBar,
 } from "react-native";
 //import Ellipsis from "./components/ellipsis";
 
@@ -13,6 +13,8 @@ export default function App() {
     return (
         <View style={{ flex: 1, backgroundColor: "pink" }}>
             <SafeAreaView style={{ flex: 1 }}>
+                <StatusBar barStyle=""></StatusBar>
+
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.container}>
                         <View style={styles.column}>
