@@ -1,6 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-web";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  SafeAreaView,
+} from "react-native";
 
 export default function App() {
   return (
