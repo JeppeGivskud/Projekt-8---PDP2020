@@ -7,25 +7,25 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-//import Ellipsis from "./components/ellipsis";
+import Ellipsis from "./components/ellipsis";
 
 export default function App() {
   return (
-    <View style={{ flex: 1, backgroundColor: "pink" }}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView style={{ flex: 1 }}>
+    <View styles={{ backgroundColor: "pink" }}>
+      <SafeAreaView>
+        <ScrollView>
           <View style={styles.container}>
             <View style={styles.column}>
-              <Button title={"1"}></Button>
-              <Button title={"2"}></Button>
-              <Button title={"3"}></Button>
-              <Button title={"4"}></Button>
+              <Button style={styles.box} title={"1"}></Button>
+              <Button style={styles.box} title={"2"}></Button>
+              <Button style={styles.box} title={"3"}></Button>
+              <Button style={styles.box} title={"4"}></Button>
             </View>
             <View style={styles.column}>
-              <Button title={"5"}></Button>
-              <Button title={"6"}></Button>
-              <Button title={"7"}></Button>
-              <Button title={"8"}></Button>
+              <Button style={styles.box} title={"5"}></Button>
+              <Button style={styles.box} title={"6"}></Button>
+              <Button style={styles.box} title={"7"}></Button>
+              <Button style={styles.box} title={"8"}></Button>
               <Text>
                 Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
                 Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
@@ -49,6 +49,8 @@ export default function App() {
               </Text>
             </View>
           </View>
+
+          {/* <Ellipsis onPress={null} /> */}
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -58,7 +60,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "blue",
+    backgroundColor: "#fff",
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "center",
@@ -69,5 +71,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "tomato",
+  },
+  box: {
+    color: "white",
+    width: "100%",
+    height: "100%",
+  },
+  scrollView: {
+    marginHorizontal: 20,
+    backgroundColor: "pink",
   },
 });
