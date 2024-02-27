@@ -1,13 +1,12 @@
-import { Text, StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, Pressable } from "react-native";
 import { SFSymbol } from "react-native-sfsymbols";
 
-export default function Ellipsis({ }) {
+export default function Ellipsis({ onPress }) {
     return (
-        <View style={styles.container}>
-
-        </View>
+        <Pressable style={styles.container} onPress={onPress}>
+            <SFSymbol name="ellipsis.circle" />
+        </Pressable>
     );
-
 }
 
 const styles = StyleSheet.create({
@@ -15,6 +14,5 @@ const styles = StyleSheet.create({
         color: "#fff",
         height: 20,
         width: 20,
-
-    }
+    },
 });
