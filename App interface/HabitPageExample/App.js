@@ -1,22 +1,45 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View, ScrollView } from "react-native";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <View style={styles.column}>
-        <Button style={styles.box} title={"1"}></Button>
-        <Button style={styles.box} title={"2"}></Button>
-        <Button style={styles.box} title={"3"}></Button>
-        <Button style={styles.box} title={"4"}></Button>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.column}>
+          <Button style={styles.box} title={"1"}></Button>
+          <Button style={styles.box} title={"2"}></Button>
+          <Button style={styles.box} title={"3"}></Button>
+          <Button style={styles.box} title={"4"}></Button>
+        </View>
+        <View style={styles.column}>
+          <Button style={styles.box} title={"5"}></Button>
+          <Button style={styles.box} title={"6"}></Button>
+          <Button style={styles.box} title={"7"}></Button>
+          <Button style={styles.box} title={"8"}></Button>
+          <Text>
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo Looooooooooooo
+            Looooooooooooo Looooooooooooo Looooooooooooo
+          </Text>
+        </View>
       </View>
-      <View style={styles.column}>
-        <Button style={styles.box} title={"5"}></Button>
-        <Button style={styles.box} title={"6"}></Button>
-        <Button style={styles.box} title={"7"}></Button>
-        <Button style={styles.box} title={"8"}></Button>
-      </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -39,5 +62,9 @@ const styles = StyleSheet.create({
     color: "white",
     width: "100%",
     height: "100%",
+  },
+  scrollView: {
+    marginHorizontal: 20,
+    backgroundColor: "pink",
   },
 });
