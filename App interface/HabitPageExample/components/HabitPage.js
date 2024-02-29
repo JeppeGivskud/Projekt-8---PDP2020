@@ -11,6 +11,7 @@ import {
 
 import { useState } from "react";
 //import Ellipsis from "./components/ellipsis";
+import TestButtons from "./TestButtons";
 
 function HabitPage() {
   const [safeAreaDimensions, setSafeAreaDimensions] = useState({
@@ -19,6 +20,10 @@ function HabitPage() {
     width: 1,
     height: 1,
   });
+  const ScreenDimensions = {
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+  };
 
   const handleSafeAreaLayout = (event) => {
     const { x, y, width, height } = event.nativeEvent.layout;
@@ -36,10 +41,20 @@ function HabitPage() {
         <ScrollView style={{ flex: 1 }}>
           <View style={styles.container}>
             <View style={styles.column}>
-              <Button title={"1"}></Button>
-              <Button title={"2"}></Button>
+              <Button
+                title={"1"}
+                onPress={() =>
+                  console.log(
+                    Dimensions.get("window"),
+                    ScreenDimensions.height,
+                    ScreenDimensions.width
+                  )
+                }
+              ></Button>
+              <Button title={"2"} height={20}></Button>
               <Button title={"3"}></Button>
               <Button title={"4"}></Button>
+              <TestButtons></TestButtons>
             </View>
             <View style={styles.column}>
               <Button title={"5"}></Button>
@@ -49,18 +64,35 @@ function HabitPage() {
             </View>
           </View>
         </ScrollView>
-        <Text>
-          hi the safe is x{safeAreaDimensions.x}y{safeAreaDimensions.y}h
-          {safeAreaDimensions.height}w{safeAreaDimensions.width}
-        </Text>
+        <View
+          style={{
+            position: "absolute",
+            flex: 1,
+            alignContent: "flex-end",
+            alignItems: "center",
+            justifyContent: "center",
+            top: safeAreaDimensions.height - 200,
+            width: safeAreaDimensions.width,
+            borderWidth: 1,
+          }}
+        >
+          <Text>
+            hi the safe is x{safeAreaDimensions.x}y{safeAreaDimensions.y}h
+            {safeAreaDimensions.height}w{safeAreaDimensions.width}
+          </Text>
+        </View>
       </SafeAreaView>
       <View
         style={[
-          styles.overlayBottom,
           {
             width: safeAreaDimensions.width,
             top: safeAreaDimensions.height,
             height: 200,
+            borderWidth: 1,
+            position: "absolute",
+            width: "100%",
+            backgroundColor: "rgba(255,100,200,0.8)", // semi-transparent red
+            zIndex: 10, // ensure it's above other components
           },
         ]}
       ></View>
@@ -81,12 +113,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "tomato",
-  },
-  overlayBottom: {
-    position: "absolute",
-    width: "100%",
-    backgroundColor: "rgba(255,100,200,0.8)", // semi-transparent red
-    zIndex: 10, // ensure it's above other components
   },
 });
 export default HabitPage;
