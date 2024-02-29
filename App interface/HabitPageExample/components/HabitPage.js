@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 //import Ellipsis from "./components/ellipsis";
 import TestButtons from "./TestButtons";
+import LogButton from "./LogButton";
 
 function HabitPage() {
   const [safeAreaDimensions, setSafeAreaDimensions] = useState({

@@ -1,40 +1,48 @@
-import { StyleSheet, View } from "react-native";
-
+import { Button, SafeAreaView, StyleSheet, View, Text } from "react-native";
+import { useState } from "react";
 import HabitPage from "./components/HabitPage";
+import LogButton from "./components/LogButton";
+import BottomBar from "./components/BottomBar";
 
 export default function App() {
+  const [safeAreaDimensions, setSafeAreaDimensions] = useState({
+    x: 1,
+    y: 1,
+    width: 1,
+    height: 1,
+  });
+  const handleSafeAreaLayout = (event) => {
+    const { x, y, width, height } = event.nativeEvent.layout;
+    setSafeAreaDimensions({ x, y, width, height });
+    console.log("Height", height, "StartY", y);
+  };
+
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "pink",
-        alignContent: "space-around",
-      }}
-    >
-      <HabitPage></HabitPage>
+    <View style={{ flex: 1 }}>
+      <SafeAreaView
+        style={{ flex: 1 }}
+        onLayout={(event) => {
+          const { x, y, width, height } = event.nativeEvent.layout;
+          console.log("LAYOUT", height);
+        }}
+      >
+        <View
+          style={{ flex: 1, backgroundColor: "tomato" }}
+          onLayout={handleSafeAreaLayout}
+        >
+          <Text>hi</Text>
+        </View>
+      </SafeAreaView>
+
+      <BottomBar
+        safeAreaDimensions={safeAreaDimensions}
+        color={"blue"}
+        opacity={0.8}
+      ></BottomBar>
+      {/*This button can log whatever */}
+      <LogButton log={"hello world"}></LogButton>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "blue",
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  column: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "tomato",
-  },
-  overlayBottom: {
-    position: "absolute",
-    width: "100%",
-    backgroundColor: "rgba(255,100,200,0.8)", // semi-transparent red
-    zIndex: 10, // ensure it's above other components
-  },
-});
+const styles = StyleSheet.create({});
