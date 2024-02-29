@@ -1,9 +1,8 @@
-import { Button, SafeAreaView, StyleSheet, View, Text } from "react-native";
+import { SafeAreaView, StyleSheet, View, Dimensions } from "react-native";
 import { useState } from "react";
 import HabitPage from "./components/HabitPage";
 import LogButton from "./components/LogButton";
 import BottomBar from "./components/BottomBar";
-import TestButtons from "./components/TestButtons";
 
 export default function App() {
   const [safeAreaDimensions, setSafeAreaDimensions] = useState({
@@ -20,19 +19,37 @@ export default function App() {
 
   return (
     <View style={{ flex: 1 }}>
+      {/*This safeAreaView is hidden*/}
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ flex: 1 }} onLayout={handleSafeAreaLayout}>
-          <HabitPage></HabitPage>
-        </View>
+        <View style={{ flex: 1 }} onLayout={handleSafeAreaLayout}></View>
       </SafeAreaView>
+      {/*This safeAreaView is hidden*/}
 
+      {/*Actual app: */}
+      <View
+        style={{
+          position: "absolute",
+          top: safeAreaDimensions.y,
+          height: Dimensions.get("window").height,
+          width: safeAreaDimensions.width,
+          backgroundColor: "red",
+        }}
+      >
+        <HabitPage />
+      </View>
+      {/*Actual app: */}
+
+      {/*Bottom bar: */}
       <BottomBar
         safeAreaDimensions={safeAreaDimensions}
         color={"blue"}
-        opacity={0.8}
+        opacity={0.5}
       ></BottomBar>
+      {/*Bottom bar: */}
+
       {/*This button can log whatever */}
-      <LogButton log={"hello world"}></LogButton>
+      <LogButton log={safeAreaDimensions}></LogButton>
+      {/*This button can log whatever */}
     </View>
   );
 }
