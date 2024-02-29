@@ -3,6 +3,7 @@ import { useState } from "react";
 import HabitPage from "./components/HabitPage";
 import LogButton from "./components/LogButton";
 import BottomBar from "./components/BottomBar";
+import TestButtons from "./components/TestButtons";
 
 export default function App() {
   const [safeAreaDimensions, setSafeAreaDimensions] = useState({
@@ -31,6 +32,7 @@ export default function App() {
           onLayout={handleSafeAreaLayout}
         >
           <Text>hi</Text>
+          <HabitPage></HabitPage>
         </View>
       </SafeAreaView>
 

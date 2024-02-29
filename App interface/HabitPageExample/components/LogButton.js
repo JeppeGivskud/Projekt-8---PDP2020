@@ -1,12 +1,13 @@
-import { View, Button } from "react-native";
+import { View, Button, Dimensions } from "react-native";
+
 export default function LogButton({ log }) {
   return (
     <View
       style={{
         position: "absolute",
         justifyContent: "center",
-        width: "100%",
-        height: "100%",
+        top: Dimensions.get("window").height / 2,
+        left: Dimensions.get("window").width / 2 - 80,
       }}
     >
       <Button title={"Log something"} onPress={() => console.log(log)}></Button>
