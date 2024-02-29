@@ -20,18 +20,8 @@ export default function App() {
 
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaView
-        style={{ flex: 1 }}
-        onLayout={(event) => {
-          const { x, y, width, height } = event.nativeEvent.layout;
-          console.log("LAYOUT", height);
-        }}
-      >
-        <View
-          style={{ flex: 1, backgroundColor: "tomato" }}
-          onLayout={handleSafeAreaLayout}
-        >
-          <Text>hi</Text>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }} onLayout={handleSafeAreaLayout}>
           <HabitPage></HabitPage>
         </View>
       </SafeAreaView>
