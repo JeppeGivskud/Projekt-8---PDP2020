@@ -9,7 +9,6 @@ import {
   Dimensions,
 } from "react-native";
 
-import { useState } from "react";
 //import Ellipsis from "./components/ellipsis";
 import TestButtons from "./TestButtons";
 import LogButton from "./LogButton";

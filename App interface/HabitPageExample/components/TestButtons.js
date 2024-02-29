@@ -1,36 +1,15 @@
-import { View, Button } from "react-native";
+import { View, Button, Text } from "react-native";
+import { useState } from "react";
+import Buttonmaker from "./TestComponents/Buttonmaker";
 export default function TestButtons() {
   return (
     <View style={{ flex: 1 }}>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
-      <Button title={"Ost"}></Button>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
     </View>
   );
 }
