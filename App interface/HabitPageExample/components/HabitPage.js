@@ -18,7 +18,7 @@ function HabitPage() {
   return (
     <View style={{ flex: 1 }}>
       <StatusBar />
-      <ScrollView style={{ flex: 1, marginBottom: 85 }}>
+      <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
           <View style={styles.column}>
             <TestButtons></TestButtons>
@@ -27,6 +27,9 @@ function HabitPage() {
             <TestButtons></TestButtons>
           </View>
         </View>
+        {/* As the scrollview extends under the page the bottom items are
+         hidden. This view bumps those items up */}
+        <View style={{ flex: 1, height: 85 }} />
       </ScrollView>
     </View>
   );
