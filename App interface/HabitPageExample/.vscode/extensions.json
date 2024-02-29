@@ -11,10 +11,5 @@
         "expo.vscode-expo-tools"
     ],
     // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
-    "unwantedRecommendations": [
-        "ms-python.python",
-        "ms-python.debugpy",
-        "ms-python.black-formatter",
-        "ms-python.vscode-pylance"
-    ]
+    "unwantedRecommendations": []
 }
