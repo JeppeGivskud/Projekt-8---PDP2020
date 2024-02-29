@@ -18,7 +18,7 @@ export default function App() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "khaki" }}>
       {/*This safeAreaView is hidden*/}
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1 }} onLayout={handleSafeAreaLayout}></View>
@@ -42,7 +42,7 @@ export default function App() {
       <BottomBar
         safeAreaDimensions={safeAreaDimensions}
         color={"khaki"}
-        opacity={0.7}
+        opacity={0.96}
       />
       {/*Bottom bar: */}
 

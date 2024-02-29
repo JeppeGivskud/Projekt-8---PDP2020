@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 //import Ellipsis from "./components/ellipsis";
-import TestButtons from "./TestButtons";
+import TestButtons from "./TestComponents/TestButtons";
 import LogButton from "./LogButton";
 // TODO: The scrollable should keep scrolling for a little longer
 function HabitPage() {
@@ -21,8 +21,12 @@ function HabitPage() {
         <View style={styles.container}>
           <View style={styles.column}>
             <TestButtons></TestButtons>
+            <TestButtons></TestButtons>
+            <TestButtons></TestButtons>
           </View>
           <View style={styles.column}>
+            <TestButtons></TestButtons>
+            <TestButtons></TestButtons>
             <TestButtons></TestButtons>
           </View>
         </View>
