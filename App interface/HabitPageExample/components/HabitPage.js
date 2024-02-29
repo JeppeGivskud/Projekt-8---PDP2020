@@ -18,7 +18,7 @@ function HabitPage() {
   return (
     <View style={{ flex: 1 }}>
       <StatusBar />
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1, marginBottom: 85 }}>
         <View style={styles.container}>
           <View style={styles.column}>
             <TestButtons></TestButtons>
@@ -34,7 +34,6 @@ function HabitPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "blue",
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "center",
@@ -44,7 +43,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "tomato",
   },
 });
 export default HabitPage;

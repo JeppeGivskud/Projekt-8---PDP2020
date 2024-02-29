@@ -9,6 +9,7 @@ export default function LogButton({ log }) {
         top: Dimensions.get("window").height / 2,
         left: Dimensions.get("window").width / 2 - 80,
         zIndex: 100,
+        backgroundColor: "khaki",
       }}
     >
       <Button title={"Log something"} onPress={() => console.log(log)}></Button>

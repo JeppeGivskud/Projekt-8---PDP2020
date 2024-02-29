@@ -32,7 +32,6 @@ export default function App() {
           top: safeAreaDimensions.y,
           height: Dimensions.get("window").height,
           width: safeAreaDimensions.width,
-          backgroundColor: "red",
         }}
       >
         <HabitPage />
@@ -42,13 +41,15 @@ export default function App() {
       {/*Bottom bar: */}
       <BottomBar
         safeAreaDimensions={safeAreaDimensions}
-        color={"blue"}
-        opacity={0.5}
-      ></BottomBar>
+        color={"khaki"}
+        opacity={0.7}
+      />
       {/*Bottom bar: */}
 
       {/*This button can log whatever */}
-      <LogButton log={safeAreaDimensions}></LogButton>
+      <LogButton
+        log={[safeAreaDimensions, Dimensions.get("window").height]}
+      ></LogButton>
       {/*This button can log whatever */}
     </View>
   );
