@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         flexDirection: "row",
         justifyContent: "space-between",
-        alignContent: "center",
+        alignContent: "center", //Den er vist ikke nødvendig -Jeppe
         alignItems: "center",
         padding: 10,
     },
