@@ -33,9 +33,6 @@ const styles = StyleSheet.create({
         width: 200,
         height: 150,
         borderRadius: 20,
-
-        flex: 1,
-        minWidth: 200,
     },
 
     ellipsisContainer: {
