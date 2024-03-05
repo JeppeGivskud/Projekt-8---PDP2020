@@ -3,7 +3,7 @@ import { View } from "react-native";
 import HabitBox from "../HabitBox";
 export default function HabitBoxes({ style }) {
     return (
-        <View style={[style]}>
+        <View style={[style, { backgroundColor: "#222" }]}>
             <HabitBox
                 color={"tomato"}
                 name={"Ostesovs"}
