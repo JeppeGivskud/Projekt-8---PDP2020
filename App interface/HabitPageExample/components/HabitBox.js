@@ -5,6 +5,7 @@ import Ellipsis from "./ellipsis";
 
 {/* 
 TODO: onPress for ellipsis skal pege på actionSheet
+TODO: logik for at man kan complete habit igen når det er en ny dag og at streak dermed skal stige
 */ }
 
 export default function HabitBox({ color, name, symbol }) {
