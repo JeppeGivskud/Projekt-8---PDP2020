@@ -24,7 +24,7 @@ export default function App() {
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={{ flex: 1 }} onLayout={handleSafeAreaLayout}>
                     <HabitPage />
-                    <HabitBox color={"#007AFF"} name="Hej" count="3" symbol="🙋‍♀️" ></HabitBox>
+                    <HabitBox color={"#007AFF"} name="Hej" count="5" symbol="🙋‍♀️" ></HabitBox>
                     <BottomBar
                         safeAreaDimensions={safeAreaDimensions}
                         color={"tomato"}

@@ -30,7 +30,7 @@ export default function HabitBox({ color, name, count, symbol }) {
 
                 <View style={styles.streakEllipsisContainer}>
                     <View style={styles.streakContainer}>
-                        <Text style={styles.habitName}>{count}</Text>
+                        <Text style={styles.habitName}>{Number(count) + 1}</Text>
                         <Ionicons name="flame" size={30} color="#fff" />
                     </View>
                     <Ellipsis onPress={null} />
@@ -44,35 +44,29 @@ export default function HabitBox({ color, name, count, symbol }) {
             </TouchableOpacity >
         );
     }
+    return (
+        <TouchableOpacity style={[styles.container, { backgroundColor: "#222" }]} onPress={markComplete} activeOpacity={0.7} >
 
-    <TouchableOpacity style={[styles.container, { backgroundColor: color - 80 }]} onPress={markComplete} >
-
-        <View style={styles.streakEllipsisContainer}>
-            <View style={styles.streakContainer}>
-                <Text style={styles.habitName}>{count}</Text>
-                <Ionicons name="flame" size={30} color="#fff" />
+            <View style={styles.streakEllipsisContainer}>
+                <View style={styles.streakContainer}>
+                    <Text style={styles.habitName}>{Number(count)}</Text>
+                    <Ionicons name="flame" size={30} color="#fff" />
+                </View>
+                <Ellipsis onPress={null} />
             </View>
-            <Ellipsis onPress={null} />
-        </View>
 
-        <View style={styles.habitNameContainer}>
-            <Text style={[styles.habitName, { paddingRight: 2 }]}>{symbol}</Text>
-            <Text style={styles.habitName}>{name}</Text>
-        </View>
+            <View style={styles.habitNameContainer}>
+                <Text style={[styles.habitName, { paddingRight: 2 }]}>{symbol}</Text>
+                <Text style={styles.habitName}>{name}</Text>
+            </View>
 
-    </TouchableOpacity >
-
-
+        </TouchableOpacity >
+    )
 }
-
-
-
-
-
 
 const styles = StyleSheet.create({
     container: {
-        //maxWidth: Dimensions.get("window").width / 2 - 20, // width/2 - 20 fordi der skal være plads til 2x margin
+        maxWidth: Dimensions.get("window").width / 2 - 20, // width/2 - 20 fordi der skal være plads til 2x margin
         minWidth: 150,
         height: 130,
         borderRadius: 20,
