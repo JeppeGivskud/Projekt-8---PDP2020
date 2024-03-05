@@ -1,18 +1,33 @@
-import { StyleSheet, Pressable } from "react-native";
-import { SFSymbol } from "react-native-sfsymbols";
+import { View, StyleSheet, Pressable } from "react-native";
 
 export default function Ellipsis({ onPress }) {
     return (
         <Pressable style={styles.container} onPress={onPress}>
-            <SFSymbol name="ellipsis.circle" />
+            <View style={styles.circle} />
+            <View style={styles.circle} />
+            <View style={styles.circle} />
         </Pressable>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        color: "#fff",
-        height: 20,
-        width: 20,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        height: 40,
+        width: 40,
+        backgroundColor: "rgba(255,255,255,0.3)",
+        opacity: 50,
+        borderRadius: 42,
+        paddingHorizontal: 6,
     },
+
+    circle: {
+        width: 7,
+        height: 7,
+        borderRadius: 100,
+        backgroundColor: "rgba(255,255,255,0.9)",
+    },
+
 });
