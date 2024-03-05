@@ -2,17 +2,21 @@ import { Text, StyleSheet, View, Pressable } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Ellipsis from "./ellipsis";
 
-{/* 
+{
+    /* 
 TODO: brug ActionSheet pakke til at render en menu når man trykker på ellipsis
 TODO: Indsæt symbol før name
-*/ }
+*/
+}
 
 export default function HabitBox({ color, name, count, symbol }) {
     return (
         <Pressable style={[styles.container, { backgroundColor: color }]}>
             <View style={styles.ellipsisContainer}>
                 <View style={[styles.ellipsisContainer, { paddingTop: 10 }]}>
-                    <Text style={[styles.habitName, { fontSize: 25 }]}>{count}</Text>
+                    <Text style={[styles.habitName, { fontSize: 25 }]}>
+                        {count}
+                    </Text>
                     <Ionicons name="flame" size={30} color="#fff" />
                 </View>
                 <Ellipsis onPress={null} />
@@ -20,7 +24,7 @@ export default function HabitBox({ color, name, count, symbol }) {
             <View style={styles.textContainer}>
                 <Text style={styles.habitName}>{name}</Text>
             </View>
-        </Pressable >
+        </Pressable>
     );
 }
 
@@ -50,10 +54,5 @@ const styles = StyleSheet.create({
     habitName: {
         color: "#fff",
         fontSize: 25,
-
-
     },
-
-
-
 });
