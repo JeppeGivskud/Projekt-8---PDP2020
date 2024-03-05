@@ -1,4 +1,4 @@
-import { View, Button, Text, TouchableOpacity } from "react-native";
+import { View, Button, Text, TouchableOpacity, Dimensions } from "react-native";
 import { useState } from "react";
 
 export default function Pushable() {
@@ -24,20 +24,18 @@ export default function Pushable() {
     <View
       onLayout={() => generateColor()}
       style={{
-        backgroundColor: color,
         flex: 1,
-        width: "100%",
-        height: "100%",
+        maxWidth: Dimensions.get("window").width / 2,
+        minWidth: 150,
+        padding: 1,
       }}
     >
       <TouchableOpacity
         style={{
-          flex: 1,
           backgroundColor: color,
           padding: 10,
-          borderRadius: 5,
-          alignItems: "center",
           justifyContent: "center",
+          alignItems: "center",
         }}
         onPress={() => (generateColor(), console.log(color))}
       >

@@ -1,9 +1,54 @@
-import { View, Button, Text } from "react-native";
-import { useState } from "react";
+import { View, Button, Text, StyleSheet } from "react-native";
 import Buttonmaker from "./Buttonmaker";
-export default function TestButtons() {
+export default function TestButtons({ style }) {
   return (
-    <View style={{ flex: 1, width: "100%", height: "100%" }}>
+    <View style={[style, { backgroundColor: "#222" }]}>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
+      <Buttonmaker></Buttonmaker>
       <Buttonmaker></Buttonmaker>
       <Buttonmaker></Buttonmaker>
       <Buttonmaker></Buttonmaker>

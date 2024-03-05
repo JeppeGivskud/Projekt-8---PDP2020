@@ -17,38 +17,31 @@ function HabitPage() {
   return (
     <View style={{ flex: 1 }}>
       <StatusBar />
-      <ScrollView style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <View style={styles.column}>
-            <TestButtons></TestButtons>
-            <TestButtons></TestButtons>
-            <TestButtons></TestButtons>
-          </View>
-          <View style={styles.column}>
-            <TestButtons></TestButtons>
-            <TestButtons></TestButtons>
-            <TestButtons></TestButtons>
-          </View>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollview}>
+        <View>
+          <TestButtons style={styles.container}></TestButtons>
         </View>
-        {/* As the scrollview extends under the page the bottom items are
-         hidden. This view bumps those items up */}
-        <View style={{ flex: 1, height: 85 }} />
+        <View>
+          <TestButtons style={styles.container}></TestButtons>
+        </View>
+        <View>
+          <TestButtons style={styles.container}></TestButtons>
+        </View>
       </ScrollView>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    flexWrap: "wrap",
   },
-  column: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+  scrollview: {
+    justifyContent: "flex-start",
+    gap: 20,
   },
 });
 export default HabitPage;
