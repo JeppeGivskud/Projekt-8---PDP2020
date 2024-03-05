@@ -5,32 +5,38 @@ import Ellipsis from "./ellipsis";
 
 {/* 
 TODO: onPress for ellipsis skal pege på actionSheet
-TODO: Indsæt symbol før name
-TODO: Count skal kun vises når habit er complete. 
 */ }
 
-export default function HabitBox({ color, name, count, symbol }) {
+export default function HabitBox({ color, name, symbol }) {
     const [habitComplete, setHabitComplete] = useState(false);
+    const [streak, setStreak] = useState(0);
+    const [streakActive, setStreakActive] = useState(false);
 
     const markComplete = () => {
         if (habitComplete === false) {
             setHabitComplete(true);
+            setStreak(streak => streak + 1)
+            setStreakActive(true)
         }
     }
 
     const markIncomplete = () => {
         if (habitComplete) {
             setHabitComplete(false)
+            setStreak(streak => streak - 1)
+            if (streak > 0) {
+                setStreakActive(false)
+            }
         }
     }
 
     if (habitComplete) {
         return (
-            <TouchableOpacity style={[styles.container, { backgroundColor: color }]} onPress={markIncomplete} >
+            <TouchableOpacity style={[styles.container, { backgroundColor: color }]} onPress={markIncomplete} activeOpacity={0.8} >
 
                 <View style={styles.streakEllipsisContainer}>
                     <View style={styles.streakContainer}>
-                        <Text style={styles.habitName}>{Number(count) + 1}</Text>
+                        <Text style={styles.habitName}>{Number(streak)}</Text>
                         <Ionicons name="flame" size={30} color="#fff" />
                     </View>
                     <Ellipsis onPress={null} />
@@ -42,18 +48,29 @@ export default function HabitBox({ color, name, count, symbol }) {
                 </View>
 
             </TouchableOpacity >
+
         );
     }
-    return (
-        <TouchableOpacity style={[styles.container, { backgroundColor: "#222" }]} onPress={markComplete} activeOpacity={0.7} >
 
-            <View style={styles.streakEllipsisContainer}>
-                <View style={styles.streakContainer}>
-                    <Text style={styles.habitName}>{Number(count)}</Text>
-                    <Ionicons name="flame" size={30} color="#fff" />
+    return (
+        <TouchableOpacity style={[styles.container, { backgroundColor: "#222" }]} onPress={markComplete} activeOpacity={0.8} >
+            {streakActive ? (
+                <View style={styles.streakEllipsisContainer}>
+                    <View style={styles.streakContainer}>
+                        <Text style={styles.habitName}>{Number(streak)}</Text>
+                        <Ionicons name="flame" size={30} color="#fff" />
+                    </View>
+                    <Ellipsis onPress={null} />
                 </View>
-                <Ellipsis onPress={null} />
-            </View>
+            ) : (
+                <View style={styles.streakEllipsisContainer}>
+                    <View style={styles.streakContainer}>
+                        <Text style={styles.habitName}>{Number(streak)}</Text>
+                        <Ionicons name="flame" size={30} color="rgba(1,1,1,0)" />
+                    </View>
+                    <Ellipsis onPress={null} />
+                </View>
+            )}
 
             <View style={styles.habitNameContainer}>
                 <Text style={[styles.habitName, { paddingRight: 2 }]}>{symbol}</Text>
