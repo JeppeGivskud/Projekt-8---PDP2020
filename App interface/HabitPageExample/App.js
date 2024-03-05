@@ -19,32 +19,18 @@ export default function App() {
 
   return (
     <View style={{ flex: 1, backgroundColor: "khaki" }}>
-      {/*This safeAreaView is hidden*/}
+      {/*Actual app: */}
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ flex: 1 }} onLayout={handleSafeAreaLayout}></View>
+        <View style={{ flex: 1 }} onLayout={handleSafeAreaLayout}>
+          <HabitPage />
+          <BottomBar
+            safeAreaDimensions={safeAreaDimensions}
+            color={"tomato"}
+            opacity={0.66} //{0.96}
+          />
+        </View>
       </SafeAreaView>
-      {/*This safeAreaView is hidden*/}
-
       {/*Actual app: */}
-      <View
-        style={{
-          position: "absolute",
-          top: safeAreaDimensions.y,
-          height: Dimensions.get("window").height,
-          width: safeAreaDimensions.width,
-        }}
-      >
-        <HabitPage />
-      </View>
-      {/*Actual app: */}
-
-      {/*Bottom bar: */}
-      <BottomBar
-        safeAreaDimensions={safeAreaDimensions}
-        color={"khaki"}
-        opacity={0.96}
-      />
-      {/*Bottom bar: */}
 
       {/*This button can log whatever */}
       <LogButton
