@@ -8,8 +8,9 @@ import {
     StatusBar,
     Dimensions,
 } from "react-native";
-
+import TestButtons from "./TestComponents/TestButtons";
 import HabitBox from "./HabitBox";
+import HabitBoxes from "./TestComponents/HabitBoxes";
 // TODO: The scrollable should keep scrolling for a little longer
 function HabitPage() {
     return (
@@ -20,11 +21,7 @@ function HabitPage() {
                 contentContainerStyle={styles.scrollview}
             >
                 <View style={styles.container}>
-                    <HabitBox
-                        color={"tomato"}
-                        name={"Ostesovs"}
-                        count={"to"}
-                    ></HabitBox>
+                    <HabitBoxes style={styles.container} />
                 </View>
             </ScrollView>
         </View>
