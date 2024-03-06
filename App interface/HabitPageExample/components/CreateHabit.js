@@ -2,7 +2,9 @@ import { Text, View, TouchableOpacity, TextInput, StyleSheet, Dimensions, Button
 import { useState } from "react";
 
 // TODO: Send information ud af component
-// TODO: fang information i "constructor" af habitBox
+// TODO: Sang information i "constructor" af habitBox
+// TODO: Få emoji keyboard library til at virke. Det kunne være sejt
+// TODO: Få picker til time section at virke. Det kunne også være sejt
 
 export default function CreateHabit({ }) {
     // States
@@ -33,7 +35,7 @@ export default function CreateHabit({ }) {
             </View>
 
 
-            {/* Habit name input TODO: inputBox skal have en fixed størrelse*/}
+            {/* Habit name input */}
             <View>
                 <View style={styles.textContainer}>
                     <Text style={styles.headingStyle}>Habit name</Text>
@@ -71,9 +73,27 @@ export default function CreateHabit({ }) {
                     />
                     <Button title="Submit symbol" onPress={displayhabitSymbol} />
                 </View>
-
             </View>
 
+            {/* Time section input */}
+            <View>
+                <View style={styles.textContainer}>
+                    <Text style={styles.headingStyle}>Time section</Text>
+                </View>
+
+                <View style={[styles.textContainer, { justifyContent: "flex-start" }]}>
+                    <TextInput
+                        style={styles.symbolInput}
+                        blurOnSubmit={true}
+                        placeholder="😏"
+                        enablesReturnKeyAutomatically={true}
+                        maxLength={1}
+                        selectTextOnFocus={true}
+                        onSubmitEditing={text => setHabitSymbol(text.nativeEvent.text)}
+                    />
+                    <Button title="Submit symbol" onPress={displayhabitSymbol} />
+                </View>
+            </View>
 
         </View >
     );
