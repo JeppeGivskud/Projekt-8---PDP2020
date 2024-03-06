@@ -90,6 +90,11 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         margin: 10, // Margin er plads omkring ydersiden
         padding: 12, // Padding er plads indad
+        shadowColor: 'rgba(0,0,0, .4)', // IOS
+        shadowOffset: { height: 1, width: 1 }, // IOS
+        shadowOpacity: 1, // IOS
+        shadowRadius: 1, //IOS
+        elevation: 2, // Android
     },
 
     streakContainer: {
