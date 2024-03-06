@@ -6,6 +6,7 @@ import Ellipsis from "./ellipsis";
 {/* 
 TODO: onPress for ellipsis skal pege på actionSheet
 TODO: logik for at man kan complete habit igen når det er en ny dag og at streak dermed skal stige
+TODO: HabitBox bliver for smal når man sætter to ved siden af hinanden. Den bruger ikke pladsen
 */ }
 
 export default function HabitBox({ color, name, symbol }) {
@@ -33,7 +34,10 @@ export default function HabitBox({ color, name, symbol }) {
 
     if (habitComplete) {
         return (
-            <TouchableOpacity style={[styles.container, { backgroundColor: color }]} onPress={markIncomplete} activeOpacity={0.8} >
+            <TouchableOpacity
+                style={[styles.container, { backgroundColor: color }]}
+                onPress={markIncomplete}
+                activeOpacity={0.8} >
 
                 <View style={styles.streakEllipsisContainer}>
                     <View style={styles.streakContainer}>

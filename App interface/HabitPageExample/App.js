@@ -4,6 +4,8 @@ import HabitPage from "./components/HabitPage";
 import LogButton from "./components/LogButton";
 import BottomBar from "./components/BottomBar";
 import HabitBox from "./components/HabitBox";
+import CreateHabit from "./components/CreateHabit";
+
 
 export default function App() {
     const [safeAreaDimensions, setSafeAreaDimensions] = useState({
@@ -12,11 +14,26 @@ export default function App() {
         width: 1,
         height: 1,
     });
+
     const handleSafeAreaLayout = (event) => {
         const { x, y, width, height } = event.nativeEvent.layout;
         setSafeAreaDimensions({ x, y, width, height });
         console.log("Height", height, "StartY", y);
     };
+
+
+    // Jakobs states og funktioner
+    const [creatingHabit, setCreatingHabit] = useState(false);
+
+    const createHabit = () => {
+        setCreatingHabit(true)
+    }
+
+    const saveHabit = () => {
+        setCreatingHabit(false)
+        // Send information til server?? eller er det wack at gøre her?
+        // Kald noget der kan lave en ny habitBox med de data jeg inputter i CreateHabit siden
+    }
 
     return (
         <View style={{ flex: 1, backgroundColor: "khaki" }}>
@@ -24,14 +41,18 @@ export default function App() {
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={{ flex: 1 }} onLayout={handleSafeAreaLayout}>
                     <HabitPage />
-                    <HabitBox color={"#007AFF"} name="Hej" symbol="🙋‍♀️" ></HabitBox>
+                    <View style={{ flexDirection: "row", justifyContent: "space-evenly", flexWrap: "wrap" }}>
+                        <HabitBox color={"#007AFF"} name="Hej" symbol="🙋‍♀️" />
+                        <HabitBox color={"#007AFF"} name="Hej" symbol="🙋‍♀️" />
+                    </View>
+                    <CreateHabit />
                     <BottomBar
                         safeAreaDimensions={safeAreaDimensions}
                         color={"tomato"}
                         opacity={0.66} //{0.96}
                     />
                 </View>
-            </SafeAreaView>
+            </SafeAreaView >
             {/*Actual app: */}
 
             {/*This button can log whatever */}
@@ -39,7 +60,7 @@ export default function App() {
                 log={[safeAreaDimensions, Dimensions.get("window").height]}
             ></LogButton>
             {/*This button can log whatever */}
-        </View>
+        </View >
     );
 }
 
