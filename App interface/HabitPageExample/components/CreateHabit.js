@@ -1,13 +1,21 @@
 import { Text, View, TouchableOpacity, TextInput, StyleSheet, Dimensions, Button } from "react-native";
 import { useState } from "react";
 
+// TODO: Send information ud af component
+// TODO: fang information i "constructor" af habitBox
+
 export default function CreateHabit({ }) {
     // States
     const [habitName, setHabitName] = useState("");
+    const [habitSymbol, setHabitSymbol] = useState("");
 
     // Functions
     const displayhabitName = () => {
         console.log(habitName)
+    };
+
+    const displayhabitSymbol = () => {
+        console.log(habitSymbol)
     };
 
     const createHabit = () => {
@@ -21,7 +29,7 @@ export default function CreateHabit({ }) {
         <View style={styles.container}>
             {/* Title */}
             <View styles={styles.textContainer}>
-                <Text style={styles.title}>Create Habit</Text>
+                <Text style={styles.title}>New habit</Text>
             </View>
 
 
@@ -43,6 +51,27 @@ export default function CreateHabit({ }) {
                     />
                     <Button title="Submit name" onPress={displayhabitName} />
                 </View>
+            </View>
+
+            {/* Habit Symbol input */}
+            <View>
+                <View style={styles.textContainer}>
+                    <Text style={styles.headingStyle}>Habit symbol</Text>
+                </View>
+
+                <View style={[styles.textContainer, { justifyContent: "flex-start" }]}>
+                    <TextInput
+                        style={styles.symbolInput}
+                        blurOnSubmit={true}
+                        placeholder="😏"
+                        enablesReturnKeyAutomatically={true}
+                        maxLength={40}
+                        selectTextOnFocus={true}
+                        onSubmitEditing={text => setHabitSymbol(text.nativeEvent.text)}
+                    />
+                    <Button title="Submit symbol" onPress={displayhabitSymbol} />
+                </View>
+
             </View>
 
 
@@ -83,20 +112,24 @@ const styles = StyleSheet.create({
     headingStyle: {
         color: "#222",
         fontSize: 18,
-        paddingTop: 10,
+        paddingTop: 12,
     },
 
     textInput: {
-        height: 40,
+        width: 250,
         marginTop: 8,
         padding: 10,
         borderRadius: 5,
         backgroundColor: "#d9d9d9",
     },
 
-    button: {
-        backgroundColor: "#007AFF",
+    symbolInput: {
+        height: 100,
+        width: 100,
+        marginTop: 8,
+        padding: 10,
         borderRadius: 5,
-        width: 30,
+        backgroundColor: "#d9d9d9",
+        fontSize: 80,
     },
 });

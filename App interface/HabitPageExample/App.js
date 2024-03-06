@@ -54,12 +54,6 @@ export default function App() {
                 </View>
             </SafeAreaView >
             {/*Actual app: */}
-
-            {/*This button can log whatever */}
-            <LogButton
-                log={[safeAreaDimensions, Dimensions.get("window").height]}
-            ></LogButton>
-            {/*This button can log whatever */}
         </View >
     );
 }
