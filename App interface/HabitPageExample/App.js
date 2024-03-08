@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, View, Dimensions } from "react-native";
+import { SafeAreaView, StyleSheet, View, Dimensions, Text, Button } from "react-native";
 import { useState } from "react";
 import HabitPage from "./components/HabitPage";
 import LogButton from "./components/LogButton";
@@ -45,8 +45,6 @@ export default function App() {
         setReceivedSymbol(habitSymbol);
     }
 
-
-
     return (
         <View style={{ flex: 1, backgroundColor: "khaki" }}>
             {/*Actual app: */}
@@ -57,7 +55,12 @@ export default function App() {
                         <HabitBox color={"#007AFF"} name={receivedHabitName} symbol={receivedSymbol} />
                         <HabitBox color={"#007AFF"} name="Hej" symbol="🙋‍♀️" />
                     </View>
-                    <CreateHabit transferHabitName={transferHabitName} transferSymbol={transferSymbol} />
+                    {creatingHabit ? (
+                        < CreateHabit transferHabitName={transferHabitName} transferSymbol={transferSymbol} saveHabit={saveHabit} />
+                    ) : (
+                        <Button title="hej" onPress={createHabit} />
+                    )}
+
                     <BottomBar
                         safeAreaDimensions={safeAreaDimensions}
                         color={"tomato"}

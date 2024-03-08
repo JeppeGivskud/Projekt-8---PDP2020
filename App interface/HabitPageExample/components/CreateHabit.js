@@ -3,13 +3,14 @@ import { useState } from "react";
 
 // TODO: Få emoji keyboard library til at virke. Det kunne være sejt
 // TODO: Få picker til time section at virke. Det kunne også være sejt
-// FIXME: Hvorfor skal der være en button før teksten bliver overført til app.js
+// FIXME: Hvorfor skal der være en button før teksten bliver overført til app.js?
+// FIXME: gem data selv når create habit ikke længere bliver vist
 
 // Der skal være en return for hver stykke data vi vil sende. Hver input skal have sin egen return. 
 //Jeg tror det betyder at den yderste container skal komme fra en anden klasse men jeg er ikke sikker
 
 
-export default function CreateHabit({ transferHabitName, transferSymbol }) {
+export default function CreateHabit({ transferHabitName, transferSymbol, saveHabit }) {
     // States
     const [habitName, setHabitName] = useState("");
     const [habitSymbol, setHabitSymbol] = useState("");
@@ -18,6 +19,8 @@ export default function CreateHabit({ transferHabitName, transferSymbol }) {
     const createHabit = () => {
         transferHabitName(habitName)
         transferSymbol(habitSymbol)
+        //saveHabit()
+
     }
 
     return (
