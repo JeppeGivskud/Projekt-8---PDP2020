@@ -88,6 +88,7 @@ export default function HabitBox({ color, name, symbol }) {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         maxWidth: Dimensions.get("window").width / 2 - 20, // width/2 - 20 fordi der skal være plads til 2x margin
         minWidth: 150,
         height: 130,

@@ -1,39 +1,32 @@
 import { Text, View, TouchableOpacity, TextInput, StyleSheet, Dimensions, Button } from "react-native";
 import { useState } from "react";
 
-// TODO: Send information ud af component
-// TODO: Sang information i "constructor" af habitBox
 // TODO: Få emoji keyboard library til at virke. Det kunne være sejt
 // TODO: Få picker til time section at virke. Det kunne også være sejt
+// FIXME: Hvorfor skal der være en button før teksten bliver overført til app.js
 
-export default function CreateHabit({ }) {
+// Der skal være en return for hver stykke data vi vil sende. Hver input skal have sin egen return. 
+//Jeg tror det betyder at den yderste container skal komme fra en anden klasse men jeg er ikke sikker
+
+
+export default function CreateHabit({ transferHabitName, transferSymbol }) {
     // States
     const [habitName, setHabitName] = useState("");
     const [habitSymbol, setHabitSymbol] = useState("");
 
     // Functions
-    const displayhabitName = () => {
-        console.log(habitName)
-    };
-
-    const displayhabitSymbol = () => {
-        console.log(habitSymbol)
-    };
-
     const createHabit = () => {
-        // Socket send alle inputtede værdier (navn, tidspunkt osv) til database
-        // Kør funktion der opdaterer habit overview?
-        // Sæt creatingHabit = false i app.js så creation UI forsvinder
-        console.log("nah man it don’t work yet")
+        transferHabitName(habitName)
+        transferSymbol(habitSymbol)
     }
 
     return (
         <View style={styles.container}>
+
             {/* Title */}
             <View styles={styles.textContainer}>
                 <Text style={styles.title}>New habit</Text>
             </View>
-
 
             {/* Habit name input */}
             <View>
@@ -51,13 +44,13 @@ export default function CreateHabit({ }) {
                         selectTextOnFocus={true}
                         onSubmitEditing={text => setHabitName(text.nativeEvent.text)}
                     />
-                    <Button title="Submit name" onPress={displayhabitName} />
                 </View>
             </View>
 
             {/* Habit Symbol input */}
             <View>
                 <View style={styles.textContainer}>
+
                     <Text style={styles.headingStyle}>Habit symbol</Text>
                 </View>
 
@@ -71,30 +64,11 @@ export default function CreateHabit({ }) {
                         selectTextOnFocus={true}
                         onSubmitEditing={text => setHabitSymbol(text.nativeEvent.text)}
                     />
-                    <Button title="Submit symbol" onPress={displayhabitSymbol} />
                 </View>
             </View>
 
-            {/* Time section input */}
-            <View>
-                <View style={styles.textContainer}>
-                    <Text style={styles.headingStyle}>Time section</Text>
-                </View>
-
-                <View style={[styles.textContainer, { justifyContent: "flex-start" }]}>
-                    <TextInput
-                        style={styles.symbolInput}
-                        blurOnSubmit={true}
-                        placeholder="😏"
-                        enablesReturnKeyAutomatically={true}
-                        maxLength={1}
-                        selectTextOnFocus={true}
-                        onSubmitEditing={text => setHabitSymbol(text.nativeEvent.text)}
-                    />
-                    <Button title="Submit symbol" onPress={displayhabitSymbol} />
-                </View>
-            </View>
-
+            {/* Habit props submit */}
+            <Button title="Create Habit" onPress={createHabit} />
         </View >
     );
 }
@@ -109,7 +83,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#f2f2f2",
         borderRadius: 20,
         margin: 10,
-        shadowColor: 'rgba(0,0,0, .4)', // IOS
+        shadowColor: 'rgba(0,0,0, .2)', // IOS
         shadowOffset: { height: 2, width: 0 }, // IOS
         shadowOpacity: 1, // IOS
         shadowRadius: 3, //IOS
@@ -136,7 +110,7 @@ const styles = StyleSheet.create({
     },
 
     textInput: {
-        width: 250,
+        flex: 1,
         marginTop: 8,
         padding: 10,
         borderRadius: 5,

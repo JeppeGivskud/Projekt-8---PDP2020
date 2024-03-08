@@ -24,6 +24,8 @@ export default function App() {
 
     // Jakobs states og funktioner
     const [creatingHabit, setCreatingHabit] = useState(false);
+    const [receivedHabitName, setReceivedHabitName] = useState("");
+    const [receivedSymbol, setReceivedSymbol] = useState("");
 
     const createHabit = () => {
         setCreatingHabit(true)
@@ -35,6 +37,16 @@ export default function App() {
         // Kald noget der kan lave en ny habitBox med de data jeg inputter i CreateHabit siden
     }
 
+    const transferHabitName = (habitName) => {
+        setReceivedHabitName(habitName);
+    }
+
+    const transferSymbol = (habitSymbol) => {
+        setReceivedSymbol(habitSymbol);
+    }
+
+
+
     return (
         <View style={{ flex: 1, backgroundColor: "khaki" }}>
             {/*Actual app: */}
@@ -42,10 +54,10 @@ export default function App() {
                 <View style={{ flex: 1 }} onLayout={handleSafeAreaLayout}>
                     <HabitPage />
                     <View style={{ flexDirection: "row", justifyContent: "space-evenly", flexWrap: "wrap" }}>
-                        <HabitBox color={"#007AFF"} name="Hej" symbol="🙋‍♀️" />
+                        <HabitBox color={"#007AFF"} name={receivedHabitName} symbol={receivedSymbol} />
                         <HabitBox color={"#007AFF"} name="Hej" symbol="🙋‍♀️" />
                     </View>
-                    <CreateHabit />
+                    <CreateHabit transferHabitName={transferHabitName} transferSymbol={transferSymbol} />
                     <BottomBar
                         safeAreaDimensions={safeAreaDimensions}
                         color={"tomato"}
