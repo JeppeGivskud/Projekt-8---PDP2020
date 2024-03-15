@@ -10,7 +10,7 @@ import { useState } from "react";
 //Jeg tror det betyder at den yderste container skal komme fra en anden klasse men jeg er ikke sikker
 
 
-export default function CreateHabit({ transferHabitName, transferSymbol, saveHabit }) {
+export default function CreateHabit({ transferHabitName, transferSymbol, saveHabit, addName }) {
     // States
     const [habitName, setHabitName] = useState("");
     const [habitSymbol, setHabitSymbol] = useState("");
@@ -20,6 +20,7 @@ export default function CreateHabit({ transferHabitName, transferSymbol, saveHab
         transferHabitName(habitName)
         transferSymbol(habitSymbol)
         //saveHabit()
+        addName(habitName)
 
     }
 

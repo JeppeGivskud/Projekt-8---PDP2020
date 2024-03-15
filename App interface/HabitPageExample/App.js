@@ -1,76 +1,238 @@
-import { SafeAreaView, StyleSheet, View, Dimensions, Text, Button } from "react-native";
-import { useState } from "react";
-import HabitPage from "./components/HabitPage";
-import LogButton from "./components/LogButton";
-import BottomBar from "./components/BottomBar";
-import HabitBox from "./components/HabitBox";
-import CreateHabit from "./components/CreateHabit";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View, TextInput, Button, Platform, FlatList } from 'react-native';
+import { useState, useEffect } from 'react';
+import * as SQLite from 'expo-sqlite';
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
+import * as DocumentPicker from 'expo-document-picker';
+
+import HabitBox from './components/HabitBox';
+import CreateHabit from './components/CreateHabit';
+
+// expo add expo-sqlite
+// expo add expo-file-system
+// expo add expo-document-picker
+// expo add expo-sharing
+// expo add expo-dev-client
+
+/*
+  For testing expo-document-picker on iOS we need a standalone app 
+  which is why we install expo-dev-client
+  
+  If you don't have eas installed then install using the following command:
+  npm install -g eas-cli
+
+  eas login
+  eas build:configure
+
+  Build for local development on iOS or Android:
+  eas build -p ios --profile development --local
+  OR
+  eas build -p android --profile development --local
+
+  May need to install the following to build locally (which allows debugging)
+  npm install -g yarn
+  brew install fastlane
+
+  After building install on your device:
+  For iOS (simulator): https://docs.expo.dev/build-reference/simulators/
+  For Android: https://docs.expo.dev/build-reference/apk/
+
+  Run on installed app:
+  expo start --dev-client
+*/
 
 
-export default function App() {
-    const [safeAreaDimensions, setSafeAreaDimensions] = useState({
-        x: 1,
-        y: 1,
-        width: 1,
-        height: 1,
-    });
+export default function NotApp() {
+    const [db, setDb] = useState(SQLite.openDatabase('example.db'));
+    const [isLoading, setIsLoading] = useState(true);
+    const [names, setNames] = useState([]);
+    const [currentName, setCurrentName] = useState(undefined);
 
-    const handleSafeAreaLayout = (event) => {
-        const { x, y, width, height } = event.nativeEvent.layout;
-        setSafeAreaDimensions({ x, y, width, height });
-        console.log("Height", height, "StartY", y);
+    const exportDb = async () => {
+        if (Platform.OS === "android") {
+            const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+            if (permissions.granted) {
+                const base64 = await FileSystem.readAsStringAsync(
+                    FileSystem.documentDirectory + 'SQLite/example.db',
+                    {
+                        encoding: FileSystem.EncodingType.Base64
+                    }
+                );
+
+                await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, 'example.db', 'application/octet-stream')
+                    .then(async (uri) => {
+                        await FileSystem.writeAsStringAsync(uri, base64, { encoding: FileSystem.EncodingType.Base64 });
+                    })
+                    .catch((e) => console.log(e));
+            } else {
+                console.log("Permission not granted");
+            }
+        } else {
+            await Sharing.shareAsync(FileSystem.documentDirectory + 'SQLite/example.db');
+        }
+    }
+
+    const importDb = async () => {
+        let result = await DocumentPicker.getDocumentAsync({
+            copyToCacheDirectory: true
+        });
+
+        if (result.type === 'success') {
+            setIsLoading(true);
+
+            if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite')).exists) {
+                await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
+            }
+
+            const base64 = await FileSystem.readAsStringAsync(
+                result.uri,
+                {
+                    encoding: FileSystem.EncodingType.Base64
+                }
+            );
+
+            await FileSystem.writeAsStringAsync(FileSystem.documentDirectory + 'SQLite/example.db', base64, { encoding: FileSystem.EncodingType.Base64 });
+            await db.closeAsync();
+            setDb(SQLite.openDatabase('example.db'));
+        }
+    };
+
+    // Kører vist én gang når appen åbner? Sørger for at den loader names 
+    useEffect(() => {
+        db.transaction(tx => {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS names (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)')
+        });
+
+        db.transaction(tx => {
+            tx.executeSql('SELECT * FROM names', null,
+                (txObj, resultSet) => setNames(resultSet.rows._array),
+                (txObj, error) => console.log(error)
+            );
+        });
+
+        // Viser text, loading names
+        setIsLoading(false);
+    }, [db]);
+
+    if (isLoading) {
+        return (
+            <View style={styles.container}>
+                <Text>Loading names...</Text>
+            </View>
+        );
+    }
+
+    // Tilføj navn til database
+    const addName = () => {
+        db.transaction(tx => {
+            tx.executeSql('INSERT INTO names (name) values (?)', [currentName],
+                (txObj, resultSet) => {
+                    let existingNames = [...names];
+                    existingNames.push({ id: resultSet.insertId, name: currentName });
+                    setNames(existingNames);
+                    setCurrentName(undefined);
+                },
+                (txObj, error) => console.log(error)
+            );
+        });
+    }
+
+    // Fjern navn fra database
+    const deleteName = (id) => {
+        db.transaction(tx => {
+            tx.executeSql('DELETE FROM names WHERE id = ?', [id],
+                (txObj, resultSet) => {
+                    if (resultSet.rowsAffected > 0) {
+                        let existingNames = [...names].filter(name => name.id !== id);
+                        setNames(existingNames);
+                    }
+                },
+                (txObj, error) => console.log(error)
+            );
+        });
+    };
+
+    const updateName = (id) => {
+        db.transaction(tx => {
+            tx.executeSql('UPDATE names SET name = ? WHERE id = ?', [currentName, id],
+                (txObj, resultSet) => {
+                    if (resultSet.rowsAffected > 0) {
+                        let existingNames = [...names];
+                        const indexToUpdate = existingNames.findIndex(name => name.id === id);
+                        existingNames[indexToUpdate].name = currentName;
+                        setNames(existingNames);
+                        setCurrentName(undefined);
+                    }
+                },
+                (txObj, error) => console.log(error)
+            );
+        });
     };
 
 
-    // Jakobs states og funktioner
-    const [creatingHabit, setCreatingHabit] = useState(false);
-    const [receivedHabitName, setReceivedHabitName] = useState("");
-    const [receivedSymbol, setReceivedSymbol] = useState("");
 
-    const createHabit = () => {
-        setCreatingHabit(true)
+
+    // const showNames = () => {
+    //     return names.map((name, index) => {
+    //         return (
+    //             <View key={index} style={styles.row}>
+    //                 <Text>{name.name}</Text>
+    //                 <Button title='Delete' onPress={() => deleteName(name.id)} />
+    //                 <Button title='Update' onPress={() => updateName(name.id)} />
+    //             </View>
+    //         );
+    //     });
+    // };
+
+    const showNames = () => {
+        return (
+            <View style={styles.row}>
+                <FlatList
+                    data={names}
+                    renderItem={({ item }) =>
+                        <View style={styles.row}>
+                            {/* <Text> {item.name}</Text> */}
+                            <HabitBox name={item.name} />
+                            <Button title='Delete' onPress={() => deleteName(item.id)} />
+                            <Button title='Update' onPress={() => updateName(item.id)} />
+                        </View>}
+                />
+            </View >
+        )
     }
 
-    const saveHabit = () => {
-        setCreatingHabit(false)
-        // Send information til server?? eller er det wack at gøre her?
-        // Kald noget der kan lave en ny habitBox med de data jeg inputter i CreateHabit siden
-    }
-
-    const transferHabitName = (habitName) => {
-        setReceivedHabitName(habitName);
-    }
-
-    const transferSymbol = (habitSymbol) => {
-        setReceivedSymbol(habitSymbol);
-    }
 
     return (
-        <View style={{ flex: 1, backgroundColor: "khaki" }}>
-            {/*Actual app: */}
-            <SafeAreaView style={{ flex: 1 }}>
-                <View style={{ flex: 1 }} onLayout={handleSafeAreaLayout}>
-                    <HabitPage />
-                    <View style={{ flexDirection: "row", justifyContent: "space-evenly", flexWrap: "wrap" }}>
-                        <HabitBox color={"#007AFF"} name={receivedHabitName} symbol={receivedSymbol} />
-                        <HabitBox color={"#007AFF"} name="Hej" symbol="🙋‍♀️" />
-                    </View>
-                    {creatingHabit ? (
-                        < CreateHabit transferHabitName={transferHabitName} transferSymbol={transferSymbol} saveHabit={saveHabit} />
-                    ) : (
-                        <Button title="hej" onPress={createHabit} />
-                    )}
-
-                    <BottomBar
-                        safeAreaDimensions={safeAreaDimensions}
-                        color={"tomato"}
-                        opacity={0.66} //{0.96}
-                    />
-                </View>
-            </SafeAreaView >
-            {/*Actual app: */}
-        </View >
+        <View style={styles.container}>
+            <TextInput value={currentName} placeholder='name' onChangeText={setCurrentName} />
+            <Button title="Add Name" onPress={addName} />
+            {showNames()}
+            <Button title="Export Db" onPress={exportDb} />
+            <Button title="Import Db" onPress={importDb} />
+            <StatusBar style="auto" />
+        </View>
     );
+
+    // return (
+    //     <CreateHabit addName={addName} />
+    // );
 }
 
-const styles = StyleSheet.create({});
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'stretch',
+        justifyContent: 'space-between',
+        margin: 8
+    }
+});
