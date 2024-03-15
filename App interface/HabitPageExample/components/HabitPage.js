@@ -8,9 +8,9 @@ import {
     StatusBar,
     Dimensions,
 } from "react-native";
-import TestButtons from "./TestComponents/TestButtons";
+import TestButtons from "./testComponents/TestButtons";
 import HabitBox from "./HabitBox";
-import HabitBoxes from "./TestComponents/HabitBoxes";
+import HabitBoxes from "./testComponents/HabitBoxes";
 // TODO: The scrollable should keep scrolling for a little longer
 function HabitPage() {
     return (
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     },
     scrollview: {
         justifyContent: "flex-start",
+        flexDirection: "row",
         gap: 20,
     },
 });
