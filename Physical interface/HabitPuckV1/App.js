@@ -43,6 +43,7 @@ export default function App() {
         </View>
     );
 }
+//yarn expo export:web
 //yarn http-server ./web-build -a 192.168.1.173
 const styles = StyleSheet.create({
     container: {
