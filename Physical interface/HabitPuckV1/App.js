@@ -9,6 +9,8 @@ import OverviewInformation from "./Components/OverviewInformation";
 export default function App() {
     var [value, setValue] = useState(90);
     var [habitName, setHabitName] = useState("Press Ups");
+    var [goal, setgoal] = useState(100);
+    var [streak, setStreak] = useState(7);
     var [width, setWidth] = "200";
     var [height, setHeight] = "200";
     // Expose value and setValue to the global window object
@@ -22,8 +24,15 @@ export default function App() {
     }
     return (
         <View style={styles.container}>
-            <ProgressBar value={value} width={width} height={height}></ProgressBar>
-            <OverviewInformation habitName={habitName} width={width} height={height}></OverviewInformation>
+            <ProgressBar goal={goal} value={value} width={width} height={height}></ProgressBar>
+            <OverviewInformation
+                value={value}
+                goal={goal}
+                habitName={habitName}
+                width={width}
+                height={height}
+                streak={streak}
+            ></OverviewInformation>
         </View>
     );
 }

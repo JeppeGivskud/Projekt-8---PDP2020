@@ -1,26 +1,42 @@
 import { View, StyleSheet, Text } from "react-native";
 
-export default function OverviewInformation({ habitName, width, height }) {
+export default function OverviewInformation({ streak, value, goal, habitName, width, height }) {
     return (
         <View style={styles.container}>
-            <View style={[styles.Absolute, { width: { width }, height: { height } }]}>
-                <Text style={{ fontSize: 30, Color: "black" }}>{habitName}</Text>
-                <Text style={{ Color: "black" }}>{habitName}</Text>
-                <Text style={{ Color: "black" }}>{habitName}</Text>
-            </View>
+            <Text style={styles.upper}>
+                {value}/{goal}
+            </Text>
+            <Text style={styles.habitName}>{habitName}</Text>
+            <Text style={styles.lower}>{streak} days</Text>
         </View>
     );
 }
 const styles = StyleSheet.create({
+    upper: {
+        fontFamily: "Nunito",
+        fontWeight: "light",
+        fontSize: 20,
+        Color: "black",
+    },
+    habitName: {
+        fontFamily: "Nunito",
+        fontWeight: "bold",
+        fontSize: 30,
+        Color: "black",
+    },
+    lower: {
+        fontFamily: "Nunito",
+        fontWeight: "light",
+        fontSize: 20,
+        Color: "black",
+    },
     container: {
         width: 250,
         height: 250,
+        padding: 50,
         position: "absolute",
-        justifyContent: "center",
+        justifyContent: "space-around",
         alignItems: "center",
         flexDirection: "column",
-    },
-    Absolute: {
-        position: "absolute",
     },
 });
