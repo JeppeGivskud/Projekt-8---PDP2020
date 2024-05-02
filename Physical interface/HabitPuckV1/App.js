@@ -14,7 +14,11 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <Button onClick={() => window.appState.setValue(window.appState.value + 10)}>
+            <Button
+                onClick={() =>
+                    window.appState.setValue(window.appState.value + 10)
+                }
+            >
                 Increase Value
             </Button>
             <CircularProgress value={value} />
@@ -24,7 +28,7 @@ export default function App() {
         </View>
     );
 }
-
+//yarn http-server ./web-build -a 192.168.1.173
 const styles = StyleSheet.create({
     container: {
         flex: 1,
