@@ -5,6 +5,7 @@ import CircularProgress from "react-native-circular-progress-indicator";
 import { Button } from "react-native";
 import ProgressBar from "./Components/ProgressBar";
 import OverviewInformation from "./Components/OverviewInformation";
+import DayCicles from "./Components/DayCircles";
 
 export default function App() {
     var [value, setValue] = useState(90);
@@ -33,6 +34,7 @@ export default function App() {
                 height={height}
                 streak={streak}
             ></OverviewInformation>
+            <DayCicles></DayCicles>
         </View>
     );
 }
