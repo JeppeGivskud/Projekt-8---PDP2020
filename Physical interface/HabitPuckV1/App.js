@@ -1,11 +1,8 @@
-import { StatusBar } from "expo-status-bar";
 import { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import CircularProgress from "react-native-circular-progress-indicator";
-import { Button } from "react-native";
+import { StyleSheet, View } from "react-native";
 import ProgressBar from "./Components/ProgressBar";
 import OverviewInformation from "./Components/OverviewInformation";
-import DayCicles from "./Components/DayCircles";
+import WeekHistory from "./Components/WeekHistory";
 
 export default function App() {
     var [value, setValue] = useState(90);
@@ -34,7 +31,7 @@ export default function App() {
                 height={height}
                 streak={streak}
             ></OverviewInformation>
-            <DayCicles></DayCicles>
+            <WeekHistory />
         </View>
     );
 }
