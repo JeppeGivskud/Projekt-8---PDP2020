@@ -1,5 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import { CircularProgressBase } from "react-native-circular-progress-indicator";
+import DayCicle from "./DayCircle";
 
 //TODO: daycicles;
 export default function WeekHistory({ value, goal, day = 2 }) {
@@ -20,6 +21,7 @@ export default function WeekHistory({ value, goal, day = 2 }) {
                     maxValue={360}
                 />
             </View>
+            <DayCicle></DayCicle>
         </View>
     );
 }
@@ -28,7 +30,7 @@ const styles = StyleSheet.create({
         width: 250,
         height: 250,
         position: "absolute",
-        zIndex: 3,
-        elevation: 3,
+        zIndex: 2,
+        elevation: 2,
     },
 });

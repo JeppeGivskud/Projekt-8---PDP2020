@@ -20,14 +20,12 @@ export default function App() {
     if (value > 100) {
         value = 100;
     }
+    if (value < 0) {
+        value = 0;
+    }
     return (
         <View style={styles.container}>
-            <ProgressBar
-                goal={goal}
-                value={value}
-                width={width}
-                height={height}
-            ></ProgressBar>
+            <ProgressBar goal={goal} value={value} width={width} height={height}></ProgressBar>
             <OverviewInformation
                 value={value}
                 goal={goal}
