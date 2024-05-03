@@ -22,7 +22,12 @@ export default function App() {
     }
     return (
         <View style={styles.container}>
-            <ProgressBar goal={goal} value={value} width={width} height={height}></ProgressBar>
+            <ProgressBar
+                goal={goal}
+                value={value}
+                width={width}
+                height={height}
+            ></ProgressBar>
             <OverviewInformation
                 value={value}
                 goal={goal}
@@ -35,7 +40,8 @@ export default function App() {
         </View>
     );
 }
-
+//yarn expo export:web
+//yarn http-server ./web-build -a 192.168.1.173
 const styles = StyleSheet.create({
     container: {
         flex: 1,
