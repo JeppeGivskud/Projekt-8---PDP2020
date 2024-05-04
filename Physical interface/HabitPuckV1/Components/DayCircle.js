@@ -9,12 +9,12 @@ function DayCircleInformation({
     const CompletionPercentage = `${Completion}%`;
     const currentDate = new Date();
     const currentDayOfWeek = currentDate.getDay(); // e.g., 2 (Tuesday)
-    var borderColor = "#fff";
+    var overCircleWidth = 0;
     console.log(CircleDayOfWeek, currentDayOfWeek, CompletionPercentage);
     if (CircleDayOfWeek == currentDayOfWeek) {
-        borderColor = "#007AFF";
+        overCircleWidth = 2;
     } else {
-        borderColor = "#BFDEFF";
+        overCircleWidth = 0;
     }
 
     return (
@@ -38,7 +38,9 @@ function DayCircleInformation({
                 />
                 <Text>{CircleDayOfWeek}</Text>
             </View>
-            <View style={[styles.overCircle]} />
+            <View
+                style={[styles.overCircle, { borderWidth: overCircleWidth }]}
+            />
         </View>
     );
 }
@@ -94,46 +96,53 @@ export default function DayCircle({
     // console.log(locations);
 
     return (
-        <View style={styles.Absolute}>
+        <View style={styles.Container}>
             <DayCircleInformation
                 Coords={locations[`day${0}`]}
                 Completion={value}
+                CircleDayOfWeek="7"
+            ></DayCircleInformation>
+            <DayCircleInformation
+                Coords={locations[`day${1}`]}
+                Completion={value}
+                CircleDayOfWeek="6"
+            ></DayCircleInformation>
+            <DayCircleInformation
+                Coords={locations[`day${2}`]}
+                Completion={value}
+                CircleDayOfWeek="5"
+            ></DayCircleInformation>
+            <DayCircleInformation
+                Coords={locations[`day${3}`]}
+                Completion={value}
+                CircleDayOfWeek="4"
+            ></DayCircleInformation>
+            <DayCircleInformation
+                Coords={locations[`day${4}`]}
+                Completion={value}
+                CircleDayOfWeek="3"
+            ></DayCircleInformation>
+            <DayCircleInformation
+                Coords={locations[`day${5}`]}
+                Completion={value}
+                CircleDayOfWeek="2"
+            ></DayCircleInformation>
+            <DayCircleInformation
+                Coords={locations[`day${6}`]}
+                Completion={value}
+                CircleDayOfWeek="1"
             ></DayCircleInformation>
         </View>
     );
 }
 const styles = StyleSheet.create({
-    Absolute: {
+    Container: {
         width: 250,
         height: 250,
         zIndex: 4,
         elevation: 4,
         position: "absolute",
     },
-
-    outerCircle: {
-        position: "absolute",
-        justifyContent: "center",
-        alignItems: "center",
-        width: 30,
-        height: 30,
-        borderRadius: 30 / 2,
-        zIndex: 5,
-        elevation: 5,
-        backgroundColor: "#007AFF",
-    },
-    innerCircle: {
-        justifyContent: "center",
-        alignItems: "center",
-        width: 26, // Adjusted width to account for margin
-        height: 26, // Adjusted height to account for margin
-        borderRadius: 26 / 2,
-        zIndex: 6,
-        elevation: 6,
-        margin: 1.5,
-        backgroundColor: "#BFDEFF",
-    },
-
     CircleContainer: {
         position: "absolute",
         justifyContent: "center",
@@ -148,7 +157,7 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         borderRadius: 30 / 2,
-        borderWidth: 3,
+        borderWidth: 2,
         borderColor: "#007AFF",
         zIndex: 7,
         elevation: 7,
