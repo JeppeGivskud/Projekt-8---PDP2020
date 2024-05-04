@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import { CircularProgressBase } from "react-native-circular-progress-indicator";
-import DayCicle from "./DayCircle";
+import DayCircle from "./DayCircle";
 
 //TODO: daycicles;
 export default function WeekHistory({ value, goal, day = 2 }) {
@@ -9,7 +9,9 @@ export default function WeekHistory({ value, goal, day = 2 }) {
     const circleSpace = (360 - 101 * 2) / 7;
     return (
         <View>
-            <View style={[styles.Absolute, { transform: [{ rotate: rotate }] }]}>
+            <View
+                style={[styles.Absolute, { transform: [{ rotate: rotate }] }]}
+            >
                 <CircularProgressBase
                     value={-day * circleSpace}
                     radius={250 / 2}
@@ -21,7 +23,7 @@ export default function WeekHistory({ value, goal, day = 2 }) {
                     maxValue={360}
                 />
             </View>
-            <DayCicle></DayCicle>
+            <DayCircle value={value}></DayCircle>
         </View>
     );
 }

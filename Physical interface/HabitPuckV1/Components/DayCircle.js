@@ -1,9 +1,59 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { useState } from "react";
 //TODO: daycicles;
-export default function DayCicle({ circleSize = 220, totalDays = 7, circleStart = 101, currentDay = 2 }) {
+function DayCircleInformation({
+    CircleDayOfWeek = "6",
+    Coords,
+    Completion = 50,
+}) {
+    const CompletionPercentage = `${Completion}%`;
+    const currentDate = new Date();
+    const currentDayOfWeek = currentDate.getDay(); // e.g., 2 (Tuesday)
+    var borderColor = "#fff";
+    console.log(CircleDayOfWeek, currentDayOfWeek, CompletionPercentage);
+    if (CircleDayOfWeek == currentDayOfWeek) {
+        borderColor = "#007AFF";
+    } else {
+        borderColor = "#BFDEFF";
+    }
+
+    return (
+        <View
+            style={[
+                styles.CircleContainer,
+                {
+                    top: Coords.y,
+                    left: Coords.x,
+                },
+            ]}
+        >
+            <View style={[styles.Circle]}>
+                <View
+                    style={[
+                        styles.circleFill,
+                        {
+                            height: CompletionPercentage,
+                        },
+                    ]}
+                />
+                <Text>{CircleDayOfWeek}</Text>
+            </View>
+            <View style={[styles.overCircle]} />
+        </View>
+    );
+}
+
+export default function DayCircle({
+    circleSize = 220,
+    totalDays = 7,
+    circleStart = 101,
+    value = 30,
+}) {
     //The circle starts at 11 degrees positive.
-    //The active area is a circle minus 180 and the new circle starts
+    //The active area is a circle minus 180 and the size of the corners
+    //The space between is six parts of the active area
+    //Calculating xy locations is done via x=r(cos(angle)) and y=r(sin(angle))
+    //The rest is formatting
 
     const newCircleStart = circleStart - 90;
     const activearea = 360 - (newCircleStart * 2 + 180);
@@ -16,58 +66,39 @@ export default function DayCicle({ circleSize = 220, totalDays = 7, circleStart 
     // Calculate the x and y coordinates of each day using trigonometric functions
     const calculateCoordinates = (dayIndex) => {
         const angle = circleStartRadians - spaceBetweenRadians * dayIndex;
-        console.log(angle);
+        // console.log(angle);
 
         const x = (circleSize / 2) * Math.cos(angle);
         const y = (circleSize / 2) * Math.sin(angle);
         return { x, y };
     };
 
-    // Initialize state for day locations
+    // Calculate x y location for each day
     let locations = {};
     for (let i = 0; i < totalDays; i++) {
         const { x, y } = calculateCoordinates(i);
         locations[`day${i}`] = { x: x, y: y };
     }
 
+    // Redefine positions accordingly
     for (let i = 0; i < totalDays; i++) {
         locations[`day${i}`].x = locations[`day${i}`].x + circleSize / 2;
         locations[`day${i}`].y = locations[`day${i}`].y * -1 + circleSize / 2;
     }
     console.log("newCircleStart", newCircleStart);
-    console.log("activearea", activearea);
-    console.log("spaceBetween", spaceBetween);
+    // console.log("activearea", activearea);
+    // console.log("spaceBetween", spaceBetween);
 
-    console.log("circleStartRadians", circleStartRadians);
-    console.log("spaceBetweenRadians", spaceBetweenRadians);
-    console.log(locations);
-    // y = r(sin()) 250*(Math.cos((101*2)/7+101) = -123.9926555873
-    // 250*(cos(101+1*22.5) <- correct
-    // text += cars[i] + "<br>";
+    // console.log("circleStartRadians", circleStartRadians);
+    // console.log("spaceBetweenRadians", spaceBetweenRadians);
+    // console.log(locations);
 
     return (
         <View style={styles.Absolute}>
-            <View style={[styles.circle, { top: locations[`day${0}`].y, left: locations[`day${0}`].x }]}>
-                <View style={[styles.circleFill, { height: "100%" }]} />
-            </View>
-            <View style={[styles.circle, { top: locations[`day${1}`].y, left: locations[`day${1}`].x }]}>
-                <View style={[styles.circleFill, { height: "100%" }]} />
-            </View>
-            <View style={[styles.circle, { top: locations[`day${2}`].y, left: locations[`day${2}`].x }]}>
-                <View style={[styles.circleFill, { height: "100%" }]} />
-            </View>
-            <View style={[styles.circle, { top: locations[`day${3}`].y, left: locations[`day${3}`].x }]}>
-                <View style={[styles.circleFill, { height: "100%" }]} />
-            </View>
-            <View style={[styles.circle, { top: locations[`day${4}`].y, left: locations[`day${4}`].x }]}>
-                <View style={[styles.circleFill, { height: "100%" }]} />
-            </View>
-            <View style={[styles.circle, { top: locations[`day${5}`].y, left: locations[`day${5}`].x }]}>
-                <View style={[styles.circleFill, { height: "100%" }]} />
-            </View>
-            <View style={[styles.circle, { top: locations[`day${6}`].y, left: locations[`day${6}`].x }]}>
-                <View style={[styles.circleFill, { height: "100%" }]} />
-            </View>
+            <DayCircleInformation
+                Coords={locations[`day${0}`]}
+                Completion={value}
+            ></DayCircleInformation>
         </View>
     );
 }
@@ -79,19 +110,67 @@ const styles = StyleSheet.create({
         elevation: 4,
         position: "absolute",
     },
-    circle: {
+
+    outerCircle: {
         position: "absolute",
+        justifyContent: "center",
+        alignItems: "center",
         width: 30,
         height: 30,
         borderRadius: 30 / 2,
-        overflow: "hidden",
         zIndex: 5,
         elevation: 5,
+        backgroundColor: "#007AFF",
+    },
+    innerCircle: {
+        justifyContent: "center",
+        alignItems: "center",
+        width: 26, // Adjusted width to account for margin
+        height: 26, // Adjusted height to account for margin
+        borderRadius: 26 / 2,
+        zIndex: 6,
+        elevation: 6,
+        margin: 1.5,
+        backgroundColor: "#BFDEFF",
+    },
+
+    CircleContainer: {
+        position: "absolute",
+        justifyContent: "center",
+        alignItems: "center",
+        width: 30,
+        height: 30,
+    },
+    overCircle: {
+        position: "absolute",
+        justifyContent: "center",
+        alignItems: "center",
+        width: 30,
+        height: 30,
+        borderRadius: 30 / 2,
+        borderWidth: 3,
+        borderColor: "#007AFF",
+        zIndex: 7,
+        elevation: 7,
+        backgroundColor: "transparent",
+    },
+    Circle: {
+        position: "absolute",
+        justifyContent: "center",
+        alignItems: "center",
+        width: 30, // Adjusted width to account for margin
+        height: 30, // Adjusted height to account for margin
+        borderRadius: 30 / 2,
+        overflow: "hidden",
+        zIndex: 4,
+        elevation: 4,
+        margin: 1.5,
+        backgroundColor: "#BFDEFF",
     },
     circleFill: {
-        backgroundColor: "#007AFF",
         width: "100%",
         bottom: 0,
         position: "absolute",
+        backgroundColor: "#007AFF",
     },
 });
