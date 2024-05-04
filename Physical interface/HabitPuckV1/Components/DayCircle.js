@@ -8,7 +8,7 @@ function DayCircleInformation({
 }) {
     const CompletionPercentage = `${Completion}%`;
     const currentDate = new Date();
-    const currentDayOfWeek = currentDate.getDay(); // e.g., 2 (Tuesday)
+    const currentDayOfWeek = currentDate.getDay();
     var overCircleWidth = 0;
     console.log(CircleDayOfWeek, currentDayOfWeek, CompletionPercentage);
     if (CircleDayOfWeek == currentDayOfWeek) {
