@@ -8,19 +8,28 @@ export default function ProgressBar({ value, goal }) {
     var circleMax = (goal / (rotation + rotation)) * (360 - rotation * 2) + 100;
     return (
         <View>
-            <View style={[styles.Absolute, { transform: [{ rotate: rotationtext }] }]}>
+            <View
+                style={[
+                    styles.Absolute,
+                    { transform: [{ rotate: rotationtext }] },
+                ]}
+            >
                 <CircularProgressBase
                     value={100}
                     radius={250 / 2}
-                    duration={200}
+                    duration={0}
                     activeStrokeWidth={40}
                     inActiveStrokeWidth={0}
                     activeStrokeColor={"#F2F8FF"}
-                    // progressValueColor={"#fff"} //textcolor
                     maxValue={circleMax}
                 />
             </View>
-            <View style={[styles.Absolute, { transform: [{ rotate: rotationtext }] }]}>
+            <View
+                style={[
+                    styles.Absolute,
+                    { transform: [{ rotate: rotationtext }] },
+                ]}
+            >
                 <CircularProgressBase
                     value={value}
                     radius={250 / 2}

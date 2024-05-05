@@ -2,15 +2,33 @@ import { View, StyleSheet, Text } from "react-native";
 import { useState } from "react";
 //TODO: daycicles;
 function DayCircleInformation({
-    CircleDayOfWeek = "6",
-    Coords,
-    Completion = 50,
+    CircleDayOfWeek = "None",
+    Coords = NaN,
+    CompletionPercent = NaN,
 }) {
-    const CompletionPercentage = `${Completion}%`;
+    const CompletionPercentage = `${CompletionPercent}%`;
+
+    //Labels days correctly
     const currentDate = new Date();
-    const currentDayOfWeek = currentDate.getDay();
-    var overCircleWidth = 0;
-    console.log(CircleDayOfWeek, currentDayOfWeek, CompletionPercentage);
+    var currentDayOfWeek = (currentDate.getDay() + 6) % 7; // Shift Sunday (0) to the end
+    var TextToShow = "none";
+    if (CircleDayOfWeek == "6") {
+        TextToShow = "S";
+    } else if (CircleDayOfWeek == "5") {
+        TextToShow = "S";
+    } else if (CircleDayOfWeek == "4") {
+        TextToShow = "F";
+    } else if (CircleDayOfWeek == "3") {
+        TextToShow = "T";
+    } else if (CircleDayOfWeek == "2") {
+        TextToShow = "W";
+    } else if (CircleDayOfWeek == "1") {
+        TextToShow = "T";
+    } else if (CircleDayOfWeek == "0") {
+        TextToShow = "M";
+    }
+    //Makes the today circle have a border
+    var overCircleWidth;
     if (CircleDayOfWeek == currentDayOfWeek) {
         overCircleWidth = 2;
     } else {
@@ -36,7 +54,7 @@ function DayCircleInformation({
                         },
                     ]}
                 />
-                <Text>{CircleDayOfWeek}</Text>
+                <Text style={{ color: "#fff" }}>{TextToShow}</Text>
             </View>
             <View
                 style={[styles.overCircle, { borderWidth: overCircleWidth }]}
@@ -49,12 +67,13 @@ export default function DayCircle({
     circleSize = 220,
     totalDays = 7,
     circleStart = 101,
-    value = 30,
+    values,
 }) {
     //The circle starts at 11 degrees positive.
     //The active area is a circle minus 180 and the size of the corners
     //The space between is six parts of the active area
     //Calculating xy locations is done via x=r(cos(angle)) and y=r(sin(angle))
+    //The circles are reversed so day 1 is circle 7 (but the arrays are 0 indexed)
     //The rest is formatting
 
     const newCircleStart = circleStart - 90;
@@ -68,8 +87,6 @@ export default function DayCircle({
     // Calculate the x and y coordinates of each day using trigonometric functions
     const calculateCoordinates = (dayIndex) => {
         const angle = circleStartRadians - spaceBetweenRadians * dayIndex;
-        // console.log(angle);
-
         const x = (circleSize / 2) * Math.cos(angle);
         const y = (circleSize / 2) * Math.sin(angle);
         return { x, y };
@@ -87,50 +104,43 @@ export default function DayCircle({
         locations[`day${i}`].x = locations[`day${i}`].x + circleSize / 2;
         locations[`day${i}`].y = locations[`day${i}`].y * -1 + circleSize / 2;
     }
-    console.log("newCircleStart", newCircleStart);
-    // console.log("activearea", activearea);
-    // console.log("spaceBetween", spaceBetween);
-
-    // console.log("circleStartRadians", circleStartRadians);
-    // console.log("spaceBetweenRadians", spaceBetweenRadians);
-    // console.log(locations);
 
     return (
         <View style={styles.Container}>
             <DayCircleInformation
                 Coords={locations[`day${0}`]}
-                Completion={value}
-                CircleDayOfWeek="7"
-            ></DayCircleInformation>
-            <DayCircleInformation
-                Coords={locations[`day${1}`]}
-                Completion={value}
+                CompletionPercent={values[6]}
                 CircleDayOfWeek="6"
             ></DayCircleInformation>
             <DayCircleInformation
-                Coords={locations[`day${2}`]}
-                Completion={value}
+                Coords={locations[`day${1}`]}
+                CompletionPercent={values[5]}
                 CircleDayOfWeek="5"
             ></DayCircleInformation>
             <DayCircleInformation
-                Coords={locations[`day${3}`]}
-                Completion={value}
+                Coords={locations[`day${2}`]}
+                CompletionPercent={values[4]}
                 CircleDayOfWeek="4"
             ></DayCircleInformation>
             <DayCircleInformation
-                Coords={locations[`day${4}`]}
-                Completion={value}
+                Coords={locations[`day${3}`]}
+                CompletionPercent={values[3]}
                 CircleDayOfWeek="3"
             ></DayCircleInformation>
             <DayCircleInformation
-                Coords={locations[`day${5}`]}
-                Completion={value}
+                Coords={locations[`day${4}`]}
+                CompletionPercent={values[2]}
                 CircleDayOfWeek="2"
             ></DayCircleInformation>
             <DayCircleInformation
-                Coords={locations[`day${6}`]}
-                Completion={value}
+                Coords={locations[`day${5}`]}
+                CompletionPercent={values[1]}
                 CircleDayOfWeek="1"
+            ></DayCircleInformation>
+            <DayCircleInformation
+                Coords={locations[`day${6}`]}
+                CompletionPercent={values[0]}
+                CircleDayOfWeek="0"
             ></DayCircleInformation>
         </View>
     );
