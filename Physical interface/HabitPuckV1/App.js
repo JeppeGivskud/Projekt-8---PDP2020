@@ -3,7 +3,8 @@ import { StyleSheet, View } from "react-native";
 import ProgressBar from "./Components/ProgressBar";
 import OverviewInformation from "./Components/OverviewInformation";
 import WeekHistory from "./Components/WeekHistory";
-
+//yarn http-server ./dist-withCirclesNew -a 192.168.1.173
+//yarn expo export -p web
 const createHistoryValues = (TodayValue) => {
     const currentDayOfWeek = (new Date().getDay() + 6) % 7; // Shift Sunday (0) to the end
     // makes random numbers except for the todayavlue
