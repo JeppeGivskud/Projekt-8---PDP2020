@@ -1,5 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/images,reactnative,node,visualstudiocode,yarn,macos,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=images,reactnative,node,visualstudiocode,yarn,macos,windows
+# Jeppe
+!*/assets
 
 ### Images ###
 # JPEG
