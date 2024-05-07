@@ -43,14 +43,13 @@ export default function App() {
         socket.io.on("close", () => setConnection(false));
 
         socket.on("newTodayValue", (data) => {
-            console.log(data.todayValue);
-            setValue(data.todayValue);
+            console.log(data.rando);
+            setValue(data.rando);
         });
 
         socket.on("pressed", (data) => {
             console.log(data.pressed);
         });
-
         return function didUnmount() {
             socket.disconnect();
             socket.removeAllListeners();
@@ -63,7 +62,7 @@ export default function App() {
             ...prevHistoryValues,
             [(new Date().getDay() + 6) % 7]: todayValue,
         }));
-    }, []);
+    }, [todayValue]);
 
     // Clamp TodayValue to be within the range [0, 100]
     if (todayValue < 0) {

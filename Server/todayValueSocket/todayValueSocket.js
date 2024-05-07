@@ -11,10 +11,9 @@ io.on("connection", (socket) => {
 });
 
 // Broadcast the current server time as global message, every 1s
-var todayValue = 0;
 setInterval(() => {
-    io.sockets.emit("newTodayValue", { todayValue });
-    todayValue += 1;
+    var rando = Math.floor(Math.random() * 100) + 1;
+    io.sockets.emit("newTodayValue", { rando });
 }, 1000);
 
 // Show the index.html by default
