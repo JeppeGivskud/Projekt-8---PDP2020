@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import Overview from "./Components/Overview";
+import io from "socket.io-client";
+const socketEndpoint = "http://localhost:3000";
+
 //yarn http-server ./dist-withCirclesNew -a 192.168.1.173
 //yarn expo export -p web
 const createHistoryValues = (todayValue) => {
@@ -28,6 +31,32 @@ export default function App() {
     const [historyValues, setHistoryValues] = useState(
         createHistoryValues(todayValue)
     );
+    const [hasConnection, setConnection] = useState(false);
+    const [pressed, setPressed] = useState(false);
+
+    useEffect(function didMount() {
+        const socket = io(socketEndpoint, {
+            transports: ["websocket"],
+        });
+
+        socket.io.on("open", () => setConnection(true));
+        socket.io.on("close", () => setConnection(false));
+
+        socket.on("newTodayValue", (data) => {
+            console.log(data.todayValue);
+            setValue(data.todayValue);
+        });
+
+        socket.on("pressed", (data) => {
+            console.log(data.pressed);
+        });
+
+        return function didUnmount() {
+            socket.disconnect();
+            socket.removeAllListeners();
+        };
+    }, []);
+
     //Runs when the value in [] is changed (so it only runs once)
     useEffect(() => {
         setHistoryValues((prevHistoryValues) => ({
