@@ -14,7 +14,8 @@ io.on("connection", (socket) => {
 setInterval(() => {
     var rando = Math.floor(Math.random() * 100) + 1;
     io.sockets.emit("newTodayValue", { rando });
-}, 1000);
+    io.sockets.emit("pressed", "We Pressin Now");
+}, 3000);
 
 // Show the index.html by default
 app.get("/", (req, res) => res.sendFile("index.html"));

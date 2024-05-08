@@ -1,11 +1,12 @@
-import { StyleSheet, View } from "react-native";
+import { useState, useEffect } from "react";
+import { Button, StyleSheet, View } from "react-native";
 import ProgressBar from "./ProgressBar";
 import OverviewInformation from "./OverviewInformation";
 import WeekHistory from "./WeekHistory";
 //yarn http-server ./dist-withCirclesNew -a 192.168.1.173
 //yarn expo export -p web
 
-export default function Overview({ props }) {
+export default function Done({ props }) {
     const {
         todayValue,
         habitName,
@@ -18,12 +19,6 @@ export default function Overview({ props }) {
 
     return (
         <View style={styles.container}>
-            <ProgressBar
-                goal={goal}
-                value={todayValue}
-                width={width}
-                height={height}
-            />
             <OverviewInformation
                 value={todayValue}
                 goal={goal}
@@ -32,7 +27,6 @@ export default function Overview({ props }) {
                 height={height}
                 streak={streak}
             />
-            <WeekHistory values={historyValues} />
         </View>
     );
 }

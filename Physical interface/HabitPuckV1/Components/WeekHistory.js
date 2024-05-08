@@ -3,7 +3,7 @@ import { CircularProgressBase } from "react-native-circular-progress-indicator";
 import DayCircle from "./DayCircle";
 
 //TODO: daycicles;
-export default function WeekHistory({ values = [30, 50, 50, 40, 50, 70, 40] }) {
+export default function WeekHistory({ values }) {
     //This screen renders a bar in the bottom and then the DayCircles. An array of values should be parsed
     const circlestart = 101;
     const rotate = "-101deg";
