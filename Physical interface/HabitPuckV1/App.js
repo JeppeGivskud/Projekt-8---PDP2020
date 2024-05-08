@@ -48,10 +48,10 @@ export default function App() {
     });
 
     useEffect(function didMount() {
-        socketShit();
+        socketStuff();
     }, []);
 
-    const socketShit = () => {
+    const socketStuff = () => {
         const socket = io(socketEndpoint, {
             transports: ["websocket"],
         });
