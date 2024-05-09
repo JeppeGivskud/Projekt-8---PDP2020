@@ -81,9 +81,9 @@ export const getHistory = (habitHistory) => {
 };
 
 export const calculateStreak = (habitHistory) => {
-    for (i = Object.keys(habitHistory).length - 1; i >= 0; i--) {
-        console.log(habitHistory[Object.keys(habitHistory)[i - 0]].count);
-    }
+    // for (i = Object.keys(habitHistory).length - 1; i >= 0; i--) {
+    //     console.log(habitHistory[Object.keys(habitHistory)[i - 0]].count);
+    // }
     //TODO: This doesn't count correctly if there are missing days
     var streak = 0;
     for (i = Object.keys(habitHistory).length - 1; i >= 0; i--) {
