@@ -14,20 +14,6 @@ const socketEndpoint = "http://localhost:3000";
 //Code for the server
 //yarn http-server ./dist-withCirclesNew -a 192.168.1.173
 //yarn expo export -p web
-const createHistoryValues = (todayValue) => {
-    const currentDayOfWeek = (new Date().getDay() + 6) % 7; // Shift Sunday (0) to the end
-    // makes random numbers except for the todayavlue
-    return {
-        0: (randomValue = Math.floor(Math.random() * 100) + 1),
-        1: (randomValue = Math.floor(Math.random() * 100) + 1),
-        2: (randomValue = Math.floor(Math.random() * 100) + 1),
-        3: (randomValue = Math.floor(Math.random() * 100) + 1),
-        4: (randomValue = Math.floor(Math.random() * 100) + 1),
-        5: (randomValue = Math.floor(Math.random() * 100) + 1),
-        6: (randomValue = Math.floor(Math.random() * 100) + 1),
-        [currentDayOfWeek]: todayValue,
-    };
-};
 
 export default function App() {
     const [todayValue, setValue] = useState(50);
