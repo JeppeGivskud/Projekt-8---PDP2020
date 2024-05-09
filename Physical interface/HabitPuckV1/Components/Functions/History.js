@@ -1,7 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
-const forsjovHabit = {
+export const dummyData = {
     "Sat May 04 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
         id: 1,
         currentDate: "2024-05-03T22:00:00.000Z",
@@ -57,7 +54,7 @@ const forsjovHabit = {
         routine: "Morning",
     },
 };
-const getHistory = (habitHistory) => {
+export const getHistory = (habitHistory) => {
     var historyValues = {
         0: 0,
         1: 0,
@@ -83,28 +80,43 @@ const getHistory = (habitHistory) => {
     return historyValues;
 };
 
-export default function App() {
-    console.log(getHistory(forsjovHabit));
-    for (i = 0; i < Object.keys(forsjovHabit).length; i++) {
-        console.log(
-            i,
-            forsjovHabit[Object.keys(forsjovHabit)[i]].currentDate,
-            forsjovHabit[Object.keys(forsjovHabit)[i]].count
-        );
+export const calculateStreak = (habitHistory) => {
+    for (i = Object.keys(habitHistory).length - 1; i >= 0; i--) {
+        console.log(habitHistory[Object.keys(habitHistory)[i - 0]].count);
     }
-    return (
-        <View style={styles.container}>
-            <Text>Open up App.js to start working on your app!</Text>
-            <StatusBar style="auto" />
-        </View>
-    );
-}
+    //TODO: This doesn't count correctly if there are missing days
+    var streak = 0;
+    for (i = Object.keys(habitHistory).length - 1; i >= 0; i--) {
+        if (habitHistory[Object.keys(habitHistory)[i]].count > 0) {
+            streak = streak + 1;
+        } else if (habitHistory[Object.keys(habitHistory)[i - 1]].count > 0) {
+            streak = streak + 1;
+        } else if (habitHistory[Object.keys(habitHistory)[i - 2]].count > 0) {
+            streak = streak + 1;
+        } else if (habitHistory[Object.keys(habitHistory)[i - 3]].count > 0) {
+            streak = streak + 1;
+        } else return streak;
+    }
+    return streak;
+};
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
+export const dummyDatasimple = {
+    "Sat May 04 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 1,
     },
-});
+    "Sun May 05 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 10,
+    },
+    "Mon May 06 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 220,
+    },
+    "Tue May 07 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 220,
+    },
+    "Wed May 08 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 220,
+    },
+    "Thu May 09 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 10,
+    },
+};

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
-// Navigation
-
+// History
+import * as History from "./Components/Functions/History";
 //Screens
 import OverviewScreen from "./Components/Overview";
 import EffortScreen from "./Components/Effort";
@@ -34,12 +34,16 @@ export default function App() {
     const [effortValue, setEffortValue] = useState(50);
     const [habitName, setHabitName] = useState("Press Ups");
     const [goal, setGoal] = useState(100);
-    const [streak, setStreak] = useState(7);
+    const [streak, setStreak] = useState(
+        History.calculateStreak(History.dummyDatasimple)
+    );
+    console.log("Streak: ", streak);
     const [width, setWidth] = useState("200");
     const [height, setHeight] = useState("200");
     const [historyValues, setHistoryValues] = useState(
-        createHistoryValues(todayValue)
+        History.getHistory(History.dummyData)
     );
+
     const [hasConnection, setConnection] = useState(false);
     const [currentScreen, setCurrentScreen] = useState({
         Overview: true,
