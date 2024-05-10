@@ -17,7 +17,6 @@ def worker1():
 
 def worker2():
     while(1):
-        print("send clock")
         socket.emit('newTodayValue', 40)  # Emit the event when a client connects
         socket.sleep(1)
         socket.emit('newTodayValue', 60)  # Emit the event when a client connects
