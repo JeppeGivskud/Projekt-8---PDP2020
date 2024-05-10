@@ -6,7 +6,8 @@ sio = socketio.Server(cors_allowed_origins="http://localhost:8081")
 app = socketio.WSGIApp(sio, static_files={
     '/': {'content_type': 'text/html', 'filename': 'index.html'}
 })
-
+## ssh pi@G883
+## kode: 12345
 @sio.event
 def connect(sid, environ):
     print('connect ', sid)
