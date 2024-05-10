@@ -10,8 +10,7 @@ app = socketio.WSGIApp(sio, static_files={
 @sio.event
 def connect(sid, environ):
     print('connect ', sid)
-    sio.emit("open","ost")
-    sio.emit('newTodayValue', random.randint(0, 100))  # Emit the event when a client connects
+    sio.emit('newTodayValue', 30)  # Emit the event when a client connects
 
 @sio.event
 def ButtonPress(sid, environ):
