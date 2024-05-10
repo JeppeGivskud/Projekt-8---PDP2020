@@ -21,7 +21,7 @@ export default function OverviewInformation({
     return (
         <View style={styles.container}>
             <View style={[styles.smallContainer, { gap: 4 }]}>
-                <Text style={[styles.upper, { fontSize: 23 }]}>{value}</Text>
+                <Text style={[styles.upper]}>{value}</Text>
                 <Text style={[styles.upper]}>/</Text>
                 <Text style={[styles.upper]}>{goal}</Text>
             </View>
