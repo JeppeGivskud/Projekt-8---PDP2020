@@ -49,11 +49,11 @@ export default function App() {
         socket.io.on("close", () => setConnection(false));
         socket.on("newTodayValue", (data) => {
             console.log("newTodayValue");
-            setValue(FloorValue(data.rando));
+            setValue(FloorValue(data));
 
             setHistoryValues((prevHistoryValues) => ({
                 ...prevHistoryValues,
-                [(new Date().getDay() + 6) % 7]: FloorValue(data.rando),
+                [(new Date().getDay() + 6) % 7]: FloorValue(data),
             }));
         });
         socket.on("pressed", (data) => {
