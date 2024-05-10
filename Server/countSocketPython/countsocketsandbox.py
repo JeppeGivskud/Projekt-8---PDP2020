@@ -27,9 +27,9 @@ def worker2():
         socket.sleep(1)
 
 
-def main():
-    socket.start_background_task(worker2)
+def main(backgroundtask):
+    socket.start_background_task(backgroundtask)
     worker1()
 
 if __name__ == '__main__':
-    main()
+    main(worker2)
