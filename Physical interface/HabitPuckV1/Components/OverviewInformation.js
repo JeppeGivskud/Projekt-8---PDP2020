@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 
 export default function OverviewInformation({
@@ -8,6 +9,15 @@ export default function OverviewInformation({
     width,
     height,
 }) {
+    const [streaksize, setStreakSize] = useState(100);
+    useEffect(() => {
+        var omissionPercentage = (streak.omissions % 5) * 20;
+        if (omissionPercentage == 0) {
+            setStreakSize("0%");
+        } else {
+            setStreakSize(100 - omissionPercentage + "%");
+        }
+    }, [streak]);
     return (
         <View style={styles.container}>
             <View style={[styles.smallContainer, { gap: 4 }]}>
@@ -20,14 +30,14 @@ export default function OverviewInformation({
             </View>
             <View style={styles.smallContainer}>
                 <Text style={[styles.lower, { paddingLeft: 20 }]}>
-                    {streak} days
+                    {streak.streak} days
                 </Text>
                 <View style={styles.imageContainer}>
                     <Image
                         source={require("../assets/StreakFlame.png")}
                         style={{
-                            width: "100%",
-                            height: "100%",
+                            width: streaksize,
+                            height: streaksize,
                             resizeMode: "contain",
                         }}
                     />
@@ -60,8 +70,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
     imageContainer: {
-        width: 25,
-        height: 18,
+        width: 20,
+        height: 20,
         overflow: "visible",
         justifyContent: "center",
         alignItems: "center",

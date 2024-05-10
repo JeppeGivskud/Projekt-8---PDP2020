@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 // History
-import * as History from "./Components/Functions/History";
+import * as History from "./Functions/History";
 //Screens
 import OverviewScreen from "./Components/Overview";
 import EffortScreen from "./Components/Effort";
@@ -23,7 +23,7 @@ export default function App() {
     const [streak, setStreak] = useState(
         History.calculateStreak(History.dummyDatasimple)
     );
-    console.log("Streak: ", streak);
+    console.log("Streak: ", streak.streak);
     const [width, setWidth] = useState("200");
     const [height, setHeight] = useState("200");
     const [historyValues, setHistoryValues] = useState(
@@ -45,10 +45,10 @@ export default function App() {
         const socket = io(socketEndpoint, {
             transports: ["websocket"],
         });
-
         socket.io.on("open", () => setConnection(true));
         socket.io.on("close", () => setConnection(false));
         socket.on("newTodayValue", (data) => {
+            console.log("newTodayValue");
             setValue(FloorValue(data.rando));
 
             setHistoryValues((prevHistoryValues) => ({
@@ -57,6 +57,8 @@ export default function App() {
             }));
         });
         socket.on("pressed", (data) => {
+            console.log("Pressed");
+
             switchScreen();
         });
         return function didUnmount() {

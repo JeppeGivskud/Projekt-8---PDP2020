@@ -81,42 +81,73 @@ export const getHistory = (habitHistory) => {
 };
 
 export const calculateStreak = (habitHistory) => {
-    // for (i = Object.keys(habitHistory).length - 1; i >= 0; i--) {
-    //     console.log(habitHistory[Object.keys(habitHistory)[i - 0]].count);
-    // }
-    //TODO: This doesn't count correctly if there are missing days
+    //Checks two things at a time. The streak length and the days which have been omissed.
+    //Once a non omission has been found the omissions stop changing
+    //The streak survives 5 days
     var streak = 0;
-    for (i = Object.keys(habitHistory).length - 1; i >= 0; i--) {
-        if (habitHistory[Object.keys(habitHistory)[i]].count > 0) {
-            streak = streak + 1;
-        } else if (habitHistory[Object.keys(habitHistory)[i - 1]].count > 0) {
-            streak = streak + 1;
-        } else if (habitHistory[Object.keys(habitHistory)[i - 2]].count > 0) {
-            streak = streak + 1;
-        } else if (habitHistory[Object.keys(habitHistory)[i - 3]].count > 0) {
-            streak = streak + 1;
-        } else return streak;
+    var omissions = 0;
+    var checkOmissions = true;
+    var maxOmissions = 5;
+    var criteria = 0;
+    for (i = Object.keys(habitHistory).length - 2; i >= 0; i--) {
+        if (omissions < maxOmissions) {
+            if (habitHistory[Object.keys(habitHistory)[i]].count > criteria) {
+                streak = streak + 1;
+                checkOmissions = false;
+            } else if (checkOmissions) {
+                omissions += 1;
+            }
+        }
     }
-    return streak;
+    if (
+        habitHistory[
+            Object.keys(habitHistory)[Object.keys(habitHistory).length - 1]
+        ].count > criteria
+    ) {
+        streak++;
+    }
+
+    return { streak: streak, omissions: omissions };
 };
 
 export const dummyDatasimple = {
     "Sat May 04 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 11,
+    },
+    "Sun May 05 2022 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 10,
+    },
+    "Mon May 10 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 9,
+    },
+    "Mon May 13 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 8,
+    },
+    "Mon May 14 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 7,
+    },
+    "Mon May 15 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 0,
+    },
+    "Mon May 16 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
         count: 1,
     },
-    "Sun May 05 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
-        count: 10,
+    "Mon May 17 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 0,
     },
-    "Mon May 06 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
-        count: 220,
+    "Mon May 18 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 0,
     },
     "Tue May 07 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
-        count: 220,
+        count: 0,
     },
     "Wed May 08 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
-        count: 220,
+        count: 1,
     },
     "Thu May 09 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
-        count: 10,
+        count: 0,
+    },
+    "Fri May 10 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 0,
     },
 };
