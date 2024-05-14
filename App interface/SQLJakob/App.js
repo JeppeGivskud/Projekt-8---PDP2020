@@ -17,7 +17,6 @@ export default function App() {
     const [effort, setEffort] = useState(10);
     const [routine, setRoutine] = useState(``);
 
-
     // Create table if not exists
     const createTable = () => {
         fetch(`${IP}/createTable`)
