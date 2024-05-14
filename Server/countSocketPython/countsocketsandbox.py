@@ -8,53 +8,22 @@ app = socketio.WSGIApp(socket)
 ## kode: 12345
 ## ssh file transfer scp
 
+@socket.on('echo')
+def echo(sid, message):
+    socket.emit('echo', message)
+
 def worker1():
     eventlet.wsgi.server(eventlet.listen(('', 3000)), app)
 
 def worker2():
     while(1):
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueUp', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
-        socket.emit('valueDown', "ost")  # Emit the event when a client connects
+        socket.emit('encoder', 40)  # Emit the event when a client connects
         socket.sleep(1)
-        '''
-        socket.emit('newTodayValue', 40)  # Emit the event when a client connects
-        socket.sleep(1)
-        socket.emit('newTodayValue', 60)  # Emit the event when a client connects
-        socket.sleep(1)
-        socket.emit('newTodayValue', 60)  # Emit the event when a client connects
+        socket.emit('encoder', 60)  # Emit the event when a client connects
         socket.sleep(1)
         socket.emit('pressed', "pressoboie")  # Emit the event when a client connects
-        socket.sleep(1)'''
+        socket.sleep(1)
+        print("full circle")
 
 
 def main(backgroundtask):
