@@ -1,8 +1,8 @@
-const express = require('express');
-const mysql = require('mysql');
-const cors = require('cors');
-const url = require('url');
-const bodyParser = require('body-parser');
+const express = require("express");
+const mysql = require("mysql2");
+const cors = require("cors");
+const url = require("url");
+const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 
@@ -12,17 +12,16 @@ app.use(express.json());
 
 app.use(bodyParser.json());
 
-const dbName = 'habitdb';
-const tableName = 'Habits';
+const dbName = "habitdb";
+const tableName = "Habits";
 
 // Create connection
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'pass',
-    database: 'PuckTest' // database og table name skal skrive manuelt ind /createTable functionen
+    host: "localhost",
+    user: "root",
+    password: "pass",
+    database: "habitdb", // database og table name skal skrive manuelt ind /createTable functionen
 });
-
 
 // Check if database exists and create if not
 // app.get('/createDb', (req, res) => {
@@ -47,16 +46,16 @@ const db = mysql.createConnection({
 // });
 
 // Check if table exists and create if not
-app.get('/createTable', (req, res) => {
+app.get("/createTable", (req, res) => {
     let sql = `SHOW TABLES IN ${dbName}`;
 
     db.query(sql, (err, results) => {
         console.log(results);
         if (err) throw err;
 
-        if (results.some(row => row['Tables_in_habitdb'] === 'Habits')) {
-            res.send('Table already exists...');
-            console.log('Table already exists...');
+        if (results.some((row) => row["Tables_in_habitdb"] === "Habits")) {
+            res.send("Table already exists...");
+            console.log("Table already exists...");
         } else {
             sql = `CREATE TABLE ${dbName}.${tableName} (
                     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -70,25 +69,24 @@ app.get('/createTable', (req, res) => {
             db.query(sql, (err, result) => {
                 if (err) throw err;
                 console.log(result);
-                res.send('Table created...');
-                console.log('Table created...');
+                res.send("Table created...");
+                console.log("Table created...");
             });
         }
     });
 });
-
 
 // Connect
 db.connect((err) => {
     if (err) {
         throw err;
     }
-    console.log('MySQL Connected...');
+    console.log("MySQL Connected...");
 });
 
 // Get all data
-app.get('/getData', (req, res) => {
-    db.query('SELECT * FROM Habits', (err, result) => {
+app.get("/getData", (req, res) => {
+    db.query("SELECT * FROM Habits", (err, result) => {
         if (err) {
             return res.send(err);
         } else {
@@ -103,7 +101,7 @@ app.get('/getData', (req, res) => {
 });
 
 // Get current date. output = [{CURRENT_DATE: "2024-05-08T22:00:00.000Z"}]
-app.get('/getDate', (req, res) => {
+app.get("/getDate", (req, res) => {
     let sql = `SELECT CURRENT_DATE`;
     db.query(sql, (err, results) => {
         if (err) throw err;
@@ -113,7 +111,7 @@ app.get('/getDate', (req, res) => {
 });
 
 // get all data for a given habit
-app.get('/getHabitData', (req, res) => {
+app.get("/getHabitData", (req, res) => {
     const queryObject = url.parse(req.url, true).query;
     const habitName = queryObject.habitName;
     let sql = `SELECT * FROM Habits WHERE habitName = ? ORDER BY id DESC LIMIT 1`;
@@ -125,7 +123,7 @@ app.get('/getHabitData', (req, res) => {
 });
 
 // get count for last 7 days
-app.get('/getHistory', (req, res) => {
+app.get("/getHistory", (req, res) => {
     const queryObject = url.parse(req.url, true).query;
     const habitName = queryObject.habitName;
     let sql = `SELECT (count) FROM Habits WHERE habitName = ? ORDER BY id DESC LIMIT 8`;
@@ -137,8 +135,8 @@ app.get('/getHistory', (req, res) => {
 });
 
 // Get habit name
-app.get('/getHabitName', (req, res) => {
-    let sql = 'SELECT habitName FROM Habits ORDER BY id DESC LIMIT 1';
+app.get("/getHabitName", (req, res) => {
+    let sql = "SELECT habitName FROM Habits ORDER BY id DESC LIMIT 1";
     db.query(sql, (err, results) => {
         if (err) throw err;
         const habitName = results[0].HabitName;
@@ -173,10 +171,11 @@ app.post("/setEffort", (req, res) => {
 });
 
 // Get count for selected habit
-app.get('/getCount', (req, res) => {
+app.get("/getCount", (req, res) => {
     const queryObject = url.parse(req.url, true).query;
     const habitName = queryObject.habitName;
-    let sql = 'SELECT count FROM Habits WHERE habitName = ? ORDER BY id DESC LIMIT 1';
+    let sql =
+        "SELECT count FROM Habits WHERE habitName = ? ORDER BY id DESC LIMIT 1";
     db.query(sql, [habitName], (err, results) => {
         if (err) throw err;
         const count = results.count;
@@ -186,11 +185,12 @@ app.get('/getCount', (req, res) => {
 });
 
 // Set count for selected habit today
-app.post('/setCount', (req, res) => {
+app.post("/setCount", (req, res) => {
     const queryObject = url.parse(req.url, true).query;
     const habitName = queryObject.habitName;
     const count = req.body.count;
-    let sql = 'UPDATE Habits SET count = ? WHERE habitName = ? AND currentDate = CURDATE()';
+    let sql =
+        "UPDATE Habits SET count = ? WHERE habitName = ? AND currentDate = CURDATE()";
     db.query(sql, [count, habitName], (err, results) => {
         if (err) throw err;
         res.send(count);
@@ -199,12 +199,12 @@ app.post('/setCount', (req, res) => {
     });
 });
 
-
 // Get target for selected habit. Bruges til /newHabitRow
-app.get('/getTarget', (req, res) => {
+app.get("/getTarget", (req, res) => {
     const queryObject = url.parse(req.url, true).query;
     const habitName = queryObject.habitName;
-    let sql = 'SELECT target FROM Habits WHERE habitName = ? ORDER BY id DESC LIMIT 1';
+    let sql =
+        "SELECT target FROM Habits WHERE habitName = ? ORDER BY id DESC LIMIT 1";
     db.query(sql, [habitName], (err, results) => {
         if (err) throw err;
         const target = results[0].target;
@@ -214,10 +214,11 @@ app.get('/getTarget', (req, res) => {
 });
 
 // Get routine for selected habit. Bruges til /newHabitRow
-app.get('/getRoutine', (req, res) => {
+app.get("/getRoutine", (req, res) => {
     const queryObject = url.parse(req.url, true).query;
     const habitName = queryObject.habitName;
-    let sql = 'SELECT routine FROM Habits WHERE habitName = ? ORDER BY id DESC LIMIT 1';
+    let sql =
+        "SELECT routine FROM Habits WHERE habitName = ? ORDER BY id DESC LIMIT 1";
     db.query(sql, [habitName], (err, results) => {
         if (err) throw err;
         const routine = results[0].routine;
@@ -243,8 +244,6 @@ app.post(`/newHabitRow`, (req, res) => {
     });
 });
 
-
-
 app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`)
+    console.log(`Server is running at http://localhost:${port}`);
 });
