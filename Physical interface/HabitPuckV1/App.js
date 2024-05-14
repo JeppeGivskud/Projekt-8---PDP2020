@@ -47,18 +47,25 @@ export default function App() {
         });
         socket.io.on("open", () => setConnection(true));
         socket.io.on("close", () => setConnection(false));
-        socket.on("newTodayValue", (data) => {
-            console.log("newTodayValue");
-            setValue(FloorValue(data));
-
-            setHistoryValues((prevHistoryValues) => ({
-                ...prevHistoryValues,
-                [(new Date().getDay() + 6) % 7]: FloorValue(data),
-            }));
+        socket.io.on("valueUp", (data) => {
+            setValue(FloorValue(todayValue + 1));
         });
-        socket.on("pressed", (data) => {
-            console.log("Pressed");
+        socket.io.on("valueDown", (data) => {
+            setValue(FloorValue(todayValue - 1));
+        });
 
+        // socket.on("newTodayValue", (data) => {
+        //     //Is now deprecated
+        //     console.log("newTodayValue");
+        //     setValue(FloorValue(data));
+
+        //     setHistoryValues((prevHistoryValues) => ({
+        //         ...prevHistoryValues,
+        //         [(new Date().getDay() + 6) % 7]: FloorValue(data),
+        //     }));
+        // });
+
+        socket.on("pressed", (data) => {
             switchScreen();
         });
         return function didUnmount() {
