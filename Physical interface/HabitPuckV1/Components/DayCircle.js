@@ -67,7 +67,7 @@ export default function DayCircle({
     circleSize = 220,
     totalDays = 7,
     circleStart = 101,
-    values,
+    historyCounts,
 }) {
     //The circle starts at 11 degrees positive.
     //The active area is a circle minus 180 and the size of the corners
@@ -109,37 +109,37 @@ export default function DayCircle({
         <View style={styles.Container}>
             <DayCircleInformation
                 Coords={locations[`day${0}`]}
-                CompletionPercent={values[6]}
+                CompletionPercent={historyCounts[6]}
                 CircleDayOfWeek="6"
             ></DayCircleInformation>
             <DayCircleInformation
                 Coords={locations[`day${1}`]}
-                CompletionPercent={values[5]}
+                CompletionPercent={historyCounts[5]}
                 CircleDayOfWeek="5"
             ></DayCircleInformation>
             <DayCircleInformation
                 Coords={locations[`day${2}`]}
-                CompletionPercent={values[4]}
+                CompletionPercent={historyCounts[4]}
                 CircleDayOfWeek="4"
             ></DayCircleInformation>
             <DayCircleInformation
                 Coords={locations[`day${3}`]}
-                CompletionPercent={values[3]}
+                CompletionPercent={historyCounts[3]}
                 CircleDayOfWeek="3"
             ></DayCircleInformation>
             <DayCircleInformation
                 Coords={locations[`day${4}`]}
-                CompletionPercent={values[2]}
+                CompletionPercent={historyCounts[2]}
                 CircleDayOfWeek="2"
             ></DayCircleInformation>
             <DayCircleInformation
                 Coords={locations[`day${5}`]}
-                CompletionPercent={values[1]}
+                CompletionPercent={historyCounts[1]}
                 CircleDayOfWeek="1"
             ></DayCircleInformation>
             <DayCircleInformation
                 Coords={locations[`day${6}`]}
-                CompletionPercent={values[0]}
+                CompletionPercent={historyCounts[0]}
                 CircleDayOfWeek="0"
             ></DayCircleInformation>
         </View>

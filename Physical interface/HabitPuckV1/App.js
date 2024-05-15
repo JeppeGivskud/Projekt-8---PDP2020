@@ -34,9 +34,10 @@ export default function App() {
     const [streak, setStreak] = useState(
         History.calculateStreak(History.dummyDatasimple)
     );
-    const [historyValues, setHistoryValues] = useState(
+    const [historyCounts, sethistoryCounts] = useState(
         History.getHistory(History.dummyDatasimple)
     );
+    console.log(historyCounts);
 
     //Screen navigation
     const [currentScreen, setCurrentScreen] = useState({
@@ -96,8 +97,8 @@ export default function App() {
         if (currentScreen.Effort) {
             setEffortCount(FloorValue(newValue));
         }
-        setHistoryValues((prevHistoryValues) => ({
-            ...prevHistoryValues,
+        sethistoryCounts((prevhistoryCounts) => ({
+            ...prevhistoryCounts,
             [(new Date().getDay() + 6) % 7]: FloorValue(newValue),
         }));
     };
@@ -121,7 +122,7 @@ export default function App() {
                         streak: streak,
                         width: width,
                         height: height,
-                        historyValues: historyValues,
+                        historyCounts: historyCounts,
                     }}
                 />
             )}
@@ -134,7 +135,7 @@ export default function App() {
                         streak: streak,
                         width: width,
                         height: height,
-                        historyValues: historyValues,
+                        historyCounts: historyCounts,
                     }}
                 />
             )}
@@ -147,7 +148,7 @@ export default function App() {
                         streak: streak,
                         width: width,
                         height: height,
-                        historyValues: historyValues,
+                        historyCounts: historyCounts,
                     }}
                 />
             )} */}

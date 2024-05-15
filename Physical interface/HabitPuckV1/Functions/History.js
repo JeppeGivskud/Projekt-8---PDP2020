@@ -55,7 +55,7 @@ export const dummyData = {
     },
 };
 export const getHistory = (habitHistory) => {
-    var historyValues = {
+    var historyCounts = {
         0: 0,
         1: 0,
         2: 0,
@@ -74,10 +74,10 @@ export const getHistory = (habitHistory) => {
         i--
     ) {
         var daycircle = (i + todaysday) % (todaysday + 2);
-        var value = habitHistory[Object.keys(habitHistory)[i]].count;
-        historyValues[daycircle] = value;
+        var count = habitHistory[Object.keys(habitHistory)[i]].count;
+        historyCounts[daycircle] = count;
     }
-    return historyValues;
+    return historyCounts;
 };
 
 export const calculateStreak = (habitHistory) => {
