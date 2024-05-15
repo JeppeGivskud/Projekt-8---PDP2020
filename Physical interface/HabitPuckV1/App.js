@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Button } from "react-native";
 // History
 import * as History from "./Functions/History";
 //Screens
@@ -23,7 +23,7 @@ const socketEndpoint = "http://localhost:3000";
 
 export default function App() {
     const [count, setCount] = useState(50);
-    const [effortCount, setEffortCount] = useState(50);
+    const [effortCount, setEffortCount] = useState(33);
     const [habitName, setHabitName] = useState("Press Ups");
     const [target, setTarget] = useState(100);
     const [streak, setStreak] = useState(
@@ -36,50 +36,53 @@ export default function App() {
         History.getHistory(History.dummyData)
     );
 
-    const [hasConnection, setConnection] = useState(false);
+    const [reload, setReload] = useState(false);
     const [currentScreen, setCurrentScreen] = useState({
-        Overview: true,
-        Effort: false,
+        Overview: false,
+        Effort: true,
         Done: false,
     });
+    useEffect(() => {
+    }, [reload]);
 
-    useEffect(function didMount() {
-        socketStuff();
-    }, []);
 
-    const socketStuff = () => {
-        const socket = io(socketEndpoint, {
-            transports: ["websocket"],
-        });
-        socket.io.on("open", () => setConnection(true));
-        socket.io.on("close", () => setConnection(false));
+    // useEffect(function didMount() {
+    //     socketStuff();
+    // }, []);
 
-        socket.on("encoder", (data) => {
-            console.log("new today value");
-            if (currentScreen.Overview) {
-                setCount(FloorValue(data));
-            }
-            if (currentScreen.Effort) {
-                setEffortCount(FloorValue(data));
-            }
+    // const socketStuff = () => {
+    //     const socket = io(socketEndpoint, {
+    //         transports: ["websocket"],
+    //     });
+    //     socket.io.on("open", () => setConnection(true));
+    //     socket.io.on("close", () => setConnection(false));
 
-            setHistoryValues((prevHistoryValues) => ({
-                ...prevHistoryValues,
-                [(new Date().getDay() + 6) % 7]: FloorValue(data),
-            }));
-        });
+    //     socket.on("encoder", (data) => {
+    //         console.log("new today value");
+    //         if (currentScreen.Overview) {
+    //             setCount(FloorValue(data));
+    //         }
+    //         if (currentScreen.Effort) {
+    //             setEffortCount(FloorValue(data));
+    //         }
 
-        socket.on("pressed", (data) => {
-            console.log("Pressed");
+    //         setHistoryValues((prevHistoryValues) => ({
+    //             ...prevHistoryValues,
+    //             [(new Date().getDay() + 6) % 7]: FloorValue(data),
+    //         }));
+    //     });
 
-            switchScreen();
-        });
+    //     socket.on("pressed", (data) => {
+    //         console.log("Pressed");
 
-        return function didUnmount() {
-            socket.disconnect();
-            socket.removeAllListeners();
-        };
-    };
+    //         switchScreen();
+    //     });
+
+    //     return function didUnmount() {
+    //         socket.disconnect();
+    //         socket.removeAllListeners();
+    //     };
+    // };
 
     const switchScreen = () => {
         if (currentScreen.Overview) {
@@ -95,6 +98,7 @@ export default function App() {
             currentScreen.Effort = false;
             currentScreen.Done = false;
         }
+        console.log(currentScreen);
     };
     const FloorValue = (count) => {
         if (count < 0) {
@@ -120,19 +124,19 @@ export default function App() {
                     }}
                 />
             )}
+
             {!!currentScreen.Effort && (
                 <EffortScreen
                     props={{
-                        count: effortCount,
+                        effortCount: effortCount,
                         habitName: habitName,
-                        target: target,
-                        streak: streak,
                         width: width,
                         height: height,
                         historyValues: historyValues,
                     }}
                 />
             )}
+
             {!!currentScreen.Done && (
                 <DoneScreen
                     props={{
@@ -146,6 +150,8 @@ export default function App() {
                     }}
                 />
             )}
+
+            <Button title="Switch" onPress={() => { switchScreen(); setReload(!reload); }} />
         </View>
     );
 }
