@@ -4,7 +4,7 @@ const cors = require("cors");
 const url = require("url");
 const bodyParser = require("body-parser");
 const app = express();
-const port = 5000;
+const port = 8080;
 
 app.use(cors());
 
@@ -245,5 +245,5 @@ app.post(`/newHabitRow`, (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
+    console.log(`Server is running at http://192.168.1.173:${port}`);
 });
