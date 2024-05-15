@@ -4,12 +4,11 @@ import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 // TODO: Flyt de her funktioner ud af App.js!
 // TODO: Variabel for IP-adresse
 
-const IP = `http://192.168.1.173:5000`;
+const IP = `http://hvejsel.dk:8080`;
 
 export default function App() {
     const [allData, setAllData] = useState();
     const [habitData, setHabitData] = useState({});
-    const [date, setDate] = useState("2024-05-10");
     const [habitName, setHabitName] = useState("Pushups");
     const [count, setCount] = useState(0);
     const [target, setTarget] = useState();
@@ -21,6 +20,7 @@ export default function App() {
         fetch(`${IP}/createTable`)
             .then((response) => response.text())
             .catch((error) => console.error("Error:", error));
+        console.log("Table created...");
     };
 
     // Get all data
@@ -29,6 +29,7 @@ export default function App() {
             .then((response) => response.json())
             .then((data) => setAllData(data))
             .catch((error) => console.error("Error:", error));
+        console.log("Data fetched...");
     };
 
     // Post count
@@ -42,6 +43,7 @@ export default function App() {
         })
             .then((response) => response.json())
             .catch((error) => console.error("Error:", error));
+        console.log("Count posted...");
     };
 
     // Post effort
@@ -56,6 +58,7 @@ export default function App() {
             .then((response) => response.json())
             .then((data) => setEffort(data))
             .catch((error) => console.error("Error:", error));
+        console.log("Effort posted...");
     };
 
     // Get target from latest habit row with same habitName. Bruges i newHabitRow til at få target med i den nye række
@@ -65,7 +68,7 @@ export default function App() {
         );
         const data = await response.json();
         setTarget(data);
-        console.log(data);
+        console.log("target is:", data);
         return data;
     }
 
@@ -76,7 +79,7 @@ export default function App() {
         );
         const data = await response.json();
         setRoutine(data);
-        console.log(data);
+        console.log("Routine is: ", data);
         return data;
     }
 
@@ -94,11 +97,13 @@ export default function App() {
                 routine: routine,
             }),
         }).catch((error) => console.error("Error:", error));
+        console.log("New habit row created...");
     }
 
     // GUI til at se og styre værdier
     return (
         <View style={styles.container}>
+            {/* <Text style={styles.textColor}>{allData}</Text> */}
             <Button title="Refresh Data" onPress={getAllData} />
             <Button title="Get target" onPress={() => getTarget(habitName)} />
             <Button title="Get routine" onPress={() => getRoutine(habitName)} />
