@@ -72,18 +72,7 @@ export default function App() {
         socket.io.on("close", () => setConnection(false));
 
         socket.on("encoder", (data) => {
-            console.log("new today value");
-            if (currentScreen.Overview) {
-                setCount(FloorValue(data));
-            }
-            if (currentScreen.Effort) {
-                setEffortCount(FloorValue(data));
-            }
-
-            setHistoryValues((prevHistoryValues) => ({
-                ...prevHistoryValues,
-                [(new Date().getDay() + 6) % 7]: FloorValue(data),
-            }));
+            changevalue(data);
         });
 
         socket.on("pressed", (data) => {
@@ -96,6 +85,20 @@ export default function App() {
             socket.disconnect();
             socket.removeAllListeners();
         };
+    };
+    const changevalue = (newValue) => {
+        console.log("new today value");
+        if (currentScreen.Overview) {
+            setCount(FloorValue(newValue));
+        }
+        if (currentScreen.Effort) {
+            setEffortCount(FloorValue(newValue));
+        }
+
+        setHistoryValues((prevHistoryValues) => ({
+            ...prevHistoryValues,
+            [(new Date().getDay() + 6) % 7]: FloorValue(newValue),
+        }));
     };
     const FloorValue = (count) => {
         if (count < 0) {
