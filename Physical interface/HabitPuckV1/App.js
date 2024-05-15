@@ -123,7 +123,7 @@ export default function App() {
             {!!currentScreen.Effort && (
                 <EffortScreen
                     props={{
-                        count: count,
+                        count: effortCount,
                         habitName: habitName,
                         target: target,
                         streak: streak,
