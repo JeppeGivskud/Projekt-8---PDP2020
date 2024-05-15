@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 // TODO: Flyt de her funktioner ud af App.js!
 // TODO: Variabel for IP-adresse
 
-const IP = `http://localhost:3000`;
+const IP = `http://192.168.1.173:5000`;
 
 export default function App() {
     const [allData, setAllData] = useState();
@@ -131,7 +131,7 @@ export default function App() {
                 title="New habit row"
                 onPress={() => newHabitRow(habitName)}
             />
-            <Button title="New habit row" onPress={createTable} />
+            <Button title="Create table" onPress={createTable} />
         </View>
     );
 }
