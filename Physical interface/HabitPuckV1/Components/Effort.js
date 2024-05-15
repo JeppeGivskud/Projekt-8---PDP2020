@@ -7,21 +7,13 @@ import WeekHistory from "./WeekHistory";
 //yarn expo export -p web
 
 export default function Effort({ props }) {
-    const {
-        todayValue,
-        habitName,
-        goal,
-        streak,
-        width,
-        height,
-        historyValues,
-    } = props;
+    const { count, habitName, target, streak, width, height } = props;
 
     return (
         <View style={styles.container}>
             <ProgressBar
-                goal={goal}
-                value={todayValue}
+                target={target}
+                count={count}
                 width={width}
                 height={height}
             />

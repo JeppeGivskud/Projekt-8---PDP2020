@@ -64,7 +64,6 @@ export default function App() {
     //Websocket
     useEffect(function didMount() {
         socketStuff();
-        updateCount(50);
     }, []);
 
     const socketStuff = () => {
@@ -89,6 +88,7 @@ export default function App() {
             socket.removeAllListeners();
         };
     };
+
     const updateCount = (newValue) => {
         console.log("new today value");
         if (currentScreen.Overview) {
@@ -126,7 +126,7 @@ export default function App() {
                     }}
                 />
             )}
-            {/* {!!currentScreen.Effort && (
+            {!!currentScreen.Effort && (
                 <EffortScreen
                     props={{
                         count: effortCount,
@@ -148,10 +148,9 @@ export default function App() {
                         streak: streak,
                         width: width,
                         height: height,
-                        historyCounts: historyCounts,
                     }}
                 />
-            )} */}
+            )}
         </View>
     );
 }
