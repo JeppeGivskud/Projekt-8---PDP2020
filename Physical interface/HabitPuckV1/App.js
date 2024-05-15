@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 // History
 import * as History from "./Functions/History";
+import * as Database from "./Functions/Database";
 //Screens
 import OverviewScreen from "./Components/Overview";
 import EffortScreen from "./Components/Effort";
@@ -11,9 +12,9 @@ import DoneScreen from "./Components/Done";
 import io from "socket.io-client";
 const socketEndpoint = "http://localhost:3000";
 
-//Code for the server
-//yarn http-server ./dist-withCirclesNew -a 192.168.1.173
+//Code for starting the server
 //yarn expo export -p web
+//yarn http-server ./dist-withCirclesNew -a 192.168.1.173
 //TODO: Implement variable target (progress bars and floor and maybe more)
 //TODO: Implement effort
 //TODO: implement done
@@ -22,27 +23,44 @@ const socketEndpoint = "http://localhost:3000";
 //FIXME: Screen switch only updates whenever the count is changed. dunno why
 
 export default function App() {
-    const [count, setCount] = useState(50);
-    const [effortCount, setEffortCount] = useState(50);
-    const [habitName, setHabitName] = useState("Press Ups");
-    const [target, setTarget] = useState(100);
-    const [streak, setStreak] = useState(
-        History.calculateStreak(History.dummyDatasimple)
-    );
-    console.log("Streak: ", streak.streak);
     const [width, setWidth] = useState("200");
     const [height, setHeight] = useState("200");
+    //HabitData
+    const [habitName, setHabitName] = useState("Pushups");
+    const [count, setCount] = useState(50);
+    const [target, setTarget] = useState(100);
+    const [effortCount, setEffortCount] = useState(50);
+    //Database
+    const [streak, setStreak] = useState(
+        History.calculateStreak(Database.getAllData)
+    );
     const [historyValues, setHistoryValues] = useState(
-        History.getHistory(History.dummyData)
+        History.getHistory(Database.getAllData)
     );
 
-    const [hasConnection, setConnection] = useState(false);
+    //Screen navigation
     const [currentScreen, setCurrentScreen] = useState({
         Overview: true,
         Effort: false,
         Done: false,
     });
+    const switchScreen = () => {
+        if (currentScreen.Overview) {
+            currentScreen.Overview = false;
+            currentScreen.Effort = true;
+            currentScreen.Done = false;
+        } else if (currentScreen.Effort) {
+            currentScreen.Overview = false;
+            currentScreen.Effort = false;
+            currentScreen.Done = true;
+        } else if (currentScreen.Done) {
+            currentScreen.Overview = true;
+            currentScreen.Effort = false;
+            currentScreen.Done = false;
+        }
+    };
 
+    //Websocket
     useEffect(function didMount() {
         socketStuff();
     }, []);
@@ -55,6 +73,7 @@ export default function App() {
         socket.io.on("close", () => setConnection(false));
 
         socket.on("encoder", (data) => {
+            console.log("newdata");
             updateCount(data);
         });
 
@@ -80,22 +99,6 @@ export default function App() {
             ...prevHistoryValues,
             [(new Date().getDay() + 6) % 7]: FloorValue(newValue),
         }));
-    };
-
-    const switchScreen = () => {
-        if (currentScreen.Overview) {
-            currentScreen.Overview = false;
-            currentScreen.Effort = true;
-            currentScreen.Done = false;
-        } else if (currentScreen.Effort) {
-            currentScreen.Overview = false;
-            currentScreen.Effort = false;
-            currentScreen.Done = true;
-        } else if (currentScreen.Done) {
-            currentScreen.Overview = true;
-            currentScreen.Effort = false;
-            currentScreen.Done = false;
-        }
     };
     const FloorValue = (count) => {
         if (count < 0) {
