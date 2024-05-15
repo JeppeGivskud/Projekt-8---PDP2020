@@ -32,10 +32,10 @@ export default function App() {
     const [effortCount, setEffortCount] = useState(50);
     //Database
     const [streak, setStreak] = useState(
-        History.calculateStreak(Database.getAllData)
+        History.calculateStreak(History.dummyDatasimple)
     );
     const [historyValues, setHistoryValues] = useState(
-        History.getHistory(Database.getAllData)
+        History.getHistory(History.dummyDatasimple)
     );
 
     //Screen navigation
@@ -63,6 +63,7 @@ export default function App() {
     //Websocket
     useEffect(function didMount() {
         socketStuff();
+        updateCount(50);
     }, []);
 
     const socketStuff = () => {
@@ -124,7 +125,7 @@ export default function App() {
                     }}
                 />
             )}
-            {!!currentScreen.Effort && (
+            {/* {!!currentScreen.Effort && (
                 <EffortScreen
                     props={{
                         count: effortCount,
@@ -149,7 +150,7 @@ export default function App() {
                         historyValues: historyValues,
                     }}
                 />
-            )}
+            )} */}
         </View>
     );
 }

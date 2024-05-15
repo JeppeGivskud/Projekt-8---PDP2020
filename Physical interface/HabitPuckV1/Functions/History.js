@@ -109,8 +109,18 @@ export const calculateStreak = (habitHistory) => {
 
     return { streak: streak, omissions: omissions };
 };
-
 export const dummyDatasimple = {
+    "Mon May 13 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 40,
+    },
+    "Tue May 14 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 80,
+    },
+    "Wed May 15 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 10,
+    },
+};
+export const dummyDatasimple2 = {
     "Sat May 04 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
         count: 11,
     },
