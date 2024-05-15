@@ -14,12 +14,18 @@ const socketEndpoint = "http://localhost:3000";
 //Code for the server
 //yarn http-server ./dist-withCirclesNew -a 192.168.1.173
 //yarn expo export -p web
+//TODO: Implement variable target (progress bars and floor and maybe more)
+//TODO: Implement effort
+//TODO: implement done
+//TODO: Get history from database
+//TODO: Send data to database
+//FIXME: Screen switch only updates whenever the count is changed. dunno why
 
 export default function App() {
-    const [todayValue, setValue] = useState(50);
-    const [effortValue, setEffortValue] = useState(50);
+    const [count, setCount] = useState(50);
+    const [effortCount, setEffortCount] = useState(50);
     const [habitName, setHabitName] = useState("Press Ups");
-    const [goal, setGoal] = useState(100);
+    const [target, setTarget] = useState(100);
     const [streak, setStreak] = useState(
         History.calculateStreak(History.dummyDatasimple)
     );
@@ -50,7 +56,12 @@ export default function App() {
 
         socket.on("encoder", (data) => {
             console.log("new today value");
-            setValue(FloorValue(data));
+            if (currentScreen.Overview) {
+                setCount(FloorValue(data));
+            }
+            if (currentScreen.Effort) {
+                setEffortCount(FloorValue(data));
+            }
 
             setHistoryValues((prevHistoryValues) => ({
                 ...prevHistoryValues,
@@ -69,10 +80,6 @@ export default function App() {
             socket.removeAllListeners();
         };
     };
-    const changeValue = (newValue) => {
-        setValue(FloorValue(todayValue + newValue));
-        console.log(todayValue);
-    };
 
     const switchScreen = () => {
         if (currentScreen.Overview) {
@@ -89,13 +96,13 @@ export default function App() {
             currentScreen.Done = false;
         }
     };
-    const FloorValue = (todayValue) => {
-        if (todayValue < 0) {
+    const FloorValue = (count) => {
+        if (count < 0) {
             return 0;
         }
-        if (todayValue > 100) {
+        if (count > 100) {
             return 100;
-        } else return todayValue;
+        } else return count;
     };
 
     return (
@@ -103,9 +110,9 @@ export default function App() {
             {!!currentScreen.Overview && (
                 <OverviewScreen
                     props={{
-                        todayValue: todayValue,
+                        count: count,
                         habitName: habitName,
-                        goal: goal,
+                        target: target,
                         streak: streak,
                         width: width,
                         height: height,
@@ -116,9 +123,9 @@ export default function App() {
             {!!currentScreen.Effort && (
                 <EffortScreen
                     props={{
-                        todayValue: todayValue,
+                        count: count,
                         habitName: habitName,
-                        goal: goal,
+                        target: target,
                         streak: streak,
                         width: width,
                         height: height,
@@ -129,9 +136,9 @@ export default function App() {
             {!!currentScreen.Done && (
                 <DoneScreen
                     props={{
-                        todayValue: todayValue,
+                        count: count,
                         habitName: habitName,
-                        goal: goal,
+                        target: target,
                         streak: streak,
                         width: width,
                         height: height,
