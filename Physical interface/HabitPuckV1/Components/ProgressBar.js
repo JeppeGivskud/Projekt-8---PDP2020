@@ -1,8 +1,8 @@
 import { View, StyleSheet } from "react-native";
 import { CircularProgressBase } from "react-native-circular-progress-indicator";
 
-export default function ProgressBar({ value, target }) {
-    // a circle has 360 degrees. We want 85*2 degrees to be the target amount. Find that fraction and find the value of the rest of the circle and then add 100 to that value such that the circle is complete
+export default function ProgressBar({ count, target }) {
+    // a circle has 360 degrees. We want 85*2 degrees to be the target amount. Find that fraction and find the count of the rest of the circle and then add 100 to that count such that the circle is complete
     var rotation = 75;
     var rotationtext = "-75deg";
     var circleMax =
@@ -32,7 +32,7 @@ export default function ProgressBar({ value, target }) {
                 ]}
             >
                 <CircularProgressBase
-                    value={value}
+                    value={count}
                     radius={250 / 2}
                     duration={200}
                     activeStrokeWidth={40}

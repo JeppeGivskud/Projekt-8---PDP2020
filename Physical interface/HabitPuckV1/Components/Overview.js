@@ -12,20 +12,20 @@ export default function Overview({ props }) {
     return (
         <View style={styles.container}>
             <ProgressBar
+                count={count}
                 target={target}
-                value={count}
                 width={width}
                 height={height}
             />
             <OverviewInformation
-                value={count}
+                count={count}
                 target={target}
                 habitName={habitName}
                 width={width}
                 height={height}
                 streak={streak}
             />
-            <WeekHistory values={historyCounts} />
+            <WeekHistory historyCounts={historyCounts} />
         </View>
     );
 }
