@@ -62,6 +62,7 @@ export default function App() {
     };
 
     //Websocket
+    const [hasConnection, setConnection] = useState(false);
     useEffect(function didMount() {
         socketStuff();
     }, []);
