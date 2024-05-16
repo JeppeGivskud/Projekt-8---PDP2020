@@ -23,7 +23,7 @@ const socketEndpoint = "http://localhost:3000";
 
 export default function App() {
     const [count, setCount] = useState(50);
-    const [effortCount, setEffortCount] = useState(33);
+    const [effortCount, setEffortCount] = useState(-3);
     const [habitName, setHabitName] = useState("Press Ups");
     const [target, setTarget] = useState(100);
     const [streak, setStreak] = useState(
@@ -133,6 +133,10 @@ export default function App() {
                         width: width,
                         height: height,
                         historyValues: historyValues,
+                        currentScreen: currentScreen,
+                        setCurrentScreen: setCurrentScreen,
+                        count: count,
+                        target: target,
                     }}
                 />
             )}

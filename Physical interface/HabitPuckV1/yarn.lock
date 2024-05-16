@@ -1204,6 +1204,11 @@
     "@babel/helper-validator-identifier" "^7.24.5"
     to-fast-properties "^2.0.0"
 
+"@expo-google-fonts/delius-unicase@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/delius-unicase/-/delius-unicase-0.2.3.tgz#d4ba859fc3e33808e64bb54e60616ef73553ab20"
+  integrity sha512-xd0is9SmchrYrBktW197S7xJd7CDpON4ASXt3vwfoxB57TgnXAvbS88lwH3w/kCo7UND+C2SHitR8ooP0Azi9A==
+
 "@expo/bunyan@^4.0.0":
   version "4.0.0"
   resolved "https://registry.npmjs.org/@expo/bunyan/-/bunyan-4.0.0.tgz"
@@ -7868,7 +7873,7 @@ react-is@^17.0.1:
 
 react-native-circular-progress-indicator@^4.4.2:
   version "4.4.2"
-  resolved "https://registry.npmjs.org/react-native-circular-progress-indicator/-/react-native-circular-progress-indicator-4.4.2.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-circular-progress-indicator/-/react-native-circular-progress-indicator-4.4.2.tgz#5475d045950e6fcc622e54fb63863b274790fb8e"
   integrity sha512-BlgshzIIIk0TP/CZY+5oyRsHl2Sb2l6cK5tzfmrVETfn6pN8dhOKrV0i3Z6i0SM8wRgncdUUSRBpCPAexh7JoQ==
   dependencies:
     react-native-redash "*"
