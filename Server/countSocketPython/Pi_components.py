@@ -1,4 +1,4 @@
-import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO  # type: ignore # this library only works on Raspberry Pi, so the warning is being ignored
 from time import sleep
 import threading
 import socketio
@@ -7,6 +7,11 @@ import eventlet
 
 class Button:
     def __init__(self, pin):
+        """Initialize the button. Attach event detection to the pin to trigger callback on button press.
+
+        Args:
+            pin (int): Pin number for the button. Use physical pin numbers.
+        """
         self.pin = pin
         self.changed = False
         self.lock = threading.Lock()
@@ -113,11 +118,13 @@ class Server:
         self.sio.on("connect", self.connect)
 
     def connect(self, sid, environ):
-        print("connect ", sid)
+        print("connect ", sid, "\n")
         self.sio.emit("encoder", 0)
 
+        # Start the button and encoder threads. These threads will run in the background and send data to the client when the values change.
         eventlet.spawn(self.button.send, self.sio)
         eventlet.spawn(self.encoder.send, self.sio)
+        print("Button and encoder started\n")
 
     def listen(self):
         eventlet.wsgi.server(eventlet.listen(("", 3000)), self.app)
@@ -133,7 +140,6 @@ def main():
     server = Server(button, encoder)
 
     try:  # run inits and threads
-        print("Starting button and encoder\n")
         server.listen()  # main thread
 
     except KeyboardInterrupt:  # stop on keyboard interrupt and cleanup
