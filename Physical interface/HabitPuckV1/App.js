@@ -32,11 +32,12 @@ export default function App() {
     const [effortCount, setEffortCount] = useState(50);
     //Database
     const [streak, setStreak] = useState(
-        History.calculateStreak(Database.getAllData)
+        History.calculateStreak(History.dummyDatasimple2)
     );
-    const [historyValues, setHistoryValues] = useState(
-        History.getHistory(Database.getAllData)
+    const [historyCounts, sethistoryCounts] = useState(
+        History.getHistory(History.dummyDatasimple2)
     );
+    console.log(historyCounts);
 
     //Screen navigation
     const [currentScreen, setCurrentScreen] = useState({
@@ -61,6 +62,7 @@ export default function App() {
     };
 
     //Websocket
+    const [hasConnection, setConnection] = useState(false);
     useEffect(function didMount() {
         socketStuff();
     }, []);
@@ -87,6 +89,7 @@ export default function App() {
             socket.removeAllListeners();
         };
     };
+
     const updateCount = (newValue) => {
         console.log("new today value");
         if (currentScreen.Overview) {
@@ -95,8 +98,8 @@ export default function App() {
         if (currentScreen.Effort) {
             setEffortCount(FloorValue(newValue));
         }
-        setHistoryValues((prevHistoryValues) => ({
-            ...prevHistoryValues,
+        sethistoryCounts((prevhistoryCounts) => ({
+            ...prevhistoryCounts,
             [(new Date().getDay() + 6) % 7]: FloorValue(newValue),
         }));
     };
@@ -120,7 +123,7 @@ export default function App() {
                         streak: streak,
                         width: width,
                         height: height,
-                        historyValues: historyValues,
+                        historyCounts: historyCounts,
                     }}
                 />
             )}
@@ -133,7 +136,7 @@ export default function App() {
                         streak: streak,
                         width: width,
                         height: height,
-                        historyValues: historyValues,
+                        historyCounts: historyCounts,
                     }}
                 />
             )}
@@ -146,7 +149,6 @@ export default function App() {
                         streak: streak,
                         width: width,
                         height: height,
-                        historyValues: historyValues,
                     }}
                 />
             )}

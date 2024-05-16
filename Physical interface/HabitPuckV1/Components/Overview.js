@@ -6,26 +6,26 @@ import WeekHistory from "./WeekHistory";
 //yarn expo export -p web
 
 export default function Overview({ props }) {
-    const { count, habitName, goal, streak, width, height, historyValues } =
+    const { count, habitName, target, streak, width, height, historyCounts } =
         props;
 
     return (
         <View style={styles.container}>
             <ProgressBar
-                goal={goal}
-                value={count}
+                count={count}
+                target={target}
                 width={width}
                 height={height}
             />
             <OverviewInformation
-                value={count}
-                goal={goal}
+                count={count}
+                target={target}
                 habitName={habitName}
                 width={width}
                 height={height}
                 streak={streak}
             />
-            <WeekHistory values={historyValues} />
+            <WeekHistory historyCounts={historyCounts} />
         </View>
     );
 }

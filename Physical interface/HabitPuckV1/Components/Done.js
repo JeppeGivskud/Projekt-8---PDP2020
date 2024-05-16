@@ -7,21 +7,13 @@ import WeekHistory from "./WeekHistory";
 //yarn expo export -p web
 
 export default function Done({ props }) {
-    const {
-        todayValue,
-        habitName,
-        goal,
-        streak,
-        width,
-        height,
-        historyValues,
-    } = props;
+    const { count, habitName, target, streak, width, height } = props;
 
     return (
         <View style={styles.container}>
             <OverviewInformation
-                value={todayValue}
-                goal={goal}
+                count={count}
+                target={target}
                 habitName={habitName}
                 width={width}
                 height={height}

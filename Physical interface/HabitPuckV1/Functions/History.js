@@ -55,7 +55,7 @@ export const dummyData = {
     },
 };
 export const getHistory = (habitHistory) => {
-    var historyValues = {
+    var historyCounts = {
         0: 0,
         1: 0,
         2: 0,
@@ -74,10 +74,10 @@ export const getHistory = (habitHistory) => {
         i--
     ) {
         var daycircle = (i + todaysday) % (todaysday + 2);
-        var value = habitHistory[Object.keys(habitHistory)[i]].count;
-        historyValues[daycircle] = value;
+        var count = habitHistory[Object.keys(habitHistory)[i]].count;
+        historyCounts[daycircle] = count;
     }
-    return historyValues;
+    return historyCounts;
 };
 
 export const calculateStreak = (habitHistory) => {
@@ -109,8 +109,18 @@ export const calculateStreak = (habitHistory) => {
 
     return { streak: streak, omissions: omissions };
 };
-
 export const dummyDatasimple = {
+    "Mon May 13 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 40,
+    },
+    "Tue May 14 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 80,
+    },
+    "Wed May 15 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
+        count: 10,
+    },
+};
+export const dummyDatasimple2 = {
     "Sat May 04 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
         count: 11,
     },
