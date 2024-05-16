@@ -1,4 +1,4 @@
-import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO  # type: ignore # this library only works on Raspberry Pi, so the warning is being ignored
 from time import sleep
 import threading
 import socketio
@@ -7,6 +7,11 @@ import eventlet
 
 class Button:
     def __init__(self, pin):
+        """Initialize the button. Attach event detection to the pin to trigger callback on button press.
+
+        Args:
+            pin (int): Pin number for the button. Use physical pin numbers.
+        """
         self.pin = pin
         self.changed = False
         self.lock = threading.Lock()
@@ -77,10 +82,10 @@ class Encoder:
                     self.counter = 100
                 print("Direction -> ", self.counter)
             elif direction == "Counterclockwise":
-                if self.counter > 0:
+                if self.counter > -5:
                     self.counter -= 1
                 else:
-                    self.counter = 0
+                    self.counter = -5
                 print("Direction <- ", self.counter)
             with self.lock:
                 self.changed = True
@@ -94,6 +99,10 @@ class Encoder:
                     print("send_encoder: sent ", self.counter)
                     self.changed = False
             eventlet.sleep(0.001)
+
+    def set_counter(self, value):
+        with self.lock:
+            self.counter = value
 
 
 class Server:
@@ -111,13 +120,22 @@ class Server:
         self.button = button
         self.encoder = encoder
         self.sio.on("connect", self.connect)
+        self.sio.on("sendCount", self.set_count)
 
     def connect(self, sid, environ):
-        print("connect ", sid)
-        self.sio.emit("encoder", 0)
+        print("connect ", sid, "\n")
+        self.sio.emit("getCount", "getCount")
 
+        # spawn the button and encoder threads. These threads will run in the background and send data to the client when the values change.
+        # it is important that these are eventlet threads, as the threadding library in python does't work with the eventlet async_mode.
         eventlet.spawn(self.button.send, self.sio)
         eventlet.spawn(self.encoder.send, self.sio)
+        print("Button and encoder started\n")
+
+    def set_count(self, sid, data):
+        self.encoder.set_counter(data)
+        print("recieved setCount: ", data)
+        self.sio.emit("encoder", self.encoder.counter)
 
     def listen(self):
         eventlet.wsgi.server(eventlet.listen(("", 3000)), self.app)
@@ -132,8 +150,7 @@ def main():
     encoder = Encoder(35, 33)
     server = Server(button, encoder)
 
-    try:  # run inits and threads
-        print("Starting button and encoder\n")
+    try:  # start the server
         server.listen()  # main thread
 
     except KeyboardInterrupt:  # stop on keyboard interrupt and cleanup
