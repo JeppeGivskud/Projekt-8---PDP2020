@@ -32,10 +32,10 @@ export default function App() {
     const [effortCount, setEffortCount] = useState(50);
     //Database
     const [streak, setStreak] = useState(
-        History.calculateStreak(History.dummyDatasimple)
+        History.calculateStreak(History.dummyDatasimple2)
     );
     const [historyCounts, sethistoryCounts] = useState(
-        History.getHistory(History.dummyDatasimple)
+        History.getHistory(History.dummyDatasimple2)
     );
     console.log(historyCounts);
 
