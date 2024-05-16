@@ -81,6 +81,7 @@ export const getHistory = (habitHistory) => {
 };
 
 export const calculateStreak = (habitHistory) => {
+    console.log(habitHistory);
     //Checks two things at a time. The streak length and the days which have been omissed.
     //Once a non omission has been found the omissions stop changing
     //The streak survives 5 days

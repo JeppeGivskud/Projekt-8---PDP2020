@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from "react-native";
 // History
 import * as History from "./Functions/History";
 import * as Database from "./Functions/Database";
+
 //Screens
 import OverviewScreen from "./Components/Overview";
 import EffortScreen from "./Components/Effort";
@@ -35,7 +36,7 @@ export default function App() {
     //Database
     const [encoderValue, setEncoderValue] = useState(0);
     const [streak, setStreak] = useState(
-        History.calculateStreak(History.dummyDatasimple2)
+        History.calculateStreak(Database.getAllData)
     );
     const [historyCounts, sethistoryCounts] = useState(
         History.getHistory(History.dummyDatasimple2)
