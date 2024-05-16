@@ -35,18 +35,18 @@ export default function App() {
     const [pressed, setPressed] = useState(false);
     //Database
     const [encoderValue, setEncoderValue] = useState(0);
-    const [streak, setStreak] = useState(
-        History.calculateStreak(Database.getAllData)
-    );
+    const [streak, setStreak] = useState({ streak: 0, omissions: 0 });
     const [historyCounts, sethistoryCounts] = useState(
-        History.getHistory(History.dummyDatasimple2)
-    );
+        History.getHistory(History.dummyDatasimple2));
     const [currentScreen, setCurrentScreen] = useState({
         Overview: true,
         Effort: false,
         Done: false,
     });
+    useEffect(() => { //Prøvede at få useeffect til at vente. Men det vireker til at usestate bare kører. Måske skal getAllData være markeret som asynkron og det samme med history.calculatestreak?
+        History.calculateStreak(Database.getAllData()).then(data => sethistoryCounts(data))
 
+    }, [])
     // Ref to hold the latest count value
     const countRef = useRef(count);
     const effortCountRef = useRef(effortCount);

@@ -54,7 +54,7 @@ export const dummyData = {
         routine: "Morning",
     },
 };
-export const getHistory = (habitHistory) => {
+export const getHistory = async (habitHistory) => {
     var historyCounts = {
         0: 0,
         1: 0,
@@ -79,9 +79,10 @@ export const getHistory = (habitHistory) => {
     }
     return historyCounts;
 };
-
+//:TODO: Habithistory has a status of pending, this is not handled in the function. Perhaps we can access the results of the request in this function
 export const calculateStreak = (habitHistory) => {
-    console.log(habitHistory);
+
+    console.log("habitHistory", habitHistory);
     //Checks two things at a time. The streak length and the days which have been omissed.
     //Once a non omission has been found the omissions stop changing
     //The streak survives 5 days

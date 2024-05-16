@@ -1,5 +1,5 @@
-const DatabaseIP = `http://hvejsel.dk:8080`;
-const habitData = {};
+const IP = `http://localhost:3001`;
+let habitData;
 
 // Create table if not exists
 export const createTable = () => {
@@ -10,13 +10,42 @@ export const createTable = () => {
 };
 
 // Get all data
-export const getAllData = () => {
-    fetch(`${IP}/getData`)
-        .then((response) => response.json())
-        .then((data) => habitData(data))
-        .catch((error) => console.error("Error:", error));
-    console.log("Data fetched...");
-    return habitData;
+//DEPRECATED: this is some oooooooooooold shid
+// export const getAllData = () => {
+//     console.log("Fetching data...");
+//     fetch(`${IP}/getData`)
+//         .then((response) => response.json())
+//         .then((data) => habitData)
+//         .catch((error) => console.error("Error:", error));
+//     console.log("Data fetched...");
+//     return habitData;
+// };
+
+// Get all data
+export const getAllData = async () => {
+    var empty = {
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+    };
+    let data;
+    try {
+        const response = await fetch(`${IP}/getData`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        console.log("Data awaiting...", data);
+        data = await response.json();
+        console.log("Data fetched...", data);
+        return data; // Return the fetched data
+    } catch (error) {
+        console.error("Error:", error);
+        throw error; // Re-throw the error so the caller can handle it
+    }
 };
 
 // Post count
