@@ -99,12 +99,13 @@ export default function App() {
         const socket = io(socketEndpoint, {
             transports: ["websocket"],
         });
-        socket.io.on("open", () => {
-            setConnection(true),
-                socket.io.emit("connect", count),
-                console.log("Connected");
+        socket.on("connection", () => setConnection(true));
+        socket.on("close", () => setConnection(false));
+
+        socket.on("getCount", (data) => {
+            console.log("Message is: ", data, count);
+            socket.emit("sendCount", count);
         });
-        socket.io.on("close", () => setConnection(false));
 
         socket.on("encoder", (data) => {
             setEncoderValue(data);

@@ -20,12 +20,23 @@ process.stdin.on("keypress", (str, key) => {
         io.sockets.emit("encoder", rando);
     }
 });
-
+// Listen for 'h' key press
+process.stdin.on("keypress", (str, key) => {
+    if (key.name === "h") {
+        console.log("h key pressed");
+        io.sockets.emit("getCount", "getCount");
+    }
+});
 // Add messages when sockets open and close connections
 io.on("connection", (socket) => {
     console.log(`[${socket.id}] socket connected`);
     socket.on("disconnect", (reason) => {
         console.log(`[${socket.id}] socket disconnected - ${reason}`);
+    });
+    socket.emit("getCount", "getCount");
+    socket.on("sendCount", (count) => {
+        console.log("sendCount", count);
+        console.log(`[${count}] is nice`);
     });
 });
 
