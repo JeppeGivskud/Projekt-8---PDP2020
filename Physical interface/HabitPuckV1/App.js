@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { StyleSheet, View, Text } from "react-native";
 // History
 import * as History from "./Functions/History";
@@ -21,6 +21,7 @@ const socketEndpoint = "http://localhost:3000";
 //TODO: Get history from database
 //TODO: Send data to database
 //FIXME: Screen switch only updates whenever the count is changed. dunno why
+//TODO: Add habitcolor
 
 export default function App() {
     const [width, setWidth] = useState("200");
@@ -45,12 +46,30 @@ export default function App() {
         Done: false,
     });
 
+    // Ref to hold the latest count value
+    const countRef = useRef(count);
+    const effortCountRef = useRef(effortCount);
+    const currentScreenRef = useRef(currentScreen);
+
     console.log("Component rendered");
 
-    //If states change, log them (should update the component)
+    // Update the ref's value whenever count changes
+    useEffect(() => {
+        countRef.current = count;
+    }, [count]);
+    useEffect(() => {
+        effortCountRef.current = effortCount;
+    }, [effortCount]);
+    useEffect(() => {
+        currentScreenRef.current = currentScreen;
+    }, [currentScreen]);
+
+    // Log the current screen whenever it changes
     useEffect(() => {
         console.log("Current screen", currentScreen);
     }, [currentScreen]);
+
+    // Log the current count whenever encoder changes and update the count or effortCount
     useEffect(() => {
         console.log("Current counts", encoderValue, count, effortCount);
         if (currentScreen.Overview) {
@@ -65,10 +84,8 @@ export default function App() {
             };
         });
     }, [encoderValue]);
-    useEffect(() => {
-        console.log("Current historyCounts", historyCounts);
-    }, [historyCounts]);
 
+    // Update the screen whenever the button is pressed
     useEffect(() => {
         if (pressed) {
             setCurrentScreen((prevScreen) => {
@@ -82,44 +99,40 @@ export default function App() {
                     newScreen = { Overview: true, Effort: false, Done: false };
                 }
 
-                console.log("Switching screen", newScreen);
+                console.log("Switching screen to", newScreen);
                 return newScreen;
             });
             setPressed(false);
         }
     }, [pressed]);
 
-    //Websocket
     const [hasConnection, setConnection] = useState(false);
-    useEffect(function didMount() {
-        socketStuff();
-    }, []);
-
-    const socketStuff = () => {
+    useEffect(() => {
         const socket = io(socketEndpoint, {
             transports: ["websocket"],
         });
-        socket.on("connection", () => setConnection(true));
-        socket.on("close", () => setConnection(false));
 
+        socket.on("connect", () => setConnection(true));
+        socket.on("disconnect", () => setConnection(false));
         socket.on("getCount", (data) => {
-            console.log("Message is: ", data, count);
+            var count = NONE;
+            if (currentScreenRef.current.Overview) {
+                count = countRef.current;
+            } else if (currentScreenRef.current.Effort) {
+                count = effortCountRef.current;
+            }
             socket.emit("sendCount", count);
         });
-
         socket.on("encoder", (data) => {
             setEncoderValue(data);
         });
-
         socket.on("pressed", (data) => {
             setPressed(true);
         });
 
-        return function didUnmount() {
-            socket.disconnect();
-            socket.removeAllListeners();
-        };
-    };
+        // Clean up the effect
+        return () => socket.disconnect();
+    }, []); // Empty array means this effect runs once on mount and clean up on unmount
 
     const FloorValue = (input) => {
         if (input < 0) {
