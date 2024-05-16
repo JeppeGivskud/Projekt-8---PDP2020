@@ -33,7 +33,7 @@ export default function App() {
     const [effortCount, setEffortCount] = useState(50);
     const [pressed, setPressed] = useState(false);
     //Database
-    const [encoderValue, setEncoderValue] = useState(8);
+    const [encoderValue, setEncoderValue] = useState(0);
     const [streak, setStreak] = useState(
         History.calculateStreak(History.dummyDatasimple2)
     );
@@ -115,13 +115,11 @@ export default function App() {
         socket.on("connect", () => setConnection(true));
         socket.on("disconnect", () => setConnection(false));
         socket.on("getCount", (data) => {
-            var count = NONE;
             if (currentScreenRef.current.Overview) {
-                count = countRef.current;
+                socket.emit("sendCount", countRef.current);
             } else if (currentScreenRef.current.Effort) {
-                count = effortCountRef.current;
+                socket.emit("sendCount", effortCountRef.current);
             }
-            socket.emit("sendCount", count);
         });
         socket.on("encoder", (data) => {
             setEncoderValue(data);
