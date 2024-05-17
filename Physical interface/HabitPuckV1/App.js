@@ -32,10 +32,10 @@ export default function App() {
     //HabitData
     const [habitName, setHabitName] = useState("Pushups");
     const [count, setCount] = useState(0);
-    const [target, setTarget] = useState();
+    const [target, setTarget] = useState(0);
     const [effortCount, setEffortCount] = useState(0);
     const [pressed, setPressed] = useState(false);
-    const [routine, setRoutine] = useState("Morn");
+    const [routine, setRoutine] = useState("");
     //Database
     const [encoderValue, setEncoderValue] = useState(0);
 
@@ -58,15 +58,31 @@ export default function App() {
     const currentScreenRef = useRef(currentScreen);
 
 
+    const getTodayString = () => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return today.toString();
+    }
+
 
     // Get all data and set state countHistory and streak
     useEffect(() => {
         Database.getAllData(habitName)
             .then(data => {
-                const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
-                const week = History.getPreviousWeekdays();
 
+                try {
+                    setTarget(data[getTodayString()].target);
+                    setRoutine(data[getTodayString()].routine);
+                } catch (error) {
+                    console.error("Error setting target and routine: ", error);
+                }
+                //console.log("target is: ", data[getTodayString()].target);
+                console.log("todayString:", getTodayString());
+                // console.log("data is: ", data);
+                // console.log("target", data[getTodayString()].target);
 
+                // console.log("todaysday = ", todaysday);
+                // console.log("week = ", week);
 
                 Database.newHabitRow(habitName, target, setTarget, routine, setRoutine);
 
@@ -77,17 +93,14 @@ export default function App() {
                         setHistoryCounts(history);
                         setLoadingCounts(false);
 
+                        const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
+                        const week = History.getPreviousWeekdays();
+
                         setCount(history[todaysday]);
-                        console.log("effort", history[todaysday]);
+                        console.log("count", history[todaysday]);
 
                         setEffortCount(data[week[todaysday]].effort);
                         console.log("effort", data[week[todaysday]].effort);
-
-                        setTarget(data[week[todaysday]].target);
-                        console.log("target", data[week[todaysday]].target);
-
-                        setRoutine(data[week[todaysday]].routine);
-                        console.log("routine", data[week[todaysday]].routine);
                     })
                     .catch(error => console.error(error));
 
