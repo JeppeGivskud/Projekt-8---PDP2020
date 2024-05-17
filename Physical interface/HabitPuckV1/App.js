@@ -63,6 +63,8 @@ export default function App() {
     const effortCountRef = useRef(effortCount);
     const currentScreenRef = useRef(currentScreen);
 
+
+
     // Get all data and set state countHistory and streak
     useEffect(() => {
         Database.getAllData()
@@ -70,8 +72,14 @@ export default function App() {
                 History.getHistory(data)
                     .then(history => {
                         console.log("history = ", history);
+                        console.log("data = ", data);
                         setHistoryCounts(history);
                         setLoadingCounts(false);
+                        const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
+                        setCount(history[todaysday]);
+                        const lastKey = Object.keys(data)[Object.keys(data).length - 1];
+                        setEffortCount(data[lastKey].effort);
+                        console.log(effortCount);
                     })
                     .catch(error => console.error(error));
 
