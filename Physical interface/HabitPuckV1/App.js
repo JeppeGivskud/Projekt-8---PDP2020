@@ -17,12 +17,13 @@ const socketEndpoint = "http://localhost:3000";
 //yarn expo export -p web
 //yarn http-server ./dist-withCirclesNew -a 192.168.1.173
 //TODO: Implement variable target (progress bars and floor and maybe more)
-//TODO: Implement effort
 //TODO: implement done
-//TODO: Get history from database
-//TODO: Send data to database
-//FIXME: Screen switch only updates whenever the count is changed. dunno why
 //TODO: Add habitcolor
+//TODO: Jeppe skal få encoder halløj til at virke
+//TODO: Jakob tilføjer ny row generering
+//TODO: Test at alting virker ordentligt
+//TODO: Server database på NUC:5000
+
 
 export default function App() {
     //Screen
@@ -31,9 +32,10 @@ export default function App() {
     //HabitData
     const [habitName, setHabitName] = useState("Pushups");
     const [count, setCount] = useState(0);
-    const [target, setTarget] = useState(100);
+    const [target, setTarget] = useState();
     const [effortCount, setEffortCount] = useState(0);
     const [pressed, setPressed] = useState(false);
+    const [routine, setRoutine] = useState("Morn");
     //Database
     const [encoderValue, setEncoderValue] = useState(0);
 
@@ -41,16 +43,8 @@ export default function App() {
     const [loadingCounts, setLoadingCounts] = useState(true);
     // const [historyCounts, setHistoryCounts] = useState(History.getHistory(History.dummyDatasimple));
     // const [streak, setStreak] = useState(History.calculateStreak(History.dummyDatasimple));
-    const [historyCounts, setHistoryCounts] = useState({
-        0: 0,
-        1: 0,
-        2: 0,
-        3: 0,
-        4: 0,
-        5: 0,
-        6: 0,
-    });
-    const [streak, setStreak] = useState({ streak: 8, omissions: 0 });
+    const [historyCounts, setHistoryCounts] = useState({});
+    const [streak, setStreak] = useState({});
 
     const [currentScreen, setCurrentScreen] = useState({
         Overview: true,
@@ -69,6 +63,13 @@ export default function App() {
     useEffect(() => {
         Database.getAllData(habitName)
             .then(data => {
+                const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
+                const week = History.getPreviousWeekdays();
+
+
+
+                Database.newHabitRow(habitName, target, setTarget, routine, setRoutine);
+
                 History.getHistory(data)
                     .then(history => {
                         console.log("history = ", history);
@@ -76,12 +77,17 @@ export default function App() {
                         setHistoryCounts(history);
                         setLoadingCounts(false);
 
-                        const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
-                        const week = History.getPreviousWeekdays();
                         setCount(history[todaysday]);
                         console.log("effort", history[todaysday]);
+
                         setEffortCount(data[week[todaysday]].effort);
                         console.log("effort", data[week[todaysday]].effort);
+
+                        setTarget(data[week[todaysday]].target);
+                        console.log("target", data[week[todaysday]].target);
+
+                        setRoutine(data[week[todaysday]].routine);
+                        console.log("routine", data[week[todaysday]].routine);
                     })
                     .catch(error => console.error(error));
 

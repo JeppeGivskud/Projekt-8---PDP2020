@@ -233,7 +233,7 @@ app.get("/getRoutine", (req, res) => {
         "SELECT routine FROM Habits WHERE habitName = ? ORDER BY id DESC LIMIT 1";
     db.query(sql, [habitName], (err, results) => {
         if (err) throw err;
-        const routine = results[0].routine;
+        const routine = results;
         res.json(routine);
         console.log(routine);
     });

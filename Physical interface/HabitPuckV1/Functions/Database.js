@@ -80,31 +80,32 @@ export const postEffort = (habitName, effortCount) => {
 };
 
 // Get target from latest habit row with same habitName. Bruges i newHabitRow til at få target med i den nye række
-export async function getTarget(habitName) {
+export async function getTarget(habitName, setTarget) {
     const response = await fetch(
         `${IP}/getTarget?habitName=${encodeURIComponent(habitName)}`
     );
     const data = await response.json();
-    setTarget(data);
+    //setTarget(data);
     console.log("target is:", data);
     return data;
 }
 
 // Get routine from latest habit row with same habitName. Bruges i newHabitRow til at få rutine med i den nye række
-export async function getRoutine(habitName) {
+export async function getRoutine(habitName, setRoutine) {
     const response = await fetch(
         `${IP}/getRoutine?habitName=${encodeURIComponent(habitName)}`
     );
     const data = await response.json();
-    setRoutine(data);
     console.log("Routine is: ", data);
+    setRoutine(data);
     return data;
 }
 
 // Create new habit row if it doesn't already exist for today. Tager target og routine fra seneste habit row med samme navn
-export async function newHabitRow(habitName) {
-    const target = await getTarget(habitName);
-    const routine = await getRoutine(habitName);
+export async function newHabitRow(habitName, target, setTarget, routine, setRoutine) {
+    setTarget(await getTarget(habitName, setTarget));
+    setRoutine(await getRoutine(habitName, setRoutine));
+
     fetch(`${IP}/newHabitRow?habitName=${encodeURIComponent(habitName)}`, {
         method: "POST",
         headers: {
