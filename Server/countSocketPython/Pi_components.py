@@ -30,6 +30,7 @@ class Button:
             with self.lock:
                 if self.changed:
                     sio.emit("pressed", "pressed")
+                    sio.emit("getCount", "getCount")
                     print("sent pressed")
                     self.changed = False
             eventlet.sleep(0.001)
@@ -125,7 +126,6 @@ class Server:
     def connect(self, sid, environ):
         print("connect ", sid, "\n")
         self.sio.emit("getCount", "getCount")
-
         # spawn the button and encoder threads. These threads will run in the background and send data to the client when the values change.
         # it is important that these are eventlet threads, as the threadding library in python does't work with the eventlet async_mode.
         eventlet.spawn(self.button.send, self.sio)
