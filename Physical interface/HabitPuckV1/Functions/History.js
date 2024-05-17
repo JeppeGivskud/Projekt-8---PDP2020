@@ -54,25 +54,25 @@ export const dummyData = {
         routine: "Morning",
     },
 };
-function getPreviousWeekdays() {
+export function getPreviousWeekdays() {
     const today = new Date();
     const daysOfWeek = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
     ];
     const weekdays = [];
 
-    for (let i = 0; i <= today.getDay(); i++) {
+    for (let i = 0; i <= today.getDay() - 1; i++) {
         const previousDay = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
+        previousDay.setHours(0, 0, 0, 0); // Set the time to 00:00:00
         if (daysOfWeek[previousDay.getDay()] !== "Sunday") {
             weekdays.push(
-                `${daysOfWeek[previousDay.getDay()]
-                } ${previousDay.toDateString()} ${previousDay.toTimeString()}`
+                `${previousDay.toDateString()} ${previousDay.toTimeString()}`
             );
         }
         if (daysOfWeek[previousDay.getDay()] === "Monday") {
@@ -80,7 +80,7 @@ function getPreviousWeekdays() {
         }
     }
 
-    return weekdays;
+    return weekdays.reverse();
 }
 export async function getHistory(habitHistory) {
     var historyCounts = {
@@ -94,19 +94,27 @@ export async function getHistory(habitHistory) {
     };
     const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
     const Keys = getPreviousWeekdays();
-    console.log("keys = ", Keys);
-    //i takes the number of the last thing
-    //i then makes a number starting from todays date
-    for (
-        i = Object.keys(habitHistory).length - 1; //example habithistory has 25 entries, i = 24
-        i >= Object.keys(habitHistory).length - todaysday - 1; //example i = 24, 24 >= 24-6-1 = 17, 24 >= 17
-        i-- //example i = 24 meaning we take the most recent entry
-    ) {
-        var daycircle = (i + todaysday) % (todaysday + 2);
-        var count = habitHistory[Object.keys(habitHistory)[i]].count;
-        historyCounts[daycircle] = count;
+    for (i = 0; i < Keys.length; i++) {
+        console.log("a datapoint:", habitHistory[Keys[i]]);
+        console.log("should be", Object.keys(habitHistory))
+        if (habitHistory[Keys[i]]) {
+            historyCounts[i] = habitHistory[Keys[i]].count;
+        } else {
+            historyCounts[i] = 0;
+        }
     }
-    console.log(historyCounts);
+    // //i takes the number of the last thing
+    // //i then makes a number starting from todays date
+    // for (
+    //     i = Object.keys(habitHistory).length - 1; //example habithistory has 25 entries, i = 24
+    //     i >= Object.keys(habitHistory).length - todaysday - 1; //example i = 24, 24 >= 24-6-1 = 17, 24 >= 17
+    //     i-- //example i = 24 meaning we take the most recent entry
+    // ) {
+    //     var daycircle = (i + todaysday) % (todaysday + 2);
+    //     var count = habitHistory[Object.keys(habitHistory)[i]].count;
+    //     historyCounts[daycircle] = count;
+    // }
+    console.log("historyCounts", historyCounts);
     return historyCounts;
 }
 

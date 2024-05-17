@@ -75,11 +75,14 @@ export default function App() {
                         console.log("data = ", data);
                         setHistoryCounts(history);
                         setLoadingCounts(false);
+
                         const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
+                        const week = History.getPreviousWeekdays();
+
                         setCount(history[todaysday]);
                         const lastKey = Object.keys(data)[Object.keys(data).length - 1];
-                        setEffortCount(data[lastKey].effort);
-                        console.log(effortCount);
+                        setEffortCount(data[week[todaysday]].effort);
+                        console.log("effort", data[week[todaysday]].effort);
                     })
                     .catch(error => console.error(error));
 
