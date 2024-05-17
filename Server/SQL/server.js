@@ -84,6 +84,8 @@ db.connect((err) => {
     console.log("MySQL Connected...");
 });
 
+
+// TODO: Add criteria for habitname
 // get all data. Return of the data
 app.get("/getData", (req, res) => {
     new Promise((resolve, reject) => {

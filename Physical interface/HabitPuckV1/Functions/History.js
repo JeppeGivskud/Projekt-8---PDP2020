@@ -54,6 +54,8 @@ export const dummyData = {
         routine: "Morning",
     },
 };
+
+
 export const getHistory = (habitHistory) => {
     var historyCounts = {
         0: 0,
@@ -79,6 +81,8 @@ export const getHistory = (habitHistory) => {
     }
     return historyCounts;
 };
+
+
 //:TODO: Habithistory has a status of pending, this is not handled in the function. Perhaps we can access the results of the request in this function
 export const calculateStreak = (habitHistory) => {
     console.log("habitHistory", habitHistory);
