@@ -67,7 +67,7 @@ export default function App() {
 
     // Get all data and set state countHistory and streak
     useEffect(() => {
-        Database.getAllData()
+        Database.getAllData(habitName)
             .then(data => {
                 History.getHistory(data)
                     .then(history => {
@@ -78,9 +78,8 @@ export default function App() {
 
                         const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
                         const week = History.getPreviousWeekdays();
-
                         setCount(history[todaysday]);
-                        const lastKey = Object.keys(data)[Object.keys(data).length - 1];
+                        console.log("effort", history[todaysday]);
                         setEffortCount(data[week[todaysday]].effort);
                         console.log("effort", data[week[todaysday]].effort);
                     })
@@ -97,7 +96,6 @@ export default function App() {
             .catch(error => console.error(error));
     }, []);
 
-    console.log("Component rendered");
 
     // Update the ref's value whenever count changes
     useEffect(() => {
@@ -144,9 +142,15 @@ export default function App() {
                 // Determine the new screen based on the previous screen
                 let newScreen;
                 if (prevScreen.Overview) {
+
+                    Database.postCount(habitName, count);
                     newScreen = { Overview: false, Effort: true, Done: false };
+
                 } else if (prevScreen.Effort) {
-                    if (count < target) {
+                    console.log("Effort count", effortCount);
+                    Database.postEffort(habitName, effortCount);
+
+                    if (countRef.current < target) {
                         console.log("Count is less than target", count, target);
                         newScreen = {
                             Overview: true,
@@ -208,6 +212,8 @@ export default function App() {
     if (loadingStreak && loadingCounts) {
         return <div>Loading...</div>; // Replace this with your loading component or spinner
     }
+
+    console.log("Component rendering");
 
     return (
         <View style={styles.container}>

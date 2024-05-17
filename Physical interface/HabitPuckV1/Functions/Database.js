@@ -22,7 +22,7 @@ export const createTable = () => {
 // };
 
 // Get all data
-export const getAllData = async () => {
+export const getAllData = async (habitName) => {
     var empty = {
         0: 0,
         1: 0,
@@ -34,7 +34,7 @@ export const getAllData = async () => {
     };
     let data;
     try {
-        const response = await fetch(`${IP}/getData`);
+        const response = await fetch(`${IP}/getData?habitName=${encodeURIComponent(habitName)}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -51,7 +51,7 @@ export const getAllData = async () => {
 };
 
 // Post count
-export const postCount = (habitName) => {
+export const postCount = (habitName, count) => {
     fetch(`${IP}/setCount?habitName=${encodeURIComponent(habitName)}`, {
         method: "POST",
         headers: {
@@ -65,13 +65,13 @@ export const postCount = (habitName) => {
 };
 
 // Post effort
-export const postEffort = (habitName) => {
+export const postEffort = (habitName, effortCount) => {
     fetch(`${IP}/setEffort?habitName=${encodeURIComponent(habitName)}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ effort: effort }),
+        body: JSON.stringify({ effortCount: effortCount }),
     })
         .then((response) => response.json())
         .then((data) => setEffort(data))

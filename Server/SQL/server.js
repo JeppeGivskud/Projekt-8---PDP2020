@@ -85,11 +85,14 @@ db.connect((err) => {
 });
 
 
-// TODO: Add criteria for habitname
 // get all data. Return of the data
 app.get("/getData", (req, res) => {
+    const queryObject = url.parse(req.url, true).query;
+    const habitName = queryObject.habitName;
+
     new Promise((resolve, reject) => {
-        db.query("SELECT * FROM Habits", (err, result) => {
+        let sql = `SELECT * FROM Habits WHERE habitName = ?`;
+        db.query(sql, [habitName], (err, result) => {
             if (err) {
                 reject(err);
             } else {
@@ -111,7 +114,7 @@ app.get("/getData", (req, res) => {
         });
 });
 
-// Get current date. output = [{CURRENT_DATE: "2024-05-08T22:00:00.000Z"}]
+// DEPRECATED: Get current date. output = [{CURRENT_DATE: "2024-05-08T22:00:00.000Z"}]
 app.get("/getDate", (req, res) => {
     let sql = `SELECT CURRENT_DATE`;
     db.query(sql, (err, results) => {
@@ -133,7 +136,7 @@ app.get("/getHabitData", (req, res) => {
     });
 });
 
-// get count for last 7 days
+// DEPRECATED: get count for last 7 days
 app.get("/getHistory", (req, res) => {
     const queryObject = url.parse(req.url, true).query;
     const habitName = queryObject.habitName;
@@ -171,14 +174,14 @@ app.post("/setHabitName", (req, res) => {
 app.post("/setEffort", (req, res) => {
     const queryObject = url.parse(req.url, true).query;
     const habitName = queryObject.habitName;
-    const effort = req.body.effort;
+    const effortCount = req.body.effortCount;
+
     let sql = `UPDATE Habits SET effort = ? WHERE habitName = ? AND currentDate = CURDATE()`;
-    db.query(sql, [effort, habitName], (err, results) => {
+    db.query(sql, [effortCount, habitName], (err, results) => {
         if (err) throw err;
-        res.send(effort[0]);
-        console.log(effort);
-        console.log(habitName);
     });
+
+    console.log("habit ", habitName, "has a effort of: ", effortCount);
 });
 
 // Get count for selected habit
@@ -204,9 +207,7 @@ app.post("/setCount", (req, res) => {
         "UPDATE Habits SET count = ? WHERE habitName = ? AND currentDate = CURDATE()";
     db.query(sql, [count, habitName], (err, results) => {
         if (err) throw err;
-        res.send(count);
-        console.log(count);
-        console.log(habitName);
+        console.log("habit ", habitName, "has a count of: ", count);
     });
 });
 

@@ -4,6 +4,7 @@ import { CircularProgressBase } from "react-native-circular-progress-indicator";
 import ReactCurvedText from "react-curved-text";
 import { useFonts } from "expo-font";
 import LOGOSVG from "../assets/EffortText.svg";
+import { postEffort } from "../Functions/Database";
 
 export default function Effort({ props }) {
     const { effortCount, habitName, setCurrentScreen, count, target } = props;
@@ -38,10 +39,6 @@ export default function Effort({ props }) {
         redBackground: "#FFF3F2",
     };
 
-    const postEffort = () => {
-        return effortCount;
-    };
-
     return (
         <View style={styles.container}>
             {/* Progress bar background */}
@@ -59,8 +56,8 @@ export default function Effort({ props }) {
                         effortCount < 33
                             ? effortBarColor.greenBackground
                             : effortCount < 66
-                            ? effortBarColor.orangeBackground
-                            : effortBarColor.redBackground
+                                ? effortBarColor.orangeBackground
+                                : effortBarColor.redBackground
                     }
                 />
             </View>
@@ -80,9 +77,9 @@ export default function Effort({ props }) {
                         effortCount < 33
                             ? effortBarColor.green
                             : effortCount < 66
-                            ? effortBarColor.orange
-                            : effortBarColor.red
-                    } //Denne skal måske flyttes til en funktion
+                                ? effortBarColor.orange
+                                : effortBarColor.red
+                    }
                 />
             </View>
             <View style={styles.imageContainer}>
