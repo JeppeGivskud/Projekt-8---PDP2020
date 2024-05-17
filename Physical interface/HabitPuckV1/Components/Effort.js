@@ -5,17 +5,7 @@ import ReactCurvedText from "react-curved-text";
 import { useFonts } from "expo-font";
 
 export default function Effort({ props }) {
-    const {
-        effortCount,
-        habitName,
-        width,
-        height,
-        historyValues,
-        currentScreen,
-        setCurrentScreen,
-        count,
-        target,
-    } = props;
+    const { effortCount, habitName, setCurrentScreen, count, target } = props;
 
     // Rotation tilbage til overview fra effort.
     useEffect(() => {

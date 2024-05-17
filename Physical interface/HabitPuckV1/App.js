@@ -1,5 +1,5 @@
-import { useState, useEffect ,useRef} from "react";
-import { StyleSheet, View ,Text,Button} from "react-native";
+import { useState, useEffect, useRef } from "react";
+import { StyleSheet, View, Text, Button } from "react-native";
 // History
 import * as History from "./Functions/History";
 import * as Database from "./Functions/Database";
@@ -35,18 +35,25 @@ export default function App() {
     const [pressed, setPressed] = useState(false);
     //Database
     const [encoderValue, setEncoderValue] = useState(0);
-    const [streak, setStreak] = useState({ streak: 0, omissions: 0 });
+    const [streak, setStreak] = useState(
+        History.calculateStreak(History.dummyDatasimple)
+    );
     const [historyCounts, sethistoryCounts] = useState(
-        History.getHistory(History.dummyDatasimple2));
+        History.getHistory(History.dummyDatasimple)
+    );
     const [currentScreen, setCurrentScreen] = useState({
-        Overview: false,
-        Effort: true,
+        Overview: true,
+        Effort: false,
         Done: false,
     });
-    useEffect(() => { //Prøvede at få useeffect til at vente. Men det vireker til at usestate bare kører. Måske skal getAllData være markeret som asynkron og det samme med history.calculatestreak?
-        History.calculateStreak(Database.getAllData()).then(data => sethistoryCounts(data))
 
-    }, [])
+    // useEffect(() => {
+    //     //Prøvede at få useeffect til at vente. Men det vireker til at usestate bare kører. Måske skal getAllData være markeret som asynkron og det samme med history.calculatestreak?
+    //     History.calculateStreak(Database.getAllData()).then((data) =>
+    //         sethistoryCounts(data)
+    //     );
+    // }, []);
+
     // Ref to hold the latest count value
     const countRef = useRef(count);
     const effortCountRef = useRef(effortCount);
@@ -62,12 +69,8 @@ export default function App() {
         effortCountRef.current = effortCount;
     }, [effortCount]);
     useEffect(() => {
-        currentScreenRef.current = currentScreen;
-    }, [currentScreen]);
-
-    // Log the current screen whenever it changes
-    useEffect(() => {
         console.log("Current screen", currentScreen);
+        currentScreenRef.current = currentScreen;
     }, [currentScreen]);
 
     // Log the current count whenever encoder changes and update the count or effortCount
@@ -164,7 +167,6 @@ export default function App() {
                         habitName: habitName,
                         width: width,
                         height: height,
-                        historyValues: historyValues,
                         currentScreen: currentScreen,
                         setCurrentScreen: setCurrentScreen,
                         count: count,
@@ -186,7 +188,27 @@ export default function App() {
                 />
             )}
 
-            <Button title="Switch" onPress={() => { switchScreen(); setReload(!reload); }} />
+            <Button
+                title="Counterclockwise"
+                onPress={() => {
+                    switchScreen();
+                    setReload(!reload);
+                }}
+            />
+            <Button
+                title="Pressed"
+                onPress={() => {
+                    switchScreen();
+                    setReload(!reload);
+                }}
+            />
+            <Button
+                title="Clockwise"
+                onPress={() => {
+                    switchScreen();
+                    setReload(!reload);
+                }}
+            />
         </View>
     );
 }
