@@ -1,6 +1,10 @@
 import { View, StyleSheet } from "react-native";
 import { CircularProgressBase } from "react-native-circular-progress-indicator";
 
+// TODO: tilføj onAnimationComplete callback til confetti library. MEGA VIGITGT!
+
+// TODO: tilføj onAnimationComplete callback til confetti library. MEGA VIGITGT!
+
 export default function ProgressBar({ count, target }) {
     // a circle has 360 degrees. We want 85*2 degrees to be the target amount. Find that fraction and find the count of the rest of the circle and then add 100 to that count such that the circle is complete
     var rotation = 75;

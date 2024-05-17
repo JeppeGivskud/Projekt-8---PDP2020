@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { useState, useEffect ,useRef} from "react";
+import { StyleSheet, View ,Text,Button} from "react-native";
 // History
 import * as History from "./Functions/History";
 import * as Database from "./Functions/Database";
@@ -39,8 +39,8 @@ export default function App() {
     const [historyCounts, sethistoryCounts] = useState(
         History.getHistory(History.dummyDatasimple2));
     const [currentScreen, setCurrentScreen] = useState({
-        Overview: true,
-        Effort: false,
+        Overview: false,
+        Effort: true,
         Done: false,
     });
     useEffect(() => { //Prøvede at få useeffect til at vente. Men det vireker til at usestate bare kører. Måske skal getAllData være markeret som asynkron og det samme med history.calculatestreak?
@@ -156,18 +156,23 @@ export default function App() {
                     }}
                 />
             )}
+
             {!!currentScreen.Effort && (
                 <EffortScreen
                     props={{
-                        count: effortCount,
+                        effortCount: effortCount,
                         habitName: habitName,
-                        target: target,
-                        streak: streak,
                         width: width,
                         height: height,
+                        historyValues: historyValues,
+                        currentScreen: currentScreen,
+                        setCurrentScreen: setCurrentScreen,
+                        count: count,
+                        target: target,
                     }}
                 />
             )}
+
             {!!currentScreen.Done && (
                 <DoneScreen
                     props={{
@@ -180,6 +185,8 @@ export default function App() {
                     }}
                 />
             )}
+
+            <Button title="Switch" onPress={() => { switchScreen(); setReload(!reload); }} />
         </View>
     );
 }
