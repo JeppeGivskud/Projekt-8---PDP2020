@@ -47,12 +47,15 @@ export default function App() {
         Done: false,
     });
 
-    // useEffect(() => {
-    //     //Prøvede at få useeffect til at vente. Men det vireker til at usestate bare kører. Måske skal getAllData være markeret som asynkron og det samme med history.calculatestreak?
-    //     History.calculateStreak(Database.getAllData()).then((data) =>
-    //         sethistoryCounts(data)
-    //     );
-    // }, []);
+    useEffect(() => {
+        //Prøvede at få useeffect til at vente. Men det vireker til at usestate bare kører. Måske skal getAllData være markeret som asynkron og det samme med history.calculatestreak?
+        let History = async () =>
+            await History.getHistory(Database.getAllData());
+        let streak = async () => History.calculateStreak(Database.getAllData());
+
+        sethistoryCounts(History);
+        setStreak(streak);
+    }, []);
 
     // Ref to hold the latest count value
     const countRef = useRef(count);
