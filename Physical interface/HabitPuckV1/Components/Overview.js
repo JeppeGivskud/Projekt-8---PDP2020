@@ -6,26 +6,25 @@ import WeekHistory from "./WeekHistory";
 //yarn expo export -p web
 
 export default function Overview({ props }) {
-    const { count, habitName, target, streak, width, height, historyCounts } =
-        props;
+  const { count, habitName, target, width, historyCounts, habitColor } = props;
 
-    return (
-        <View style={styles.container}>
-            <ProgressBar count={count} target={target} />
-            <OverviewInformation
-                count={count}
-                target={target}
-                habitName={habitName}
-                width={width}
-            />
-            <WeekHistory historyCounts={historyCounts} />
-        </View>
-    );
+  return (
+    <View style={[styles.container]}>
+      <ProgressBar count={count} target={target} habitColor={habitColor} />
+      <OverviewInformation
+        count={count}
+        target={target}
+        habitName={habitName}
+        width={width}
+      />
+      <WeekHistory historyCounts={historyCounts} habitColor={habitColor} />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
 });

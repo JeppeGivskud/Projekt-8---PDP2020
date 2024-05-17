@@ -17,8 +17,6 @@ const socketEndpoint = "http://localhost:3000";
 //yarn expo export -p web
 //yarn http-server ./dist-withCirclesNew -a 192.168.1.173
 //TODO: Implement variable target (progress bars and floor and maybe more)
-//TODO: Implement effort
-//TODO: implement done
 //TODO: Get history from database
 //TODO: Send data to database
 //FIXME: Screen switch only updates whenever the count is changed. dunno why
@@ -34,6 +32,7 @@ export default function App() {
   const [target, setTarget] = useState(100);
   const [effortCount, setEffortCount] = useState(0);
   const [pressed, setPressed] = useState(false);
+  const [habitColor, setHabitColor] = useState("#FF2C55");
   //Database
   const [encoderValue, setEncoderValue] = useState(0);
 
@@ -53,9 +52,9 @@ export default function App() {
   const [streak, setStreak] = useState({ streak: 2, omissions: 0 });
 
   const [currentScreen, setCurrentScreen] = useState({
-    Overview: false,
+    Overview: true,
     Effort: false,
-    Done: true,
+    Done: false,
   });
 
   // Ref to hold the latest count value
@@ -220,6 +219,7 @@ export default function App() {
             target: target,
             streak: streak,
             historyCounts: historyCounts,
+            habitColor: habitColor,
           }}
         />
       )}
@@ -243,6 +243,7 @@ export default function App() {
             habitName: habitName,
             target: target,
             streak: streak,
+            habitColor: habitColor,
           }}
         />
       )}

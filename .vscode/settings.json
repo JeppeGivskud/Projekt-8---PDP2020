@@ -1,12 +1,7 @@
 {
-  "git.autofetch": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "prettier.enable": true,
-  "editor.formatOnPaste": false,
-  "prettier.useEditorConfig": false,
-  "prettier.printWidth": 120,
-  "prettier.useTabs": true,
-  "prettier.tabWidth": 4,
-  "prettier.configPath": ".vscode/settings.json"
+    "git.autofetch": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false,
+    "prettier.configPath": ".prettierrc"
 }

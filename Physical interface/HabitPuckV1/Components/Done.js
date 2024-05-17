@@ -7,26 +7,25 @@ import WeekHistory from "./WeekHistory";
 //yarn expo export -p web
 
 export default function Done({ props }) {
-  const { habitName, streak, target } = props;
-  const teststreak = { streak: 2, omissions: 0 };
-  return (
-    <View style={styles.container}>
-      <OverviewInformation
-        habitName={habitName}
-        streak={teststreak}
-        textColor="#fff"
-        count={target}
-        target={target}
-      />
-    </View>
-  );
+    const { habitName, streak, target, habitColor } = props;
+    return (
+        <View style={[styles.container, { backgroundColor: habitColor }]}>
+            <OverviewInformation
+                habitName={habitName}
+                streak={streak}
+                textColor="#fff"
+                count={target}
+                target={target}
+            />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: 250,
-    height: 250,
-    backgroundColor: "#007AFF",
-    borderRadius: 250 / 2,
-  },
+    container: {
+        width: 250,
+        height: 250,
+        backgroundColor: "#007AFF",
+        borderRadius: 250 / 2,
+    },
 });

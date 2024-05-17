@@ -10,11 +10,11 @@ export default function OverviewInformation({
 }) {
   const [streaksize, setStreakSize] = useState(100);
   const [omissionPercentage, setOmissionPercentage] = useState(
-    (streak.omissions % 5) * 20
+    (streak.omissions % 5) * 20,
   );
 
   useEffect(() => {
-    if (streak.omissions == 0) {
+    if (streak.omissions == 0 && streak.streak > 0) {
       setStreakSize("100%");
     } else {
       setOmissionPercentage((streak.omissions % 5) * 20);
@@ -26,9 +26,6 @@ export default function OverviewInformation({
     }
   }, [streak]);
 
-  console.log("streak", streak);
-  console.log("streaksize", streaksize);
-  console.log("omissionpercentage", omissionPercentage);
   return (
     <View style={styles.container}>
       <View style={[styles.smallContainer, { gap: 4 }]}>
