@@ -54,8 +54,35 @@ export const dummyData = {
         routine: "Morning",
     },
 };
+function getPreviousWeekdays() {
+    const today = new Date();
+    const daysOfWeek = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+    ];
+    const weekdays = [];
 
+    for (let i = 1; i <= today.getDay(); i++) {
+        const previousDay = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
+        if (daysOfWeek[previousDay.getDay()] !== "Sunday") {
+            weekdays.push(
+                `${
+                    daysOfWeek[previousDay.getDay()]
+                } ${previousDay.toDateString()} ${previousDay.toTimeString()}`
+            );
+        }
+        if (daysOfWeek[previousDay.getDay()] === "Monday") {
+            break;
+        }
+    }
 
+    return weekdays;
+}
 export async function getHistory(habitHistory) {
     var historyCounts = {
         0: 0,
@@ -67,7 +94,8 @@ export async function getHistory(habitHistory) {
         6: 0,
     };
     const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
-
+    const Keys = getPreviousWeekdays();
+    print(Keys);
     //i takes the number of the last thing
     //i then makes a number starting from todays date
     for (
@@ -81,8 +109,7 @@ export async function getHistory(habitHistory) {
     }
     console.log(historyCounts);
     return historyCounts;
-};
-
+}
 
 //:TODO: Habithistory has a status of pending, this is not handled in the function. Perhaps we can access the results of the request in this function
 export async function calculateStreak(habitHistory) {
@@ -114,8 +141,7 @@ export async function calculateStreak(habitHistory) {
     }
 
     return { streak: streak, omissions: omissions };
-};
-
+}
 
 export const dummyDatasimple = {
     "Mon May 13 2024 00:00:00 GMT+0200 (Central European Summer Time)": {
