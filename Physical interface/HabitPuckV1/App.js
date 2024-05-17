@@ -63,15 +63,25 @@ export default function App() {
     const effortCountRef = useRef(effortCount);
     const currentScreenRef = useRef(currentScreen);
 
+    // Get all data and set state countHistory and streak
     useEffect(() => {
         Database.getAllData()
             .then(data => {
-                const history = History.getHistory(data);
-                const streak = History.calculateStreak(data);
-                setHistoryCounts(history);
-                setStreak(streak);
-                setLoadingStreak(false);
-                setLoadingCounts(false);
+                History.getHistory(data)
+                    .then(history => {
+                        console.log("history = ", history);
+                        setHistoryCounts(history);
+                        setLoadingCounts(false);
+                    })
+                    .catch(error => console.error(error));
+
+                History.calculateStreak(data)
+                    .then(streak => {
+                        console.log("streak = ", streak);
+                        setStreak(streak);
+                        setLoadingStreak(false);
+                    })
+                    .catch(error => console.error(error));
             })
             .catch(error => console.error(error));
     }, []);
@@ -160,9 +170,11 @@ export default function App() {
             return 100;
         } else return input;
     };
+
     if (loadingStreak && loadingCounts) {
         return <div>Loading...</div>; // Replace this with your loading component or spinner
     }
+
     return (
         <View style={styles.container}>
             {!!currentScreen.Overview && (
