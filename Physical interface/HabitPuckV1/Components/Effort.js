@@ -93,7 +93,7 @@ export default function Effort({ props }) {
             </View>
 
             {/* Initiation effort */}
-            <View style={styles.textContainer}>
+            {/* <View style={styles.textContainer}>
                 <ReactCurvedText
                     width={200}
                     height={200}
@@ -112,10 +112,10 @@ export default function Effort({ props }) {
                         },
                     }}
                 />
-            </View>
+            </View> */}
 
             {/* TODO: Teksten skal være tyndere og rund. Verbal label: Easy  */}
-            <View style={styles.textContainer}>
+            {/* <View style={styles.textContainer}>
                 <ReactCurvedText
                     width={200}
                     height={200}
@@ -129,10 +129,10 @@ export default function Effort({ props }) {
                     textProps={{ style: styles.verbalLabelStyle }}
                     textPathProps={{ fill: "#7c7c7c" }}
                 />
-            </View>
+            </View> */}
 
             {/* Divider dot left: ·  */}
-            <View style={styles.textContainer}>
+            {/* <View style={styles.textContainer}>
                 <ReactCurvedText
                     width={200}
                     height={200}
@@ -146,10 +146,10 @@ export default function Effort({ props }) {
                     textProps={{ style: styles.dividerDotStyle }}
                     textPathProps={{ fill: "#C1C1C1" }}
                 />
-            </View>
+            </View> */}
 
             {/* TODO: Teksten skal være tyndere og rund. Verbal label: Moderate  */}
-            <View style={styles.textContainer}>
+            {/* <View style={styles.textContainer}>
                 <ReactCurvedText
                     width={200}
                     height={200}
@@ -163,10 +163,10 @@ export default function Effort({ props }) {
                     textProps={{ style: styles.verbalLabelStyle }}
                     textPathProps={{ fill: "#7c7c7c" }}
                 />
-            </View>
+            </View> */}
 
             {/* Divider dot right: ·  */}
-            <View style={styles.textContainer}>
+            {/* <View style={styles.textContainer}>
                 <ReactCurvedText
                     width={200}
                     height={200}
@@ -180,10 +180,10 @@ export default function Effort({ props }) {
                     textProps={{ style: styles.dividerDotStyle }}
                     textPathProps={{ fill: "#C1C1C1" }}
                 />
-            </View>
+            </View> */}
 
             {/* TODO: Teksten skal være tyndere og rund. Verbal label: Hard  */}
-            <View style={styles.textContainer}>
+            {/* <View style={styles.textContainer}>
                 <ReactCurvedText
                     width={200}
                     height={200}
@@ -197,7 +197,7 @@ export default function Effort({ props }) {
                     textProps={{ style: styles.verbalLabelStyle }}
                     textPathProps={{ fill: "#7c7c7c" }}
                 />
-            </View>
+            </View> */}
 
             {/* Effort tal i midten af cirkel */}
             <View style={styles.textContainer}>

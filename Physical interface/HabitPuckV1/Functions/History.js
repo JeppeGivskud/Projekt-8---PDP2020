@@ -69,14 +69,15 @@ export const getHistory = (habitHistory) => {
     //i takes the number of the last thing
     //i then makes a number starting from todays date
     for (
-        i = Object.keys(habitHistory).length - 1;
-        i >= Object.keys(habitHistory).length - todaysday - 1;
-        i--
+        i = Object.keys(habitHistory).length - 1; //example habithistory has 25 entries, i = 24
+        i >= Object.keys(habitHistory).length - todaysday - 1; //example i = 24, 24 >= 24-6-1 = 17, 24 >= 17
+        i-- //example i = 24 meaning we take the most recent entry
     ) {
         var daycircle = (i + todaysday) % (todaysday + 2);
         var count = habitHistory[Object.keys(habitHistory)[i]].count;
         historyCounts[daycircle] = count;
     }
+    console.log(historyCounts);
     return historyCounts;
 };
 //:TODO: Habithistory has a status of pending, this is not handled in the function. Perhaps we can access the results of the request in this function

@@ -25,6 +25,7 @@ const socketEndpoint = "http://localhost:3000";
 //TODO: Add habitcolor
 
 export default function App() {
+    //Screen
     const [width, setWidth] = useState("200");
     const [height, setHeight] = useState("200");
     //HabitData
