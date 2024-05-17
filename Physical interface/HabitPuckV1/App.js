@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, Text, Button } from "react-native";
+import { StyleSheet, View, Text, Button, Pressable } from "react-native";
 // History
 import * as History from "./Functions/History";
 import * as Database from "./Functions/Database";
@@ -25,13 +25,14 @@ const socketEndpoint = "http://localhost:3000";
 //TODO: Add habitcolor
 
 export default function App() {
+    //Screen
     const [width, setWidth] = useState("200");
     const [height, setHeight] = useState("200");
     //HabitData
     const [habitName, setHabitName] = useState("Pushups");
-    const [count, setCount] = useState(50);
+    const [count, setCount] = useState(0);
     const [target, setTarget] = useState(100);
-    const [effortCount, setEffortCount] = useState(50);
+    const [effortCount, setEffortCount] = useState(0);
     const [pressed, setPressed] = useState(false);
     //Database
     const [encoderValue, setEncoderValue] = useState(0);
@@ -205,28 +206,53 @@ export default function App() {
                     }}
                 />
             )}
-
-            <Button
-                title="Counterclockwise"
-                onPress={() => {
-                    switchScreen();
-                    setReload(!reload);
+            <View
+                style={{
+                    position: "absolute",
+                    top: 280,
+                    width: 250,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    gap: 10,
                 }}
-            />
-            <Button
-                title="Pressed"
-                onPress={() => {
-                    switchScreen();
-                    setReload(!reload);
-                }}
-            />
-            <Button
-                title="Clockwise"
-                onPress={() => {
-                    switchScreen();
-                    setReload(!reload);
-                }}
-            />
+            >
+                <Pressable
+                    style={{
+                        justifyContent: "center",
+                        height: 20,
+                        backgroundColor: "cyan",
+                    }}
+                    onPress={() => {
+                        setEncoderValue(FloorValue(encoderValue - 1));
+                    }}
+                >
+                    <Text style={{ fontSize: 10 }}>Counterclockwise</Text>
+                </Pressable>
+                <Pressable
+                    style={{
+                        justifyContent: "center",
+                        height: 20,
+                        backgroundColor: "cyan",
+                    }}
+                    onPress={() => {
+                        setPressed(true);
+                    }}
+                >
+                    <Text style={{ fontSize: 10 }}>Pressed</Text>
+                </Pressable>
+                <Pressable
+                    style={{
+                        justifyContent: "center",
+                        height: 20,
+                        backgroundColor: "cyan",
+                    }}
+                    onPress={() => {
+                        setEncoderValue(FloorValue(encoderValue + 1));
+                    }}
+                >
+                    <Text style={{ fontSize: 10 }}>Clockwise</Text>
+                </Pressable>
+            </View>
         </View>
     );
 }
@@ -237,165 +263,3 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
     },
 });
-
-// import { useState, useEffect } from "react";
-// import { StyleSheet, View } from "react-native";
-// // History
-// import * as History from "./Functions/History";
-// import * as Database from "./Functions/Database";
-// //Screens
-// import OverviewScreen from "./Components/Overview";
-// import EffortScreen from "./Components/Effort";
-// import DoneScreen from "./Components/Done";
-
-// //Websocket
-// import io from "socket.io-client";
-// const socketEndpoint = "http://localhost:3000";
-
-// //Code for starting the server
-// //yarn expo export -p web
-// //yarn http-server ./dist-withCirclesNew -a 192.168.1.173
-// //TODO: Implement variable target (progress bars and floor and maybe more)
-// //TODO: Implement effort
-// //TODO: implement done
-// //TODO: Get history from database
-// //TODO: Send data to database
-// //FIXME: Screen switch only updates whenever the count is changed. dunno why
-
-// export default function App() {
-//     const [width, setWidth] = useState("200");
-//     const [height, setHeight] = useState("200");
-//     //HabitData
-//     const [habitName, setHabitName] = useState("Pushups");
-//     const [count, setCount] = useState(50);
-//     const [target, setTarget] = useState(100);
-//     const [effortCount, setEffortCount] = useState(50);
-
-//     //Database
-//     const [streak, setStreak] = useState(
-//         History.calculateStreak(History.dummyDatasimple2)
-//     );
-//     const [historyCounts, setHistoryCounts] = useState(
-//         History.getHistory(History.dummyDatasimple2)
-//     );
-
-//     //Screen navigation
-//     const [currentScreen, setCurrentScreen] = useState({
-//         Overview: true,
-//         Effort: false,
-//         Done: false,
-//     });
-//     const switchScreen = () => {
-//         console.log("Changing screen");
-//         if (currentScreen.Overview) {
-//             currentScreen.Overview = false;
-//             currentScreen.Effort = true;
-//             currentScreen.Done = false;
-//         } else if (currentScreen.Effort) {
-//             currentScreen.Overview = false;
-//             currentScreen.Effort = false;
-//             currentScreen.Done = true;
-//         } else if (currentScreen.Done) {
-//             currentScreen.Overview = true;
-//             currentScreen.Effort = false;
-//             currentScreen.Done = false;
-//         }
-//     };
-
-//     //Websocket
-//     const [hasConnection, setConnection] = useState(false);
-//     useEffect(function didMount() {
-//         socketStuff();
-//     }, []);
-
-//     const socketStuff = () => {
-//         const socket = io(socketEndpoint, {
-//             transports: ["websocket"],
-//         });
-//         socket.io.on("open", () => setConnection(true));
-//         socket.io.on("close", () => setConnection(false));
-
-//         socket.on("encoder", (data) => {
-//             updateCount(data);
-//         });
-
-//         socket.on("pressed", (data) => {
-//             switchScreen();
-//         });
-
-//         return function didUnmount() {
-//             socket.disconnect();
-//             socket.removeAllListeners();
-//         };
-//     };
-
-//     const updateCount = (newValue) => {
-//         if (currentScreen.Overview) {
-//             setCount(FloorValue(newValue));
-//         }
-//         if (currentScreen.Effort) {
-//             setEffortCount(FloorValue(newValue));
-//         }
-//         setHistoryCounts((prevhistoryCounts) => ({
-//             ...prevhistoryCounts,
-//             [(new Date().getDay() + 6) % 7]: FloorValue(newValue),
-//         }));
-//     };
-//     const FloorValue = (count) => {
-//         if (count < 0) {
-//             return 0;
-//         }
-//         if (count > 100) {
-//             return 100;
-//         } else return count;
-//     };
-
-//     return (
-//         <View style={styles.container}>
-//             {!!currentScreen.Overview && (
-//                 <OverviewScreen
-//                     props={{
-//                         count: count,
-//                         habitName: habitName,
-//                         target: target,
-//                         streak: streak,
-//                         width: width,
-//                         height: height,
-//                         historyCounts: historyCounts,
-//                     }}
-//                 />
-//             )}
-//             {!!currentScreen.Effort && (
-//                 <EffortScreen
-//                     props={{
-//                         count: effortCount,
-//                         habitName: habitName,
-//                         target: target,
-//                         streak: streak,
-//                         width: width,
-//                         height: height,
-//                     }}
-//                 />
-//             )}
-//             {!!currentScreen.Done && (
-//                 <DoneScreen
-//                     props={{
-//                         count: count,
-//                         habitName: habitName,
-//                         target: target,
-//                         streak: streak,
-//                         width: width,
-//                         height: height,
-//                     }}
-//                 />
-//             )}
-//         </View>
-//     );
-// }
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         backgroundColor: "#fff",
-//     },
-// });
