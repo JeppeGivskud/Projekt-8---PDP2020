@@ -29,9 +29,9 @@ export default function App() {
     const [height, setHeight] = useState("200");
     //HabitData
     const [habitName, setHabitName] = useState("Pushups");
-    const [count, setCount] = useState(50);
+    const [count, setCount] = useState(0);
     const [target, setTarget] = useState(100);
-    const [effortCount, setEffortCount] = useState(50);
+    const [effortCount, setEffortCount] = useState(0);
     const [pressed, setPressed] = useState(false);
     //Database
     const [encoderValue, setEncoderValue] = useState(0);
@@ -47,15 +47,15 @@ export default function App() {
         Done: false,
     });
 
-    useEffect(() => {
-        //Prøvede at få useeffect til at vente. Men det vireker til at usestate bare kører. Måske skal getAllData være markeret som asynkron og det samme med history.calculatestreak?
-        let History = async () =>
-            await History.getHistory(Database.getAllData());
-        let streak = async () => History.calculateStreak(Database.getAllData());
+    // useEffect(() => {
+    //     //Prøvede at få useeffect til at vente. Men det vireker til at usestate bare kører. Måske skal getAllData være markeret som asynkron og det samme med history.calculatestreak?
+    //     let History = async () =>
+    //         await History.getHistory(Database.getAllData());
+    //     let streak = async () => History.calculateStreak(Database.getAllData());
 
-        sethistoryCounts(History);
-        setStreak(streak);
-    }, []);
+    //     sethistoryCounts(History);
+    //     setStreak(streak);
+    // }, []);
 
     // Ref to hold the latest count value
     const countRef = useRef(count);
@@ -194,22 +194,19 @@ export default function App() {
             <Button
                 title="Counterclockwise"
                 onPress={() => {
-                    switchScreen();
-                    setReload(!reload);
+                    setEncoderValue(encoderValue - 1);
                 }}
             />
             <Button
                 title="Pressed"
                 onPress={() => {
-                    switchScreen();
-                    setReload(!reload);
+                    setPressed(true);
                 }}
             />
             <Button
                 title="Clockwise"
                 onPress={() => {
-                    switchScreen();
-                    setReload(!reload);
+                    setEncoderValue(encoderValue + 1);
                 }}
             />
         </View>
