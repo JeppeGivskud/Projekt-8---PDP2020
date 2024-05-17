@@ -67,12 +67,11 @@ function getPreviousWeekdays() {
     ];
     const weekdays = [];
 
-    for (let i = 1; i <= today.getDay(); i++) {
+    for (let i = 0; i <= today.getDay(); i++) {
         const previousDay = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
         if (daysOfWeek[previousDay.getDay()] !== "Sunday") {
             weekdays.push(
-                `${
-                    daysOfWeek[previousDay.getDay()]
+                `${daysOfWeek[previousDay.getDay()]
                 } ${previousDay.toDateString()} ${previousDay.toTimeString()}`
             );
         }
@@ -80,7 +79,6 @@ function getPreviousWeekdays() {
             break;
         }
     }
-    weekdays.push(today.getDay());
 
     return weekdays;
 }
@@ -96,7 +94,7 @@ export async function getHistory(habitHistory) {
     };
     const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
     const Keys = getPreviousWeekdays();
-    print(Keys);
+    console.log("keys = ", Keys);
     //i takes the number of the last thing
     //i then makes a number starting from todays date
     for (
