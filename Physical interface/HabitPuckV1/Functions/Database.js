@@ -38,9 +38,11 @@ export const getAllData = async () => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
+
         console.log("Data awaiting...", data);
         data = await response.json();
         console.log("Data fetched...", data);
+
         return data; // Return the fetched data
     } catch (error) {
         console.error("Error:", error);

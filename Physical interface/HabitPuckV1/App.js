@@ -36,32 +36,45 @@ export default function App() {
     const [pressed, setPressed] = useState(false);
     //Database
     const [encoderValue, setEncoderValue] = useState(0);
-    const [streak, setStreak] = useState(
-        History.calculateStreak(History.dummyDatasimple)
-    );
-    const [historyCounts, sethistoryCounts] = useState(
-        History.getHistory(History.dummyDatasimple)
-    );
+
+    const [loadingStreak, setLoadingStreak] = useState(true);
+    const [loadingCounts, setLoadingCounts] = useState(true);
+    // const [historyCounts, setHistoryCounts] = useState(History.getHistory(History.dummyDatasimple));
+    // const [streak, setStreak] = useState(History.calculateStreak(History.dummyDatasimple));
+    const [historyCounts, setHistoryCounts] = useState({
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+    });
+    const [streak, setStreak] = useState({ streak: 8, omissions: 0 });
+
     const [currentScreen, setCurrentScreen] = useState({
         Overview: true,
         Effort: false,
         Done: false,
     });
 
-    // useEffect(() => {
-    //     //Prøvede at få useeffect til at vente. Men det vireker til at usestate bare kører. Måske skal getAllData være markeret som asynkron og det samme med history.calculatestreak?
-    //     let History = async () =>
-    //         await History.getHistory(Database.getAllData());
-    //     let streak = async () => History.calculateStreak(Database.getAllData());
-
-    //     sethistoryCounts(History);
-    //     setStreak(streak);
-    // }, []);
-
     // Ref to hold the latest count value
     const countRef = useRef(count);
     const effortCountRef = useRef(effortCount);
     const currentScreenRef = useRef(currentScreen);
+
+    useEffect(() => {
+        Database.getAllData()
+            .then(data => {
+                const history = History.getHistory(data);
+                const streak = History.calculateStreak(data);
+                setHistoryCounts(history);
+                setStreak(streak);
+                setLoadingStreak(false);
+                setLoadingCounts(false);
+            })
+            .catch(error => console.error(error));
+    }, []);
 
     console.log("Component rendered");
 
@@ -85,7 +98,7 @@ export default function App() {
         } else if (currentScreen.Effort) {
             setEffortCount(FloorValue(encoderValue));
         }
-        sethistoryCounts((prevhistoryCounts) => {
+        setHistoryCounts((prevhistoryCounts) => {
             return {
                 ...prevhistoryCounts,
                 [(new Date().getDay() + 6) % 7]: FloorValue(count),
@@ -170,7 +183,9 @@ export default function App() {
             return 100;
         } else return input;
     };
-
+    if (loadingStreak && loadingCounts) {
+        return <div>Loading...</div>; // Replace this with your loading component or spinner
+    }
     return (
         <View style={styles.container}>
             {!!currentScreen.Overview && (
