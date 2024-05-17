@@ -4,7 +4,7 @@ const cors = require("cors");
 const url = require("url");
 const bodyParser = require("body-parser");
 const app = express();
-const port = 8080;
+const port = 3001;
 
 app.use(cors());
 
@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.use(bodyParser.json());
 
-const dbName = "habitdb";
+const dbName = "PuckTest";
 const tableName = "Habits";
 
 // Create connection
@@ -20,7 +20,7 @@ const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "pass",
-    database: "habitdb", // database og table name skal skrive manuelt ind /createTable functionen
+    database: "PuckTest", // database og table name skal skrive manuelt ind /createTable functionen
 });
 
 // Check if database exists and create if not
@@ -84,20 +84,29 @@ db.connect((err) => {
     console.log("MySQL Connected...");
 });
 
-// Get all data
+// get all data. Return of the data
 app.get("/getData", (req, res) => {
-    db.query("SELECT * FROM Habits", (err, result) => {
-        if (err) {
-            return res.send(err);
-        } else {
-            const data = result.reduce((acc, row) => {
-                acc[row.currentDate] = row;
-                return acc;
-            }, {});
+    new Promise((resolve, reject) => {
+        db.query("SELECT * FROM Habits", (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                const data = result.reduce((acc, row) => {
+                    acc[row.currentDate] = row;
+                    return acc;
+                }, {});
+                resolve(data);
+            }
+        });
+    })
+        .then(data => {
+            console.log("works");
             console.log(data);
-            return res.json(data);
-        }
-    });
+            res.json(data);
+        })
+        .catch(err => {
+            res.send(err);
+        });
 });
 
 // Get current date. output = [{CURRENT_DATE: "2024-05-08T22:00:00.000Z"}]

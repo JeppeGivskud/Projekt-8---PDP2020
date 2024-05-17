@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Button, StyleSheet, View, Text } from "react-native";
 import { CircularProgressBase } from "react-native-circular-progress-indicator";
-import ReactCurvedText from 'react-curved-text';
-import { useFonts } from 'expo-font';
+import ReactCurvedText from "react-curved-text";
+import { useFonts } from "expo-font";
 
 export default function Effort({ props }) {
     const {
@@ -17,7 +17,6 @@ export default function Effort({ props }) {
         target,
     } = props;
 
-
     // Rotation tilbage til overview fra effort.
     useEffect(() => {
         if (effortCount < -3) {
@@ -25,17 +24,14 @@ export default function Effort({ props }) {
         }
     }, [effortCount]);
 
-
     // Pressed skal komme fra socket?
     // if (pressed) {
     //     // Post effort to database
-
 
     //     if (count >= target) {
     //         setCurrentScreen({ Overview: false, Effort: false, Done: true });
     //     }
     // }
-
 
     //FIXME: This font shid don’t work
     // Custom fonts
@@ -56,15 +52,14 @@ export default function Effort({ props }) {
         orangeBackground: "#FFFAF2",
         red: "#FF3B2F",
         redBackground: "#FFF3F2",
-    }
+    };
 
     const postEffort = () => {
-        return effortCount
-    }
+        return effortCount;
+    };
 
     return (
-        <View style={styles.container} >
-
+        <View style={styles.container}>
             {/* Progress bar background */}
             <View style={styles.progressContainer}>
                 <CircularProgressBase
@@ -76,9 +71,15 @@ export default function Effort({ props }) {
                     activeStrokeWidth={40}
                     inActiveStrokeWidth={0}
                     maxValue={100}
-                    activeStrokeColor={effortCount < 33 ? effortBarColor.greenBackground : effortCount < 66 ? effortBarColor.orangeBackground : effortBarColor.redBackground}
+                    activeStrokeColor={
+                        effortCount < 33
+                            ? effortBarColor.greenBackground
+                            : effortCount < 66
+                            ? effortBarColor.orangeBackground
+                            : effortBarColor.redBackground
+                    }
                 />
-            </View >
+            </View>
 
             {/* Progress bar foreground */}
             <View style={styles.progressContainer}>
@@ -91,9 +92,15 @@ export default function Effort({ props }) {
                     activeStrokeWidth={40}
                     inActiveStrokeWidth={0}
                     maxValue={89}
-                    activeStrokeColor={effortCount < 33 ? effortBarColor.green : effortCount < 66 ? effortBarColor.orange : effortBarColor.red} //Denne skal måske flyttes til en funktion
+                    activeStrokeColor={
+                        effortCount < 33
+                            ? effortBarColor.green
+                            : effortCount < 66
+                            ? effortBarColor.orange
+                            : effortBarColor.red
+                    } //Denne skal måske flyttes til en funktion
                 />
-            </View >
+            </View>
 
             {/* Initiation effort */}
             <View style={styles.textContainer}>
@@ -107,7 +114,13 @@ export default function Effort({ props }) {
                     startOffset={85}
                     reversed={false}
                     text="Initiation effort"
-                    textProps={{ style: { fontSize: 18, textAlign: "center", fontFamily: "sans-serif" } }}
+                    textProps={{
+                        style: {
+                            fontSize: 18,
+                            textAlign: "center",
+                            fontFamily: "sans-serif",
+                        },
+                    }}
                 />
             </View>
 
@@ -124,7 +137,7 @@ export default function Effort({ props }) {
                     reversed={false}
                     text="Easy"
                     textProps={{ style: styles.verbalLabelStyle }}
-                    textPathProps={{ "fill": "#7c7c7c" }}
+                    textPathProps={{ fill: "#7c7c7c" }}
                 />
             </View>
 
@@ -141,7 +154,7 @@ export default function Effort({ props }) {
                     reversed={false}
                     text="·"
                     textProps={{ style: styles.dividerDotStyle }}
-                    textPathProps={{ "fill": "#C1C1C1" }}
+                    textPathProps={{ fill: "#C1C1C1" }}
                 />
             </View>
 
@@ -158,7 +171,7 @@ export default function Effort({ props }) {
                     reversed={true}
                     text="Moderate"
                     textProps={{ style: styles.verbalLabelStyle }}
-                    textPathProps={{ "fill": "#7c7c7c" }}
+                    textPathProps={{ fill: "#7c7c7c" }}
                 />
             </View>
 
@@ -175,7 +188,7 @@ export default function Effort({ props }) {
                     reversed={false}
                     text="·"
                     textProps={{ style: styles.dividerDotStyle }}
-                    textPathProps={{ "fill": "#C1C1C1" }}
+                    textPathProps={{ fill: "#C1C1C1" }}
                 />
             </View>
 
@@ -192,21 +205,21 @@ export default function Effort({ props }) {
                     reversed={false}
                     text="Hard"
                     textProps={{ style: styles.verbalLabelStyle }}
-                    textPathProps={{ "fill": "#7c7c7c" }}
+                    textPathProps={{ fill: "#7c7c7c" }}
                 />
             </View>
 
             {/* Effort tal i midten af cirkel */}
             <View style={styles.textContainer}>
-                <Text style={styles.effortCountStyle}>{effortCount > 0 ? effortCount : 0}</Text>
+                <Text style={styles.effortCountStyle}>
+                    {effortCount > 0 ? effortCount : 0}
+                </Text>
             </View>
-
-        </View >
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-
     progressContainer: {
         width: 250,
         height: 250,

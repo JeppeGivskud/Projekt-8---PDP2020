@@ -3,8 +3,8 @@ import { View, StyleSheet, Text, Image } from "react-native";
 
 export default function OverviewInformation({
     streak,
-    value,
-    goal,
+    count,
+    target,
     habitName,
     width,
     height,
@@ -21,9 +21,9 @@ export default function OverviewInformation({
     return (
         <View style={styles.container}>
             <View style={[styles.smallContainer, { gap: 4 }]}>
-                <Text style={[styles.upper]}>{value}</Text>
+                <Text style={[styles.upper]}>{count}</Text>
                 <Text style={[styles.upper]}>/</Text>
-                <Text style={[styles.upper]}>{goal}</Text>
+                <Text style={[styles.upper]}>{target}</Text>
             </View>
             <View style={styles.smallContainer}>
                 <Text style={styles.habitName}>{habitName}</Text>

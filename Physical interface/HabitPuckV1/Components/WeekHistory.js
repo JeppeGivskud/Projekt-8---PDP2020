@@ -3,8 +3,8 @@ import { CircularProgressBase } from "react-native-circular-progress-indicator";
 import DayCircle from "./DayCircle";
 
 //TODO: daycicles;
-export default function WeekHistory({ values }) {
-    //This screen renders a bar in the bottom and then the DayCircles. An array of values should be parsed
+export default function WeekHistory({ historyCounts }) {
+    //This screen renders a bar in the bottom and then the DayCircles. An array of historyCounts should be parsed
     const circlestart = 101;
     const rotate = "-101deg";
     const circleSpace = (360 - circlestart * 2) / 6;
@@ -28,7 +28,7 @@ export default function WeekHistory({ values }) {
                     maxValue={360}
                 />
             </View>
-            <DayCircle values={values}></DayCircle>
+            <DayCircle historyCounts={historyCounts}></DayCircle>
         </View>
     );
 }
