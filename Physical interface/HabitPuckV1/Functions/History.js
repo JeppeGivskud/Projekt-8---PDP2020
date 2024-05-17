@@ -80,6 +80,7 @@ function getPreviousWeekdays() {
             break;
         }
     }
+    weekdays.push(today.getDay());
 
     return weekdays;
 }
