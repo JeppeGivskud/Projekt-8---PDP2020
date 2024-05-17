@@ -5,7 +5,8 @@
   "prettier.enable": true,
   "editor.formatOnPaste": false,
   "prettier.useEditorConfig": false,
-  "prettier.useTabs": false,
-  "prettier.configPath": ".vscode/settings.json",
-  "prettier.printWidth": 120
+  "prettier.printWidth": 120,
+  "prettier.useTabs": true,
+  "prettier.tabWidth": 4,
+  "prettier.configPath": ".vscode/settings.json"
 }
