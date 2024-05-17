@@ -114,6 +114,16 @@ export default function App() {
                 [(new Date().getDay() + 6) % 7]: FloorValue(count),
             };
         });
+
+        if (currentScreen.Effort) {
+            if (encoderValue < -3) {
+                setCurrentScreen({
+                    Overview: true,
+                    Effort: false,
+                    Done: false,
+                });
+            }
+        }
     }, [encoderValue]);
 
     // Update the screen whenever the button is pressed
@@ -125,7 +135,20 @@ export default function App() {
                 if (prevScreen.Overview) {
                     newScreen = { Overview: false, Effort: true, Done: false };
                 } else if (prevScreen.Effort) {
-                    newScreen = { Overview: false, Effort: false, Done: true };
+                    if (count < target) {
+                        console.log("Count is less than target", count, target);
+                        newScreen = {
+                            Overview: true,
+                            Effort: false,
+                            Done: false,
+                        };
+                    } else {
+                        newScreen = {
+                            Overview: false,
+                            Effort: false,
+                            Done: true,
+                        };
+                    }
                 } else if (prevScreen.Done) {
                     newScreen = { Overview: true, Effort: false, Done: false };
                 }
@@ -235,7 +258,7 @@ export default function App() {
                         backgroundColor: "cyan",
                     }}
                     onPress={() => {
-                        setEncoderValue(FloorValue(encoderValue - 1));
+                        setEncoderValue(encoderValue - 1);
                     }}
                 >
                     <Text style={{ fontSize: 10 }}>Counterclockwise</Text>
@@ -259,7 +282,7 @@ export default function App() {
                         backgroundColor: "cyan",
                     }}
                     onPress={() => {
-                        setEncoderValue(FloorValue(encoderValue + 1));
+                        setEncoderValue(encoderValue + 1);
                     }}
                 >
                     <Text style={{ fontSize: 10 }}>Clockwise</Text>

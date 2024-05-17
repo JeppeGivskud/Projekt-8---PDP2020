@@ -1,18 +1,12 @@
 import { useState, useEffect } from "react";
-import { Button, StyleSheet, View, Text } from "react-native";
+import { Button, StyleSheet, View, Text, Image } from "react-native";
 import { CircularProgressBase } from "react-native-circular-progress-indicator";
 import ReactCurvedText from "react-curved-text";
 import { useFonts } from "expo-font";
+import LOGOSVG from "../assets/EffortText.svg";
 
 export default function Effort({ props }) {
     const { effortCount, habitName, setCurrentScreen, count, target } = props;
-
-    // Rotation tilbage til overview fra effort.
-    useEffect(() => {
-        if (effortCount < -3) {
-            setCurrentScreen({ Overview: true, Effort: false, Done: false });
-        }
-    }, [effortCount]);
 
     // Pressed skal komme fra socket?
     // if (pressed) {
@@ -91,7 +85,16 @@ export default function Effort({ props }) {
                     } //Denne skal måske flyttes til en funktion
                 />
             </View>
-
+            <View style={styles.imageContainer}>
+                <Image
+                    source={require("../assets/EffortText.png")}
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        resizeMode: "contain",
+                    }}
+                />
+            </View>
             {/* Initiation effort */}
             {/* <View style={styles.textContainer}>
                 <ReactCurvedText
@@ -246,5 +249,14 @@ const styles = StyleSheet.create({
     dividerDotStyle: {
         fontFamily: "sans-serif",
         fontSize: 20,
+    },
+    imageContainer: {
+        width: 250,
+        height: 250,
+        padding: 20,
+        position: "absolute",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
     },
 });
