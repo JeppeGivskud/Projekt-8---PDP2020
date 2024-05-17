@@ -26,8 +26,8 @@ const socketEndpoint = "http://localhost:3000";
 
 export default function App() {
     //Screen
-    const [width, setWidth] = useState("200");
-    const [height, setHeight] = useState("200");
+    const [width, setWidth] = useState(250);
+    const [height, setHeight] = useState(250);
     //HabitData
     const [habitName, setHabitName] = useState("Pushups");
     const [count, setCount] = useState(0);
@@ -37,8 +37,8 @@ export default function App() {
     //Database
     const [encoderValue, setEncoderValue] = useState(0);
 
-    const [loadingStreak, setLoadingStreak] = useState(true);
-    const [loadingCounts, setLoadingCounts] = useState(true);
+    const [loadingStreak, setLoadingStreak] = useState(false);
+    const [loadingCounts, setLoadingCounts] = useState(false);
     // const [historyCounts, setHistoryCounts] = useState(History.getHistory(History.dummyDatasimple));
     // const [streak, setStreak] = useState(History.calculateStreak(History.dummyDatasimple));
     const [historyCounts, setHistoryCounts] = useState({
@@ -53,9 +53,9 @@ export default function App() {
     const [streak, setStreak] = useState({ streak: 8, omissions: 0 });
 
     const [currentScreen, setCurrentScreen] = useState({
-        Overview: true,
+        Overview: false,
         Effort: false,
-        Done: false,
+        Done: true,
     });
 
     // Ref to hold the latest count value
@@ -63,14 +63,12 @@ export default function App() {
     const effortCountRef = useRef(effortCount);
     const currentScreenRef = useRef(currentScreen);
 
-
-
     // Get all data and set state countHistory and streak
     useEffect(() => {
         Database.getAllData(habitName)
-            .then(data => {
+            .then((data) => {
                 History.getHistory(data)
-                    .then(history => {
+                    .then((history) => {
                         console.log("history = ", history);
                         console.log("data = ", data);
                         setHistoryCounts(history);
@@ -83,19 +81,18 @@ export default function App() {
                         setEffortCount(data[week[todaysday]].effort);
                         console.log("effort", data[week[todaysday]].effort);
                     })
-                    .catch(error => console.error(error));
+                    .catch((error) => console.error(error));
 
                 History.calculateStreak(data)
-                    .then(streak => {
+                    .then((streak) => {
                         console.log("streak = ", streak);
                         setStreak(streak);
                         setLoadingStreak(false);
                     })
-                    .catch(error => console.error(error));
+                    .catch((error) => console.error(error));
             })
-            .catch(error => console.error(error));
+            .catch((error) => console.error(error));
     }, []);
-
 
     // Update the ref's value whenever count changes
     useEffect(() => {
@@ -142,10 +139,8 @@ export default function App() {
                 // Determine the new screen based on the previous screen
                 let newScreen;
                 if (prevScreen.Overview) {
-
                     Database.postCount(habitName, count);
                     newScreen = { Overview: false, Effort: true, Done: false };
-
                 } else if (prevScreen.Effort) {
                     console.log("Effort count", effortCount);
                     Database.postEffort(habitName, effortCount);
@@ -224,8 +219,6 @@ export default function App() {
                         habitName: habitName,
                         target: target,
                         streak: streak,
-                        width: width,
-                        height: height,
                         historyCounts: historyCounts,
                     }}
                 />
@@ -236,8 +229,6 @@ export default function App() {
                     props={{
                         effortCount: effortCount,
                         habitName: habitName,
-                        width: width,
-                        height: height,
                         currentScreen: currentScreen,
                         setCurrentScreen: setCurrentScreen,
                         count: count,
@@ -253,8 +244,6 @@ export default function App() {
                         habitName: habitName,
                         target: target,
                         streak: streak,
-                        width: width,
-                        height: height,
                     }}
                 />
             )}

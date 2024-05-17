@@ -11,19 +11,12 @@ export default function Overview({ props }) {
 
     return (
         <View style={styles.container}>
-            <ProgressBar
-                count={count}
-                target={target}
-                width={width}
-                height={height}
-            />
+            <ProgressBar count={count} target={target} />
             <OverviewInformation
                 count={count}
                 target={target}
                 habitName={habitName}
                 width={width}
-                height={height}
-                streak={streak}
             />
             <WeekHistory historyCounts={historyCounts} />
         </View>

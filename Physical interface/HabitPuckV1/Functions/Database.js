@@ -34,9 +34,11 @@ export const getAllData = async (habitName) => {
     };
     let data;
     try {
-        const response = await fetch(`${IP}/getData?habitName=${encodeURIComponent(habitName)}`);
+        const response = await fetch(
+            `${IP}/getData?habitName=${encodeURIComponent(habitName)}`
+        );
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error("Network response was not ok");
         }
 
         console.log("Data awaiting...", data);
@@ -46,6 +48,7 @@ export const getAllData = async (habitName) => {
         return data; // Return the fetched data
     } catch (error) {
         console.error("Error:", error);
+        return empty; // Return an empty object if an error occurred
         throw error; // Re-throw the error so the caller can handle it
     }
 };
