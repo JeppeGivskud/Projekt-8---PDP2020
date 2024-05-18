@@ -14,8 +14,7 @@ import io from "socket.io-client";
 const socketEndpoint = "http://localhost:3000";
 
 //Code for starting the server
-//yarn expo export -p web
-//yarn http-server ./dist-withCirclesNew -a 192.168.1.173
+//git pull; yarn expo export -p web ;yarn http-server ./dist -a 192.168.1.173 --port 8080
 //TODO: Implement variable target (progress bars and floor and maybe more)
 //TODO: Get history from database
 //TODO: Send data to database
