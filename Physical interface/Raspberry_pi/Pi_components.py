@@ -51,7 +51,7 @@ class Encoder:
         self.lock = threading.Lock()
         GPIO.setup(self.pin_A, GPIO.IN)
         GPIO.setup(self.pin_B, GPIO.IN)
-        GPIO.add_event_detect(self.pin_A, GPIO.RISING, callback=self.callback, bouncetime=10)
+        GPIO.add_event_detect(self.pin_A, GPIO.RISING, callback=self.callback, bouncetime=1)
 
     def callback(self, channel):
         # First read
