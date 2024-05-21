@@ -14,31 +14,28 @@ import io from "socket.io-client";
 const socketEndpoint = "http://localhost:3000";
 
 //Code for starting the server
-//yarn expo export -p web
-//yarn http-server ./dist-withCirclesNew -a 192.168.1.173
+//git pull; yarn expo export -p web ;yarn http-server ./dist -a 192.168.1.173 --port 8080
 //TODO: Implement variable target (progress bars and floor and maybe more)
-//TODO: Implement effort
-//TODO: implement done
 //TODO: Get history from database
 //TODO: Send data to database
 //FIXME: Screen switch only updates whenever the count is changed. dunno why
-//TODO: Add habitcolor
 
 export default function App() {
     //Screen
-    const [width, setWidth] = useState("200");
-    const [height, setHeight] = useState("200");
+    const [width, setWidth] = useState(250);
+    const [height, setHeight] = useState(250);
     //HabitData
     const [habitName, setHabitName] = useState("Pushups");
     const [count, setCount] = useState(0);
     const [target, setTarget] = useState(100);
     const [effortCount, setEffortCount] = useState(0);
     const [pressed, setPressed] = useState(false);
+    const [habitColor, setHabitColor] = useState("#FF2C55");
     //Database
     const [encoderValue, setEncoderValue] = useState(0);
 
-    const [loadingStreak, setLoadingStreak] = useState(true);
-    const [loadingCounts, setLoadingCounts] = useState(true);
+    const [loadingStreak, setLoadingStreak] = useState(false);
+    const [loadingCounts, setLoadingCounts] = useState(false);
     // const [historyCounts, setHistoryCounts] = useState(History.getHistory(History.dummyDatasimple));
     // const [streak, setStreak] = useState(History.calculateStreak(History.dummyDatasimple));
     const [historyCounts, setHistoryCounts] = useState({
@@ -50,7 +47,7 @@ export default function App() {
         5: 0,
         6: 0,
     });
-    const [streak, setStreak] = useState({ streak: 8, omissions: 0 });
+    const [streak, setStreak] = useState({ streak: 2, omissions: 0 });
 
     const [currentScreen, setCurrentScreen] = useState({
         Overview: true,
@@ -63,14 +60,12 @@ export default function App() {
     const effortCountRef = useRef(effortCount);
     const currentScreenRef = useRef(currentScreen);
 
-
-
     // Get all data and set state countHistory and streak
     useEffect(() => {
         Database.getAllData(habitName)
-            .then(data => {
+            .then((data) => {
                 History.getHistory(data)
-                    .then(history => {
+                    .then((history) => {
                         console.log("history = ", history);
                         console.log("data = ", data);
                         setHistoryCounts(history);
@@ -83,19 +78,18 @@ export default function App() {
                         setEffortCount(data[week[todaysday]].effort);
                         console.log("effort", data[week[todaysday]].effort);
                     })
-                    .catch(error => console.error(error));
+                    .catch((error) => console.error(error));
 
                 History.calculateStreak(data)
-                    .then(streak => {
+                    .then((streak) => {
                         console.log("streak = ", streak);
                         setStreak(streak);
                         setLoadingStreak(false);
                     })
-                    .catch(error => console.error(error));
+                    .catch((error) => console.error(error));
             })
-            .catch(error => console.error(error));
+            .catch((error) => console.error(error));
     }, []);
-
 
     // Update the ref's value whenever count changes
     useEffect(() => {
@@ -142,10 +136,8 @@ export default function App() {
                 // Determine the new screen based on the previous screen
                 let newScreen;
                 if (prevScreen.Overview) {
-
                     Database.postCount(habitName, count);
                     newScreen = { Overview: false, Effort: true, Done: false };
-
                 } else if (prevScreen.Effort) {
                     console.log("Effort count", effortCount);
                     Database.postEffort(habitName, effortCount);
@@ -224,9 +216,8 @@ export default function App() {
                         habitName: habitName,
                         target: target,
                         streak: streak,
-                        width: width,
-                        height: height,
                         historyCounts: historyCounts,
+                        habitColor: habitColor,
                     }}
                 />
             )}
@@ -236,8 +227,6 @@ export default function App() {
                     props={{
                         effortCount: effortCount,
                         habitName: habitName,
-                        width: width,
-                        height: height,
                         currentScreen: currentScreen,
                         setCurrentScreen: setCurrentScreen,
                         count: count,
@@ -249,12 +238,10 @@ export default function App() {
             {!!currentScreen.Done && (
                 <DoneScreen
                     props={{
-                        count: count,
                         habitName: habitName,
                         target: target,
                         streak: streak,
-                        width: width,
-                        height: height,
+                        habitColor: habitColor,
                     }}
                 />
             )}
