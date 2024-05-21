@@ -204,7 +204,7 @@ app.post("/setCount", (req, res) => {
     const habitName = queryObject.habitName;
     const count = req.body.count;
     let sql =
-        "UPDATE Habits SET count = ? WHERE habitName = ? AND currentDate = CURDATE()";
+        "UPDATE Habits SET count = count + ? WHERE habitName = ? AND currentDate = CURDATE()";
     db.query(sql, [count, habitName], (err, results) => {
         if (err) throw err;
         console.log("habit ", habitName, "has a count of: ", count);
