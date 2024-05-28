@@ -1,13 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import RenderData from "./components/RenderData";
 import * as DataHandler from "./components/DataHandler";
 import { ActivityIndicator } from "react-native";
 
 export default function App() {
     const [habitData, setHabitData] = useState({
-        name: "Defaultname",
+        name: "Undefined",
         count: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 },
         target: 100,
         streak: { count: 0, omissions: 0 },
@@ -18,19 +18,41 @@ export default function App() {
     const [habitDataTemp, setHabitDataTemp] = useState(habitData);
 
     useEffect(() => {
-        console.log("Fetching data...");
         DataHandler.getAllData(name, setHabitData);
     }, []);
 
     console.log("habitData: ", habitData);
 
-    if ((habitData.name = "Defaultname")) {
+    if ((habitData.name = "Undefined")) {
+        const [textValue, setTextValue] = useState(habitData.name);
+        const [loading, setLoading] = useState(false);
+        if (loading) {
+            return (
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <ActivityIndicator size={100} color="tomato" />
+                </View>
+            );
+        }
         return (
-            <View style={{ justifyContent: "center", flex: 1 }}>
-                <ActivityIndicator size={100} color="tomato" />
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <TextInput
+                    style={{ borderWidth: 1 }}
+                    clearTextOnFocus={true}
+                    defaultValue={textValue}
+                    onChangeText={(newData) => setTextValue(newData)}
+                ></TextInput>
+                <Pressable
+                    onPress={() => {
+                        DataHandler.getAllData(textValue, setHabitData);
+                        setLoading(true);
+                    }}
+                >
+                    <Text>Load {textValue}</Text>
+                </Pressable>
             </View>
         );
     }
+
 
     return (
         <View style={styles.container}>
@@ -64,13 +86,6 @@ export default function App() {
                     DataHandler.postCount(name, habitData.count);
                 }}
             ></Button>
-
-            {/* <Button>
-                title={"Post count"}
-                onPress={() => {
-                    DataHandler.postCount(name, habitData.count);
-                }}
-            </Button> */}
         </View>
     );
 }
