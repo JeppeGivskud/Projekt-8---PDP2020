@@ -15,14 +15,15 @@ export default function App() {
         effort: 0,
     });
     const name = "Pushups";
-    const todayCount = habitData.count[new Date().getDay()];
     const [habitDataTemp, setHabitDataTemp] = useState(habitData);
 
     useEffect(() => {
+        console.log("Fetching data...");
         DataHandler.getAllData(name, setHabitData);
     }, []);
 
     console.log("habitData: ", habitData);
+
     if ((habitData.name = "Defaultname")) {
         return (
             <View style={{ justifyContent: "center", flex: 1 }}>
@@ -30,6 +31,7 @@ export default function App() {
             </View>
         );
     }
+
     return (
         <View style={styles.container}>
             <View style={{ alignItems: "center" }}>
@@ -59,10 +61,16 @@ export default function App() {
                 title={"Save changes"}
                 onPress={() => {
                     setHabitData(habitDataTemp);
+                    DataHandler.postCount(name, habitData.count);
                 }}
             ></Button>
 
-
+            {/* <Button>
+                title={"Post count"}
+                onPress={() => {
+                    DataHandler.postCount(name, habitData.count);
+                }}
+            </Button> */}
         </View>
     );
 }

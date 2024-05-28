@@ -1,10 +1,12 @@
 
+import { Text } from "react-native";
 
 // TODO: Send korrekt data objekt til RenderDataScreen
 
 export const getAllData = async (name, setHabitData) => {
     const IP = `http://localhost:3000`;
     habitName = name;
+    var loading = true
 
     // henter al data fra database
     const fetchData = async (habitName) => {
@@ -125,7 +127,9 @@ export const getAllData = async (name, setHabitData) => {
     setHabitData(habitObject);
 };
 
-export const setCount = async (name, todayCount) => {
+export const postCount = async (name, habitData) => {
+    const count = habitData.count[new Date().getDay()];
+    console.log("Count: ", count);
     fetch(`${IP}/setCount?habitName=${encodeURIComponent(habitName)}`, {
         method: "POST",
         headers: {
