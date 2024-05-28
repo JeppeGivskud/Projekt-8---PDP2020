@@ -1,9 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import RenderData from "./components/RenderData";
-import { useState } from "react";
 import * as DataHandler from './components/DataHandler';
 
 export default function App() {
