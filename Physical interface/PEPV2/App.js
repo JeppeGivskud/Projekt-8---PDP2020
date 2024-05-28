@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { useEffect } from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
 import RenderData from "./components/RenderData";
 import { useState } from "react";
 import * as DataHandler from './components/DataHandler';
@@ -15,6 +16,7 @@ export default function App() {
         effort: 0,
     });
     const name = "Pushups";
+    const [habitDataTemp, setHabitDataTemp] = useState(habitData);
 
     useEffect(() => {
         DataHandler.getAllData(name, setHabitData);
@@ -44,8 +46,14 @@ export default function App() {
             </View>
             <View style={{ alignItems: "center" }}>
                 <Text style={{ paddingTop: 10 }}>Edit habit data</Text>
-                <RenderData {...{ habitData, setHabitData }}></RenderData>
+                <RenderData habitData={habitDataTemp} setHabitData={setHabitDataTemp}></RenderData>
             </View>
+            <Button
+                title={"Save changes"}
+                onPress={() => {
+                    setHabitData(habitDataTemp);
+                }}
+            ></Button>
         </View>
     );
 }
