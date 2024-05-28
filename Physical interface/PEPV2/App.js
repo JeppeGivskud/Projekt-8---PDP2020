@@ -1,10 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import RenderData from "./components/RenderData";
+import { useState } from "react";
 
 export default function App() {
     const [habitData, setHabitData] = useState({
-        habitName: "",
-        count: { 0: 1, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 },
+        habitName: "Defaultname",
+        count: [0, 0, 0, 0, 0, 0, 0],
         target: 100,
         streak: { count: 0, omissions: 0 },
         routine: "DefaultRutine",
@@ -12,8 +14,8 @@ export default function App() {
     });
     return (
         <View style={styles.container}>
-            <Text>Open up App.js to start working on your app!</Text>
-            <StatusBar style="auto" />
+            <Text>{habitData.habitName}</Text>
+            <RenderData {...{ habitData }}></RenderData>
         </View>
     );
 }

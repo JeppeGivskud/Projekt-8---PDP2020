@@ -1,32 +1,42 @@
 import React, { useState } from "react";
+import { View, Text, Button } from "react-native";
 
 export default function RenderData({ habitData }) {
-    const [habitData, setHabitData] = useState({
-        count: 0,
-        effort: 0,
-    });
+    const [data, setData] = useState(habitData);
+    const today = new Date().getDay();
 
     const incrementCount = () => {
-        setHabitData((prevData) => ({
+        setData((prevData) => ({
             ...prevData,
-            count: prevData.count + 1,
+            count: {
+                ...prevData.count,
+                [today]: prevData.count[today] + 1,
+            },
         }));
+    };
+    const changeHabitData = (newData) => {
+        habitData.habitName = newData;
     };
 
     const incrementEffort = () => {
-        setHabitData((prevData) => ({
+        setData((prevData) => ({
             ...prevData,
             effort: prevData.effort + 1,
         }));
     };
-
     return (
-        <div>
-            <h1>Habit Data</h1>
-            <p>Count: {habitData.count}</p>
-            <p>Effort: {habitData.effort}</p>
-            <button onClick={incrementCount}>Increment Count</button>
-            <button onClick={incrementEffort}>Increment Effort</button>
-        </div>
+        <View>
+            <Text>Habit Data for :{habitData.habitName}</Text>
+            <Text>Count: {data.count[today]}</Text>
+            <Text>Effort: {data.effort}</Text>
+            <Button title="Increment Count" onPress={incrementCount} />
+            <Button
+                title="Increment Effort"
+                onPress={() => {
+                    incrementEffort;
+                    changeHabitData("ost");
+                }}
+            />
+        </View>
     );
 }
