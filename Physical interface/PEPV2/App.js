@@ -12,10 +12,11 @@ export default function App() {
         routine: "DefaultRutine",
         effort: 0,
     });
+    
     return (
         <View style={styles.container}>
             <Text>{habitData.habitName}</Text>
-            <RenderData {...{ habitData }}></RenderData>
+            <RenderData {...{ habitData, setHabitData }}></RenderData>
         </View>
     );
 }
