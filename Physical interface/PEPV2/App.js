@@ -1,17 +1,18 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import RenderData from "./components/RenderData";
 import { useState } from "react";
 
 export default function App() {
     const [habitData, setHabitData] = useState({
-        habitName: "Defaultname",
+        name: "Defaultname",
         count: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 },
         target: 100,
         streak: { count: 0, omissions: 0 },
         routine: "DefaultRutine",
         effort: 0,
     });
+    const [habitDataTemp, setHabitDataTemp] = useState(habitData);
 
     return (
         <View style={styles.container}>
@@ -19,7 +20,7 @@ export default function App() {
                 <Text>Raw habit data</Text>
 
                 <View style={{ borderColor: "tomato", borderWidth: 2, padding: 10 }}>
-                    <Text>habit name: {habitData.habitName}</Text>
+                    <Text>habit name: {habitData.name}</Text>
                     <Text>History:</Text>
                     {Object.entries(habitData.count).map(([key, value]) => (
                         <View key={key} style={{ paddingLeft: 20, flexDirection: "row" }}>
@@ -36,8 +37,14 @@ export default function App() {
             </View>
             <View style={{ alignItems: "center" }}>
                 <Text style={{ paddingTop: 10 }}>Edit habit data</Text>
-                <RenderData {...{ habitData, setHabitData }}></RenderData>
+                <RenderData habitData={habitDataTemp} setHabitData={setHabitDataTemp}></RenderData>
             </View>
+            <Button
+                title={"Save changes"}
+                onPress={() => {
+                    setHabitData(habitDataTemp);
+                }}
+            ></Button>
         </View>
     );
 }

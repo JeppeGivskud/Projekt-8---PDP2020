@@ -8,7 +8,7 @@ export default function RenderData({ habitData, setHabitData }) {
     const changeName = (newData) => {
         setHabitData((prevData) => ({
             ...prevData,
-            habitName: newData,
+            name: newData,
         }));
     };
     const changeCount = (day, newData) => {
@@ -44,7 +44,7 @@ export default function RenderData({ habitData, setHabitData }) {
 
     return (
         <View style={{ borderColor: "tomato", borderWidth: 2 }}>
-            <EditableData Name={"HabitName: "} Data={habitData.habitName} setData={changeName}></EditableData>
+            <EditableData Name={"HabitName: "} Data={habitData.name} setData={changeName}></EditableData>
             {Object.entries(habitData.count).map(([key, value]) => (
                 <View key={key} style={{ paddingLeft: 20, flexDirection: "row" }}>
                     <EditableData
