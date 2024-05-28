@@ -1,35 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, ActivityIndicator } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
 // TODO: brug korrekt database kode. Den fra habit puck skak fiddles herind
 // TODO: Send korrekt data objekt til RenderDataScreen
 
 
-export default function DataHandler() {
-    const [data, setData] = useState({});
-    const [habitData, setHabitData] = useState({});
-    const [loading, setLoading] = useState(true);
-    const navigation = useNavigation();
+
+
+
+
+export const getAllData = async (name, setHabitData) => {
     const IP = `http://localhost:3000`;
+    habitName = name;
 
-    useEffect(() => {
-        fetchData(); // Fetch data from database
-        createHabitObject(data)
-    }, []);
-
-    const fetchData = async () => {
+    // henter al data fra database
+    const fetchData = async (habitName) => {
         try {
             const response = await fetch(`${IP}/getData?habitName=${encodeURIComponent(habitName)}`);
-            setData(await response.json());
-            console.log("data state: ", data);
-            console.log("response.json():", response.json());
+            console.log("Data awaiting...");
+            data = await response.json();
+            console.log("Data fetched...", data);
+            return data;
         } catch (error) {
             console.error("Error:", error);
-        } finally {
-            setLoading(false);
         }
     };
+
+    var data = await fetchData(habitName);
 
     // Kommer fra habit puck V1
     const getPreviousWeekdays = () => {
@@ -73,7 +69,6 @@ export default function DataHandler() {
             }
         }
         console.log("historyCounts", historyCounts);
-        setHistoryCounts(await historyCounts);
         return historyCounts;
     };
 
@@ -101,11 +96,10 @@ export default function DataHandler() {
         if (data[Object.keys(data)[Object.keys(data).length - 1]].count > criteria) {
             streak++;
         }
-        setStreakObject({ count: streak, omissions: omissions });
         return { count: streak, omissions: omissions };
     };
 
-    // Object with habitName, target, effort, routine from the latest row in the imported data
+    // Object with habitName, target, effort, routine from todays row in the imported data
     const createHabitObject = async (data) => {
         var habitObject = {
             name: null,
@@ -117,30 +111,24 @@ export default function DataHandler() {
         };
 
         const today = new Date();
+        today.setHours(0, 0, 0, 0);
         const todayString = today.toString();
         console.log(todayString);
 
+        const [count, streak] = await Promise.all([getHistory(data), calculateStreak(data)]);
+
         habitObject.name = data[todayString].habitName;
-        habitObject.count = await getHistory(data);
+        habitObject.count = count;
         habitObject.target = data[todayString].target;
         habitObject.effort = data[todayString].effort;
         habitObject.routine = data[todayString].routine;
-        habitObject.streak = await calculateStreak(data);
+        habitObject.streak = streak;
 
         console.log("habitObject:", habitObject);
-        setHabitData(habitObject);
-        console.log("habitData:", habitData);
+        return habitObject;
     };
 
-    const navigateToRenderData = () => {
-        navigation.navigate("RenderDataScreen", { data });
-    };
 
-    // Skift til RenderDataScreen hvis data er loaded
-    if (loading) {
-        return <ActivityIndicator size="large" />;
-    } else {
-        navigateToRenderData();
-    }
+    var habitObject = await createHabitObject(data);
+    setHabitData(habitObject);
 };
-

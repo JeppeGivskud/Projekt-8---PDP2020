@@ -1,7 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import { useEffect } from "react";
 import RenderData from "./components/RenderData";
 import { useState } from "react";
+import * as DataHandler from './components/DataHandler';
 
 export default function App() {
     const [habitData, setHabitData] = useState({
@@ -12,6 +14,12 @@ export default function App() {
         routine: "DefaultRutine",
         effort: 0,
     });
+    const name = "Pushups";
+
+    useEffect(() => {
+        DataHandler.getAllData(name, setHabitData);
+    }, []);
+
     return (
         <View style={styles.container}>
             <Text>{habitData.habitName}</Text>
