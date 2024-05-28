@@ -1,12 +1,6 @@
-import React, { useEffect, useState } from "react";
 
-// TODO: brug korrekt database kode. Den fra habit puck skak fiddles herind
+
 // TODO: Send korrekt data objekt til RenderDataScreen
-
-
-
-
-
 
 export const getAllData = async (name, setHabitData) => {
     const IP = `http://localhost:3000`;
@@ -24,8 +18,6 @@ export const getAllData = async (name, setHabitData) => {
             console.error("Error:", error);
         }
     };
-
-    var data = await fetchData(habitName);
 
     // Kommer fra habit puck V1
     const getPreviousWeekdays = () => {
@@ -128,7 +120,20 @@ export const getAllData = async (name, setHabitData) => {
         return habitObject;
     };
 
-
+    var data = await fetchData(habitName);
     var habitObject = await createHabitObject(data);
     setHabitData(habitObject);
+};
+
+export const setCount = async (name, count) => {
+    fetch(`${IP}/setCount?habitName=${encodeURIComponent(habitName)}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ count: count }),
+    })
+        .then((response) => response.json())
+        .catch((error) => console.error("Error:", error));
+    console.log("Count posted...");
 };

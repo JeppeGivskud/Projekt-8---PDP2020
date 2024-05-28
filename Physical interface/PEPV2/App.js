@@ -7,7 +7,7 @@ import * as DataHandler from './components/DataHandler';
 
 export default function App() {
     const [habitData, setHabitData] = useState({
-        habitName: "Defaultname",
+        name: "Defaultname",
         count: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 },
         target: 100,
         streak: { count: 0, omissions: 0 },
@@ -20,13 +20,14 @@ export default function App() {
         DataHandler.getAllData(name, setHabitData);
     }, []);
 
+    console.log("habitData: ", habitData);
     return (
         <View style={styles.container}>
             <View style={{ alignItems: "center" }}>
                 <Text>Raw habit data</Text>
 
                 <View style={{ borderColor: "tomato", borderWidth: 2, padding: 10 }}>
-                    <Text>habit name: {habitData.habitName}</Text>
+                    <Text>habit name: {habitData.name}</Text>
                     <Text>History:</Text>
                     {Object.entries(habitData.count).map(([key, value]) => (
                         <View key={key} style={{ paddingLeft: 20, flexDirection: "row" }}>
