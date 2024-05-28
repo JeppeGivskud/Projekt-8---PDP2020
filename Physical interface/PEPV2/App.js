@@ -2,7 +2,8 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import RenderData from "./components/RenderData";
-import * as DataHandler from './components/DataHandler';
+import * as DataHandler from "./components/DataHandler";
+import { ActivityIndicator } from "react-native";
 
 export default function App() {
     const [habitData, setHabitData] = useState({
@@ -21,6 +22,13 @@ export default function App() {
     }, []);
 
     console.log("habitData: ", habitData);
+    if ((habitData.name = "Defaultname")) {
+        return (
+            <View style={{ justifyContent: "center", flex: 1 }}>
+                <ActivityIndicator size={100} color="tomato" />
+            </View>
+        );
+    }
     return (
         <View style={styles.container}>
             <View style={{ alignItems: "center" }}>

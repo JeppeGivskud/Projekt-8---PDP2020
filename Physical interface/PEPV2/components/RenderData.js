@@ -3,8 +3,6 @@ import { View, Text, Button, TextInput } from "react-native";
 import EditableData from "./EditableData";
 
 export default function RenderData({ habitData, setHabitData }) {
-    const today = new Date().getDay();
-
     const changeName = (newData) => {
         setHabitData((prevData) => ({
             ...prevData,
