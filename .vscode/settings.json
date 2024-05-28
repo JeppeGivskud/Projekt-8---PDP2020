@@ -3,6 +3,5 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.formatOnPaste": false,
-    "prettier.configPath": "./.prettierrc",
     "workbench.colorTheme": "Dark+ Mono"
 }
