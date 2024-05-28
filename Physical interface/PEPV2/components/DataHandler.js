@@ -1,12 +1,12 @@
 
-import { Text } from "react-native";
+const IP = `http://localhost:3000`;
 
 // TODO: Send korrekt data objekt til RenderDataScreen
 
-export const getAllData = async (name, setHabitData) => {
-    const IP = `http://localhost:3000`;
-    habitName = name;
+export const getAllData = async (textValue, setHabitData) => {
+    habitName = textValue;
     var loading = true
+    console.log("Data awaiting...");
 
     // henter al data fra database
     const fetchData = async (habitName) => {

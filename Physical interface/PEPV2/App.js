@@ -17,16 +17,17 @@ export default function App() {
     const name = "Pushups";
     const [habitDataTemp, setHabitDataTemp] = useState(habitData);
 
-    useEffect(() => {
-        DataHandler.getAllData(name, setHabitData);
-    }, []);
+    // useEffect(() => {
+    //     DataHandler.getAllData(name, setHabitData);
+    // }, []);
 
     console.log("habitData: ", habitData);
 
     if ((habitData.name = "Undefined")) {
-        const [textValue, setTextValue] = useState(habitData.name);
+        const [textValue, setTextValue] = useState("Underdefined");
         const [loading, setLoading] = useState(false);
         if (loading) {
+            console.log("Loading...", habitData.name);
             return (
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                     <ActivityIndicator size={100} color="tomato" />
@@ -44,6 +45,7 @@ export default function App() {
                 <Pressable
                     onPress={() => {
                         DataHandler.getAllData(textValue, setHabitData);
+                        console.log(textValue);
                         setLoading(true);
                     }}
                 >
@@ -86,6 +88,8 @@ export default function App() {
                     DataHandler.postCount(name, habitData.count);
                 }}
             ></Button>
+
+
         </View>
     );
 }
