@@ -119,6 +119,7 @@ export const getAllData = async (name, setHabitData) => {
         habitObject.routine = data[todayString].routine;
         habitObject.streak = streak;
 
+        setLoading(false);
         console.log("habitObject:", habitObject);
         return habitObject;
     };
