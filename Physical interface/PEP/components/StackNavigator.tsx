@@ -7,9 +7,9 @@ const Stack = createStackNavigator();
 
 export default function StackNavigator() {
   return (
-    <Stack.Navigator initialRouteName="FetchData">
-      <Stack.Screen name = "DataHandler" component={DataHandler} />
-      <Stack.Screen name = "RenderDataScreen" component={RenderDataScreen} />
+    <Stack.Navigator initialRouteName="RenderDataScreen">
+      <Stack.Screen name="DataHandler" component={DataHandler} />
+      <Stack.Screen name="RenderDataScreen" component={RenderDataScreen} />
     </Stack.Navigator>
   );
 };
