@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import RenderData from "./components/RenderData";
 import * as DataHandler from "./components/DataHandler";
@@ -17,9 +17,10 @@ export default function App() {
     const name = "Pushups";
     const [habitDataTemp, setHabitDataTemp] = useState(habitData);
 
+    const [nameRef, setNameRef] = useRef(habitData.name);
     useEffect(() => {
-        DataHandler.getAllData(name, setHabitData);
-    }, []);
+        habitData.name = nameRef.current;
+    }, [nameRef.current]);
 
     console.log("habitData: ", habitData);
 
@@ -52,7 +53,6 @@ export default function App() {
             </View>
         );
     }
-
 
     return (
         <View style={styles.container}>
