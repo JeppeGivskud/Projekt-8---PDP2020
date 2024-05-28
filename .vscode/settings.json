@@ -3,6 +3,5 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.formatOnPaste": false,
-    "prettier.configPath": "/Users/jakob/Documents/8. Semester/👨‍👨‍👦 P8/Vscode/Projekt-8-PDP2020/.prettierrc",
     "workbench.colorTheme": "Dark+ Mono"
 }
