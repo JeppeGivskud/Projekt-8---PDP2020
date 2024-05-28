@@ -15,10 +15,11 @@ export default function App() {
         effort: 0,
     });
     const [name, setName] = useState("");
+    const [nameTemp, setNameTemp] = useState("");
     const [habitDataTemp, setHabitDataTemp] = useState(habitData);
     const [loading, setLoading] = useState(true);
 
-
+    // Loader data hver gang name ændres
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -37,7 +38,8 @@ export default function App() {
                     Value={name}
                     placeholder="Habit name"
                     placeholderTextColor={"#aaa"}
-                    onChangeText={setName}
+                    onChangeText={setNameTemp}
+                    onSubmitEditing={() => setName(nameTemp)}
                 ></TextInput>
             </View>
         );

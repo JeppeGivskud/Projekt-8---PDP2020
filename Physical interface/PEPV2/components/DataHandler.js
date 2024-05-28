@@ -4,7 +4,7 @@ const IP = `http://localhost:3000`;
 // TODO: Send korrekt data objekt til RenderDataScreen
 
 export const getAllData = async (name, setHabitData) => {
-    habitName = name.toString();
+    habitName = name;
     console.log(habitName);
     console.log("getAllData function");
 
@@ -119,7 +119,6 @@ export const getAllData = async (name, setHabitData) => {
         habitObject.routine = data[todayString].routine;
         habitObject.streak = streak;
 
-        setLoading(false);
         console.log("habitObject:", habitObject);
         return habitObject;
     };
