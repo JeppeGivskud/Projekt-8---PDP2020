@@ -125,7 +125,7 @@ export const getAllData = async (name, setHabitData) => {
     setHabitData(habitObject);
 };
 
-export const setCount = async (name, count) => {
+export const setCount = async (name, todayCount) => {
     fetch(`${IP}/setCount?habitName=${encodeURIComponent(habitName)}`, {
         method: "POST",
         headers: {

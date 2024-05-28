@@ -14,6 +14,7 @@ export default function App() {
         effort: 0,
     });
     const name = "Pushups";
+    const todayCount = habitData.count[new Date().getDay()];
     const [habitDataTemp, setHabitDataTemp] = useState(habitData);
 
     useEffect(() => {
@@ -52,6 +53,8 @@ export default function App() {
                     setHabitData(habitDataTemp);
                 }}
             ></Button>
+
+
         </View>
     );
 }
