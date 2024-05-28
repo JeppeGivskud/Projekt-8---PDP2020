@@ -14,48 +14,79 @@ export default function App() {
         routine: "DefaultRutine",
         effort: 0,
     });
-    const name = "Pushups";
+    const [name, setName] = useState("");
     const [habitDataTemp, setHabitDataTemp] = useState(habitData);
+    const [loading, setLoading] = useState(true);
 
-    const [nameRef, setNameRef] = useRef(habitData.name);
+
     useEffect(() => {
-        habitData.name = nameRef.current;
-    }, [nameRef.current]);
+        const fetchData = async () => {
+            setLoading(true);
+            console.log("name: ", name);
+            await DataHandler.getAllData(name, setHabitData);
+            setLoading(false);
+        };
+        fetchData();
+    }, [name]);
 
-    console.log("habitData: ", habitData);
-
-    if ((habitData.name = "Undefined")) {
-        const [textValue, setTextValue] = useState("Underdefined");
-        const [loading, setLoading] = useState(false);
-        if (loading) {
-            console.log("Loading...", habitData.name);
-            return (
-                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                    <ActivityIndicator size={100} color="tomato" />
-                </View>
-            );
-        }
+    if (loading) {
         return (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                 <TextInput
                     style={{ borderWidth: 1 }}
-                    clearTextOnFocus={true}
-                    defaultValue={textValue}
-                    onChangeText={(newData) => setTextValue(newData)}
+                    Value={name}
+                    placeholder="Habit name"
+                    placeholderTextColor={"#aaa"}
+                    onChangeText={setName}
                 ></TextInput>
-                <Pressable
-                    onPress={() => {
-                        DataHandler.getAllData(textValue, setHabitData);
-                        console.log(textValue);
-                        setLoading(true);
-                    }}
-                >
-                    <Text>Load {textValue}</Text>
-                </Pressable>
             </View>
         );
     }
 
+    // const nameRef = useRef("Undefined");
+    // useEffect(() => { nameRef.current = habitData.name; console.log("A CHANGE", habitData.name) }, [habitData.name]);
+    // console.log("habitData: ", habitData);
+
+    // useEffect(() => {
+    //     console.log("Fetching data...");
+    // }, []);
+
+    // if (habitData.name === "Undefined") {
+    //     const [textValue, setTextValue] = useState("Underdefined");
+    //     const [loading, setLoading] = useState(false);
+    //     if (loading) {
+    //         console.log("Loading...", habitData.name);
+    //         return (
+    //             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    //                 <ActivityIndicator size={100} color="tomato" />
+    //             </View>
+    //         );
+    //     }
+    //     return (
+    //         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    //             <TextInput
+    //                 style={{ borderWidth: 1 }}
+    //                 clearTextOnFocus={true}
+    //                 defaultValue={textValue}
+    //                 onChangeText={(newData) => setTextValue(newData)}
+    //             ></TextInput>
+    //             <Pressable
+    //                 onPress={() => {
+    //                     DataHandler.getAllData(textValue, setHabitData);
+    //                     console.log(textValue);
+    //                     setLoading(true);
+    //                 }}
+    //             >
+    //                 <Text>Load {textValue}</Text>
+    //             </Pressable>
+    //         </View>
+    //     );
+    // }
+
+
+
+
+    // TODO: raw data rendering til component
     return (
         <View style={styles.container}>
             <View style={{ alignItems: "center" }}>

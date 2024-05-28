@@ -3,14 +3,15 @@ const IP = `http://localhost:3000`;
 
 // TODO: Send korrekt data objekt til RenderDataScreen
 
-export const getAllData = async (textValue, setHabitData) => {
-    habitName = textValue;
-    var loading = true
-    console.log("Data awaiting...");
+export const getAllData = async (name, setHabitData) => {
+    habitName = name.toString();
+    console.log(habitName);
+    console.log("getAllData function");
 
     // henter al data fra database
     const fetchData = async (habitName) => {
         try {
+            console.log(habitName);
             const response = await fetch(`${IP}/getData?habitName=${encodeURIComponent(habitName)}`);
             console.log("Data awaiting...");
             data = await response.json();
@@ -127,6 +128,7 @@ export const getAllData = async (textValue, setHabitData) => {
     setHabitData(habitObject);
 };
 
+// postCount. Tager i mod habitData og poster dagens count til databasen
 export const postCount = async (name, habitData) => {
     const count = habitData.count[new Date().getDay()];
     console.log("Count: ", count);
