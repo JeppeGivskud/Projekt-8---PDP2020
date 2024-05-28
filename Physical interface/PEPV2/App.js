@@ -16,24 +16,17 @@ export default function App() {
     });
     const name = "Pushups";
     const [habitDataTemp, setHabitDataTemp] = useState(habitData);
+    const [loading, setLoading] = useState(false);
 
-    const [nameRef, setNameRef] = useRef(habitData.name);
-    useEffect(() => {
-        habitData.name = nameRef.current;
-    }, [nameRef.current]);
-
-    console.log("habitData: ", habitData);
-
-    if ((habitData.name = "Undefined")) {
+    if (loading == true) {
+        return (
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <ActivityIndicator size={100} color="tomato" />
+            </View>
+        );
+    }
+    if (habitData.name == "Undefined") {
         const [textValue, setTextValue] = useState(habitData.name);
-        const [loading, setLoading] = useState(false);
-        if (loading) {
-            return (
-                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                    <ActivityIndicator size={100} color="tomato" />
-                </View>
-            );
-        }
         return (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                 <TextInput
@@ -44,7 +37,7 @@ export default function App() {
                 ></TextInput>
                 <Pressable
                     onPress={() => {
-                        DataHandler.getAllData(textValue, setHabitData);
+                        DataHandler.getAllData(textValue, setHabitData, setLoading);
                         setLoading(true);
                     }}
                 >

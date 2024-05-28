@@ -1,12 +1,11 @@
-
 import { Text } from "react-native";
 
 // TODO: Send korrekt data objekt til RenderDataScreen
 
-export const getAllData = async (name, setHabitData) => {
+export const getAllData = async (name, setHabitData, setLoading) => {
     const IP = `http://localhost:3000`;
     habitName = name;
-    var loading = true
+    var loading = true;
 
     // henter al data fra database
     const fetchData = async (habitName) => {
@@ -118,6 +117,7 @@ export const getAllData = async (name, setHabitData) => {
         habitObject.routine = data[todayString].routine;
         habitObject.streak = streak;
 
+        setLoading(false);
         console.log("habitObject:", habitObject);
         return habitObject;
     };
