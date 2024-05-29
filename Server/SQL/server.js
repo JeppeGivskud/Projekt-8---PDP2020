@@ -4,7 +4,7 @@ const cors = require("cors");
 const url = require("url");
 const bodyParser = require("body-parser");
 const app = express();
-const port = 3000;
+const port = 5000;
 
 app.use(cors());
 
@@ -19,7 +19,7 @@ const tableName = "User1";
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "Luffe2008",
+    password: "pass",
 });
 
 // Check if table exists and create if not
