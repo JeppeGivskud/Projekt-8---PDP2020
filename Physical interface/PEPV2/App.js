@@ -11,10 +11,10 @@ export default function App() {
         count: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 },
         target: 100,
         streak: { count: 0, omissions: 0 },
-        routine: "DefaultRutine",
+        routine: "DefaultRoutine",
         effort: 0,
     });
-    const [name, setName] = useState("");
+    const [name, setName] = useState(null);
     const [nameTemp, setNameTemp] = useState("");
     const [habitDataTemp, setHabitDataTemp] = useState(habitData);
     const [loading, setLoading] = useState(true);
@@ -30,11 +30,12 @@ export default function App() {
         fetchData();
     }, [name]);
 
+    // TextInput til at vælge hvilke vane skal vises.
     if (loading) {
         return (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                 <TextInput
-                    style={{ borderWidth: 1 }}
+                    style={{ borderWidth: 2, borderRadius: 8, padding: 10 }}
                     Value={name}
                     placeholder="Habit name"
                     placeholderTextColor={"#aaa"}
