@@ -19,7 +19,7 @@ const tableName = "User1";
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "pass",
+    password: "Luffe2008",
 });
 
 // Check if table exists and create if not
@@ -70,7 +70,7 @@ app.get("/getData", (req, res) => {
     console.log("getData", habitName, tableName, dataBase);
 
     new Promise((resolve, reject) => {
-        let sql = `SELECT * FROM ${dataBase}.${tableName} WHERE habitName = '${habitName}' ORDER BY id`;
+        let sql = `SELECT * FROM ${dataBase}.${tableName} WHERE habitName = '${habitName}'`;
         console.log(sql);
         db.query(sql, (err, result) => {
             if (err) {
@@ -78,9 +78,20 @@ app.get("/getData", (req, res) => {
             } else {
                 // Convert the result to an object with the date as key
                 const data = result.reduce((acc, row) => {
-                    const date = new Date(row.currentDate);
-                    const englishDate = date.toLocaleString("en-US", { timeZone: "GMT", hour12: false });
-                    acc[englishDate] = row;
+                    const date = new Date(row.currentDate).toISOString();
+                    console.log("date", date);
+                    const options = {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        timeZoneName: "short",
+                    };
+                    const dateString = date.toString();
+                    acc[dateString] = row;
                     return acc;
                 }, {});
                 resolve(data);

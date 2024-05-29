@@ -1,8 +1,8 @@
-var IP = `http://localhost:3000`;
+var IP = `http://127.0.0.1:5000`;
 
 // TODO: Send korrekt data objekt til RenderDataScreen
 
-export const getAllData = async (habitName, tableName, dataBase, setHabitData, IPadress = "http://localhost:3000") => {
+export const getAllData = async (habitName, tableName, dataBase, setHabitData, IPadress = "http://127.0.0.1:5000") => {
     IP = IPadress;
     console.log("Fetching from", IP);
     // Henter al data fra database
@@ -24,9 +24,20 @@ export const getAllData = async (habitName, tableName, dataBase, setHabitData, I
             console.error("Error:", error);
         }
     };
-
+    const getPreviousWeekdays2 = () => {
+        const One = new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
+        const Two = new Date(new Date().setHours(0, 0, 0, 0) - 24 * 60 * 60 * 1000).toISOString();
+        const Three = new Date(new Date().setHours(0, 0, 0, 0) - 2 * 24 * 60 * 60 * 1000).toISOString();
+        const Four = new Date(new Date().setHours(0, 0, 0, 0) - 3 * 24 * 60 * 60 * 1000).toISOString();
+        const Five = new Date(new Date().setHours(0, 0, 0, 0) - 4 * 24 * 60 * 60 * 1000).toISOString();
+        const Six = new Date(new Date().setHours(0, 0, 0, 0) - 5 * 24 * 60 * 60 * 1000).toISOString();
+        const Seven = new Date(new Date().setHours(0, 0, 0, 0) - 6 * 24 * 60 * 60 * 1000).toISOString();
+        return [One, Two, Three, Four, Five, Six, Seven];
+    };
     // Kommer fra habit puck V1
     const getPreviousWeekdays = () => {
+        //5/18/2024, 22:00:00:
+        //Wed May 29 2024 00:00:00 GMT+0200 (Central European Summer Time)
         const today = new Date();
         const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         const weekdays = [];
@@ -55,8 +66,8 @@ export const getAllData = async (habitName, tableName, dataBase, setHabitData, I
             5: 0,
             6: 0,
         };
-        const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
-        const Keys = getPreviousWeekdays();
+        // const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
+        const Keys = getPreviousWeekdays2();
         console.log("Keys", Keys);
         console.log("data", data);
         for (let i = 0; i < Keys.length; i++) {
