@@ -78,7 +78,9 @@ app.get("/getData", (req, res) => {
             } else {
                 // Convert the result to an object with the date as key
                 const data = result.reduce((acc, row) => {
-                    acc[row.currentDate + "DERP"] = row;
+                    const date = new Date(row.currentDate);
+                    const englishDate = date.toLocaleString("en-US", { timeZone: "GMT", hour12: false });
+                    acc[englishDate] = row;
                     return acc;
                 }, {});
                 resolve(data);
