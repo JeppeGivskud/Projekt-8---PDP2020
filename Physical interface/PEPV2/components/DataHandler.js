@@ -4,7 +4,7 @@ var IP = `http://localhost:3000`;
 
 export const getAllData = async (habitName, tableName, dataBase, setHabitData, IPadress = "http://localhost:3000") => {
     IP = IPadress;
-
+    console.log("Fetching from", IP);
     // Henter al data fra database
 
     const fetchData = async (habitName) => {
@@ -57,6 +57,8 @@ export const getAllData = async (habitName, tableName, dataBase, setHabitData, I
         };
         const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
         const Keys = getPreviousWeekdays();
+        console.log("Keys", Keys);
+        console.log("data", data);
         for (let i = 0; i < Keys.length; i++) {
             console.log("a datapoint:", data[Keys[i]]);
             console.log("should be", Object.keys(data));

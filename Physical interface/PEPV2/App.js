@@ -16,42 +16,36 @@ export default function App() {
     });
     const [dataBase, setDatabase] = useState("habitdb"); //must be lowercase
     const [tableName, setTableName] = useState("user1");
-    const [habitName, setHabitName] = useState("Exercise");
-    const [nameTemp, setNameTemp] = useState("");
+    const [habitName, setHabitName] = useState("Pushups");
+    const [nameTemp, setNameTemp] = useState("Pushups");
     const [habitDataTemp, setHabitDataTemp] = useState(habitData);
     const [loading, setLoading] = useState(true);
 
-    const outerFunction = async () => {
+    // Loader data hver gang name ændres
+    useEffect(() => {
         if (habitName === "") {
             console.log("name is empty!", habitName);
             return;
         }
-        const fetchData = async () => {
-            setLoading(true);
-            await DataHandler.getAllData(
-                habitName,
-                tableName,
-                dataBase,
-                setHabitData,
-                (IPadress = "http://hvejsel.dk:3000")
-            );
-            setLoading(false);
-        };
-        await fetchData();
-    };
-    // Loader data hver gang name ændres
-    useEffect(() => {
         console.log("Activating fetchData");
-        outerFunction();
+        const fetchData = async () => {
+            console.log("Fetching data");
+            setLoading(true);
+            await DataHandler.getAllData(habitName, tableName, dataBase, setHabitData, "http://hvejsel.dk:5000");
+            setLoading(false);
+            console.log("Data fetched");
+        };
+        fetchData();
     }, [habitName]);
 
     if (loading) {
         return (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <Text>{[dataBase, " ,", tableName, " ,", habitName]}</Text>
                 <TextInput
                     style={{ borderWidth: 1 }}
                     Value={dataBase}
-                    placeholder="Database:"
+                    placeholder={dataBase}
                     placeholderTextColor={"#aaa"}
                     onChangeText={setDatabase}
                     onSubmitEditing={() => setDatabase(dataBase)}
@@ -59,18 +53,18 @@ export default function App() {
                 <TextInput
                     style={{ borderWidth: 1 }}
                     Value={tableName}
-                    placeholder="Username"
+                    placeholder={tableName}
                     placeholderTextColor={"#aaa"}
                     onChangeText={setTableName}
                     onSubmitEditing={() => setTableName(tableName)}
                 ></TextInput>
                 <TextInput
                     style={{ borderWidth: 1 }}
-                    Value={habitName}
-                    placeholder="Habit name"
+                    Value={nameTemp}
+                    placeholder={nameTemp}
                     placeholderTextColor={"#aaa"}
                     onChangeText={setNameTemp}
-                    onSubmitEditing={() => setHabitName(habitName)}
+                    onSubmitEditing={() => setHabitName(nameTemp)}
                 ></TextInput>
             </View>
         );
