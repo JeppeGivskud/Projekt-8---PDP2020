@@ -61,13 +61,10 @@ db.connect((err) => {
     createTable();
 });
 
-// get all data. Return of the data
-// app.get("/getData", (req, res) => {
-//     const queryObject = url.parse(req.url, true).query;
-//     const habitName = queryObject.habitName;
-//     const tableName = queryObject.tableName;
-//     const dataBase = queryObject.dataBase;
-//     console.log("getData", habitName, tableName, dataBase);
+app.get("/", (req, res) => {
+    res.send("Hello stranger!");
+    console.log("Somebody said hi!");
+});
 app.get("/getData", (req, res) => {
     const { habitName, tableName, dataBase } = req.query;
     console.log("getData", habitName, tableName, dataBase);
