@@ -19,19 +19,21 @@ const tableName = "User1";
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "pass",
+    password: "Luffe2008",
 });
 
 // Check if table exists and create if not
 const createTable = () => {
     let tableName = "user1";
-
-    db.query(`SHOW TABLES LIKE '${tableName}'`, function (err, results, fields) {
+    db.query(`USE ${dbName}`, function (err, results, fields) {
         if (err) throw err;
 
-        if (results.length === 0) {
-            console.log("Creating new table!");
-            sql = `CREATE TABLE ${dbName}.${tableName} (
+        db.query(`SHOW TABLES LIKE '${tableName}'`, function (err, results, fields) {
+            if (err) throw err;
+
+            if (results.length === 0) {
+                console.log("Creating new table!");
+                sql = `CREATE TABLE ${dbName}.${tableName} (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     currentDate DATE,
                     habitName VARCHAR(255),
@@ -40,14 +42,15 @@ const createTable = () => {
                     effort INT DEFAULT 0,
                     routine VARCHAR(255)
                 )`;
-            db.query(sql, (err, result) => {
-                if (err) throw err;
-                console.log(result);
-                console.log("Table created...");
-            });
-        } else {
-            console.log("Table already exists...");
-        }
+                db.query(sql, (err, result) => {
+                    if (err) throw err;
+                    console.log(result);
+                    console.log("Table created...");
+                });
+            } else {
+                console.log("Table already exists...");
+            }
+        });
     });
 };
 
