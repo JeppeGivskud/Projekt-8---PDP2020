@@ -24,12 +24,39 @@ const db = mysql.createConnection({
 
 // Check if table exists and create if not
 const createTable = () => {
+    let tableName = "user1";
+
+    db.query(`SHOW TABLES LIKE '${tableName}'`, function (err, results, fields) {
+        if (err) throw err;
+
+        if (results.length === 0) {
+            // Table doesn't exist, create it
+            db.query(
+                `CREATE TABLE ${tableName} (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            currentDate DATE,
+            habitName VARCHAR(255),
+            count INT DEFAULT 0,
+            target INT DEFAULT 1,
+            effort INT DEFAULT 0,
+            routine VARCHAR(255)
+        )`,
+                function (err, results, fields) {
+                    if (err) throw err;
+                    console.log("Table created...");
+                }
+            );
+        } else {
+            console.log("Table already exists...");
+        }
+    });
+
     let sql = `SHOW TABLES IN ${dbName}`;
 
     db.query(sql, (err, results) => {
         console.log(results);
         if (err) throw err;
-        if (results.some((row) => row["Tables_in_habitdb"] === tableName)) {
+        if (results.find((row) => row["Tables_in_habitdb"] === tableName)) {
             console.log("Table already exists...");
         } else {
             console.log("Creating new table!");
@@ -50,10 +77,6 @@ const createTable = () => {
         }
     });
 };
-
-app.get("/", (req, res) => {
-    res.send("Hello, world!");
-});
 
 // Connect
 db.connect((err) => {
