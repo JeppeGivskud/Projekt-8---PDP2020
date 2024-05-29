@@ -51,6 +51,10 @@ const createTable = () => {
     });
 };
 
+app.get("/", (req, res) => {
+    res.send("Hello, world!");
+});
+
 // Connect
 db.connect((err) => {
     if (err) throw err;

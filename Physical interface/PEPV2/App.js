@@ -28,7 +28,13 @@ export default function App() {
         }
         const fetchData = async () => {
             setLoading(true);
-            await DataHandler.getAllData(habitName, tableName, dataBase, setHabitData);
+            await DataHandler.getAllData(
+                habitName,
+                tableName,
+                dataBase,
+                setHabitData,
+                (IPadress = "http://hvejsel.dk:3000")
+            );
             setLoading(false);
         };
         await fetchData();
