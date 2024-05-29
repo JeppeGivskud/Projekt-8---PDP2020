@@ -14,7 +14,7 @@ export default function App() {
         routine: "DefaultRutine",
         effort: 0,
     });
-    const [dataBase, setDatabase] = useState("HabitDB");
+    const [dataBase, setDatabase] = useState("habitdb"); //must be lowercase
     const [tableName, setTableName] = useState("user1");
     const [habitName, setHabitName] = useState("Exercise");
     const [nameTemp, setNameTemp] = useState("");

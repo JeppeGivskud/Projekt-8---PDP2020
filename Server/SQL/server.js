@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.use(bodyParser.json());
 
-const dbName = "HabitDB";
+const dbName = "habitdb";
 const tableName = "User1";
 
 // Create connection
