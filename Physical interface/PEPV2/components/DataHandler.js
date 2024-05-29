@@ -121,18 +121,16 @@ export const getAllData = async (habitName, tableName, dataBase, setHabitData, I
             streak: {},
         };
 
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const todayString = today.toString();
-        console.log(todayString);
+        const today = new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
 
         const [count, streak] = await Promise.all([getHistory(data), calculateStreak(data)]);
 
-        habitObject.name = data[todayString].habitName;
+        habitObject.name = data[today].habitName;
+        habitObject.target = data[today].target;
+        habitObject.effort = data[today].effort;
+        habitObject.routine = data[today].routine;
+
         habitObject.count = count;
-        habitObject.target = data[todayString].target;
-        habitObject.effort = data[todayString].effort;
-        habitObject.routine = data[todayString].routine;
         habitObject.streak = streak;
 
         console.log("habitObject:", habitObject);
