@@ -1,18 +1,21 @@
-
-const IP = `http://localhost:3000`;
+var IP = `http://localhost:3000`;
 
 // TODO: Send korrekt data objekt til RenderDataScreen
 
-export const getAllData = async (name, setHabitData) => {
-    habitName = name;
-    console.log(habitName);
-    console.log("getAllData function");
+export const getAllData = async (habitName, tableName, dataBase, setHabitData, IPadress = "http://localhost:3000") => {
+    IP = IPadress;
 
-    // henter al data fra database
+    // Henter al data fra database
+
     const fetchData = async (habitName) => {
         try {
-            console.log(habitName);
-            const response = await fetch(`${IP}/getData?habitName=${encodeURIComponent(habitName)}`);
+            console.log("Requesting data for: ", habitName, tableName, dataBase);
+            //The fetch is creating an url with the habitName, tableName and dataBase which is deconstructed on the server side
+            const response = await fetch(
+                `${IP}/getData?habitName=${encodeURIComponent(habitName)}&tableName=${encodeURIComponent(
+                    tableName
+                )}&dataBase=${encodeURIComponent(dataBase)}`
+            );
             console.log("Data awaiting...");
             data = await response.json();
             console.log("Data fetched...", data);

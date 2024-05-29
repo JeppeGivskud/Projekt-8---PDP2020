@@ -14,81 +14,62 @@ export default function App() {
         routine: "DefaultRutine",
         effort: 0,
     });
-    const [name, setName] = useState("");
+    const [dataBase, setDatabase] = useState("HabitDB");
+    const [tableName, setTableName] = useState("user1");
+    const [habitName, setHabitName] = useState("Exercise");
     const [nameTemp, setNameTemp] = useState("");
     const [habitDataTemp, setHabitDataTemp] = useState(habitData);
     const [loading, setLoading] = useState(true);
 
-    // Loader data hver gang name ændres
-    useEffect(() => {
+    const outerFunction = async () => {
+        if (habitName === "") {
+            console.log("name is empty!", habitName);
+            return;
+        }
         const fetchData = async () => {
             setLoading(true);
-            console.log("name: ", name);
-            await DataHandler.getAllData(name, setHabitData);
+            await DataHandler.getAllData(habitName, tableName, dataBase, setHabitData);
             setLoading(false);
         };
-        fetchData();
-    }, [name]);
+        await fetchData();
+    };
+    // Loader data hver gang name ændres
+    useEffect(() => {
+        console.log("Activating fetchData");
+        outerFunction();
+    }, [habitName]);
 
     if (loading) {
         return (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                 <TextInput
                     style={{ borderWidth: 1 }}
-                    Value={name}
+                    Value={dataBase}
+                    placeholder="Database:"
+                    placeholderTextColor={"#aaa"}
+                    onChangeText={setDatabase}
+                    onSubmitEditing={() => setDatabase(dataBase)}
+                ></TextInput>
+                <TextInput
+                    style={{ borderWidth: 1 }}
+                    Value={tableName}
+                    placeholder="Username"
+                    placeholderTextColor={"#aaa"}
+                    onChangeText={setTableName}
+                    onSubmitEditing={() => setTableName(tableName)}
+                ></TextInput>
+                <TextInput
+                    style={{ borderWidth: 1 }}
+                    Value={habitName}
                     placeholder="Habit name"
                     placeholderTextColor={"#aaa"}
                     onChangeText={setNameTemp}
-                    onSubmitEditing={() => setName(nameTemp)}
+                    onSubmitEditing={() => setHabitName(habitName)}
                 ></TextInput>
             </View>
         );
     }
 
-    // const nameRef = useRef("Undefined");
-    // useEffect(() => { nameRef.current = habitData.name; console.log("A CHANGE", habitData.name) }, [habitData.name]);
-    // console.log("habitData: ", habitData);
-
-    // useEffect(() => {
-    //     console.log("Fetching data...");
-    // }, []);
-
-    // if (habitData.name === "Undefined") {
-    //     const [textValue, setTextValue] = useState("Underdefined");
-    //     const [loading, setLoading] = useState(false);
-    //     if (loading) {
-    //         console.log("Loading...", habitData.name);
-    //         return (
-    //             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    //                 <ActivityIndicator size={100} color="tomato" />
-    //             </View>
-    //         );
-    //     }
-    //     return (
-    //         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    //             <TextInput
-    //                 style={{ borderWidth: 1 }}
-    //                 clearTextOnFocus={true}
-    //                 defaultValue={textValue}
-    //                 onChangeText={(newData) => setTextValue(newData)}
-    //             ></TextInput>
-    //             <Pressable
-    //                 onPress={() => {
-    //                     DataHandler.getAllData(textValue, setHabitData);
-    //                     console.log(textValue);
-    //                     setLoading(true);
-    //                 }}
-    //             >
-    //                 <Text>Load {textValue}</Text>
-    //             </Pressable>
-    //         </View>
-    //     );
-    // }
-
-
-
-
-    // TODO: raw data rendering til component
     return (
         <View style={styles.container}>
             <View style={{ alignItems: "center" }}>
@@ -121,8 +102,6 @@ export default function App() {
                     DataHandler.postCount(name, habitData.count);
                 }}
             ></Button>
-
-
         </View>
     );
 }
