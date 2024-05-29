@@ -78,7 +78,7 @@ app.get("/getData", (req, res) => {
             } else {
                 // Convert the result to an object with the date as key
                 const data = result.reduce((acc, row) => {
-                    acc[row.currentDate] = row;
+                    acc[row.currentDate + "DERP"] = row;
                     return acc;
                 }, {});
                 resolve(data);
