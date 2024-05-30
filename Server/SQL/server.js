@@ -65,6 +65,7 @@ app.get("/", (req, res) => {
     res.send("Hello stranger!");
     console.log("Somebody said hi!");
 });
+
 app.get("/getData", (req, res) => {
     const { habitName, tableName, dataBase } = req.query;
     console.log("getData", habitName, tableName, dataBase);
@@ -75,6 +76,7 @@ app.get("/getData", (req, res) => {
         db.query(sql, (err, result) => {
             if (err) {
                 reject(err);
+                console.log(err);
             } else {
                 // Convert the result to an object with the date as key
                 const data = result.reduce((acc, row) => {
