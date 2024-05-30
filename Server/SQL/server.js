@@ -19,7 +19,7 @@ const tableName = "User1";
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "pass",
+    password: "Pass",
 });
 
 // Check if table exists and create if not
@@ -70,6 +70,7 @@ function checkIfEmptyToday(dataBase, tableName, habitName) {
     // Check if there is an entry for today, if not create one using the data for a previous day (up to 30 days)
     // This is to ensure that there is always an entry for today
     // If there are no entries at all, create a new habit
+    console.log("Checking if entry exists for today...", habitName);
     return new Promise((resolve, reject) => {
         db.query(
             `SELECT COUNT(*) AS count FROM ${dataBase}.${tableName} WHERE habitName = '${habitName}' AND currentDate = CURDATE()`,
@@ -78,8 +79,7 @@ function checkIfEmptyToday(dataBase, tableName, habitName) {
                     console.log(err);
                     reject(err);
                 } else {
-                    const count = result[0].count;
-                    if (count === 0) {
+                    if (result.length === 0) {
                         console.log("Creating empty entry...");
                         db.query(
                             //This quiry takes the previous days data and copies it to the current day.
@@ -108,19 +108,19 @@ function checkIfEmptyToday(dataBase, tableName, habitName) {
                                                 reject(err);
                                                 console.log(err);
                                             } else {
-                                                console.log("Empty new habit created...");
+                                                console.log("Empty new habit created");
                                                 resolve();
                                             }
                                         }
                                     );
                                 } else {
-                                    console.log("Empty entry created...");
+                                    console.log("Empty entry created");
                                     resolve();
                                 }
                             }
                         );
                     } else {
-                        console.log("Entry already exists...");
+                        console.log("Entry already exists for today");
                         resolve();
                     }
                 }
@@ -181,9 +181,8 @@ app.post("/setRow", (req, res) => {
     // Update or insert a row in the database with the data from the request body
     const { habitName, target, effort, routine, count } = req.body;
     console.log("setRow", habitName, target, effort, routine, count);
-
-    let sql = `UPDATE ${dbName}.${tableName} SET habitName = ?, target = ?, effort = ?, routine = ?, count = ? WHERE currentDate = CURDATE()`;
-    db.query(sql, [habitName, target, effort, routine, count], (err, result) => {
+    let sql = `UPDATE ${dbName}.${tableName} SET target = ?, effort = ?, routine = ?, count = ? WHERE currentDate = CURDATE() AND habitName = ?`;
+    db.query(sql, [target, effort, routine, count, habitName], (err, result) => {
         if (err) {
             console.log(err);
             res.status(500).send("Error updating row in database");
