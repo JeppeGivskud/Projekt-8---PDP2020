@@ -19,7 +19,7 @@ const tableName = "User1";
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "Luffe2008",
+    password: "pass",
 });
 
 // Check if table exists and create if not
@@ -201,7 +201,7 @@ app.post("/setRow", (req, res) => {
                     }
                 });
             } else {
-                console.log("Row updated successfully", result);
+                console.log("Row updated successfully", result.affectedRows);
                 res.status(200).send("Row updated successfully");
             }
         }
