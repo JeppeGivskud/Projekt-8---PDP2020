@@ -37,7 +37,7 @@ export default function App() {
             //     console.log("Data fetched");
             // };
             // fetchData();
-            DataHandler.getAllData(habitName, tableName, dataBase, setHabitData /*"http://hvejsel.dk:5000"*/);
+            DataHandler.getAllData(habitName, tableName, dataBase, setHabitData, "http://hvejsel.dk:5000");
         }
     }, [loadingScreen]);
 
@@ -83,7 +83,7 @@ export default function App() {
     }
 
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <Button title="Go back" onPress={() => setLoadingScreen(true)}></Button>
             <View style={styles.container}>
                 <View style={{ alignItems: "center" }}>

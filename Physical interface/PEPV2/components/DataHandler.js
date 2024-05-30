@@ -55,7 +55,9 @@ export const getAllData = async (habitName, tableName, dataBase, setHabitData, I
         };
         // const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
         const Keys = getPreviousWeekdays();
+        console.log("Keys", Keys);
         for (i = 0; i < Keys.length; i++) {
+            console.log("Keys[i]", Keys[i], habitHistory[Keys[i]]);
             if (habitHistory[Keys[i]]) {
                 historyCounts[i] = habitHistory[Keys[i]].count;
             } else {
