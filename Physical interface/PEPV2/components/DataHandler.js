@@ -1,13 +1,11 @@
 
 const IP = `http://localhost:3000`;
+const todayIndex = (new Date().getDay() + 6) % 7
 
 // TODO: Send korrekt data objekt til RenderDataScreen
 
 export const getAllData = async (name, setHabitData) => {
     habitName = name;
-    console.log(habitName);
-    console.log("getAllData function");
-
     // henter al data fra database
     const fetchData = async (habitName) => {
         try {
@@ -22,7 +20,7 @@ export const getAllData = async (name, setHabitData) => {
         }
     };
 
-    // Kommer fra habit puck V1
+    // Regner dagene i denne uge
     const getPreviousWeekdays = () => {
         const today = new Date();
         const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -41,7 +39,7 @@ export const getAllData = async (name, setHabitData) => {
         return weekdays.reverse();
     };
 
-    // Kommer fra habit puck V1
+    // Beregner count historik for denne uge
     const getHistory = async (data) => {
         var historyCounts = {
             0: 0,
@@ -67,7 +65,7 @@ export const getAllData = async (name, setHabitData) => {
         return historyCounts;
     };
 
-    // Kommer fra habit puck V1
+    // Regne streak og omissions
     const calculateStreak = async (data) => {
         console.log("habitHistory", data);
         //Checks two things at a time. The streak length and the days which have been omissed.
@@ -94,7 +92,7 @@ export const getAllData = async (name, setHabitData) => {
         return { count: streak, omissions: omissions };
     };
 
-    // Object with habitName, target, effort, routine from todays row in the imported data
+    // Object with habitName, target, effort, routine from todays row in the imported data as well as count history and streak
     const createHabitObject = async (data) => {
         var habitObject = {
             name: null,
@@ -105,12 +103,14 @@ export const getAllData = async (name, setHabitData) => {
             streak: {},
         };
 
+        // Output er en string med dagens dato med format "Mon Mar 01 2021 00:00:00 GMT+0200 (Central European Standard Time)"
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const todayString = today.toString();
         console.log(todayString);
 
-        const [count, streak] = await Promise.all([getHistory(data), calculateStreak(data)]);
+        count = await getHistory(data);
+        streak = await calculateStreak(data);
 
         habitObject.name = data[todayString].habitName;
         habitObject.count = count;
@@ -123,15 +123,17 @@ export const getAllData = async (name, setHabitData) => {
         return habitObject;
     };
 
+    // Output er getAllData funktionen 
     var data = await fetchData(habitName);
     var habitObject = await createHabitObject(data);
     setHabitData(habitObject);
 };
 
-// postCount. Tager i mod habitData og poster dagens count til databasen
-export const postCount = async (name, habitData) => {
-    const count = habitData.count[new Date().getDay()];
-    console.log("Count: ", count);
+// postCount. Tager imod habitData og poster dagens count til databasen
+export const postCount = async (habitData) => {
+    habitName = habitData.name;
+    const count = habitData.count[todayIndex];
+    console.log("DataHandler Count: ", count);
     fetch(`${IP}/setCount?habitName=${encodeURIComponent(habitName)}`, {
         method: "POST",
         headers: {
@@ -142,4 +144,21 @@ export const postCount = async (name, habitData) => {
         .then((response) => response.json())
         .catch((error) => console.error("Error:", error));
     console.log("Count posted...");
+};
+
+// PostEffort. Tager i mod habitData og poster effort til databasen
+export const postEffort = async (habitData) => {
+    habitName = habitData.name;
+    const effort = habitData.effort;
+    console.log("DataHandler Effort: ", effort);
+    fetch(`${IP}/setEffort?habitName=${encodeURIComponent(habitName)}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ effort: effort }),
+    })
+        .then((response) => response.json())
+        .catch((error) => console.error("Error:", error));
+    console.log("Effort posted...");
 };
