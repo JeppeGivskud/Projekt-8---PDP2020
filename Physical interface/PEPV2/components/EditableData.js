@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, TextInput, Button, Pressable, Text } from "react-native";
 
 const EditableData = ({ Name, Data, setData }) => {
@@ -7,31 +7,23 @@ const EditableData = ({ Name, Data, setData }) => {
     const changeData = (newData) => {
         setData(newData);
     };
-
     return (
         <View
             style={{
                 flexDirection: "row",
                 borderRadius: 2,
-                justifyContent: "center",
+                justifyContent: "flex-start",
                 alignContent: "center",
                 alignItems: "center",
             }}
         >
             <Text style={{ width: 100 }}>{Name}</Text>
             <TextInput
-                style={[editable ? { borderWidth: 1 } : {}, { padding: 1, margin: 1 }]}
+                style={{ padding: 1, margin: 1, borderWidth: 1, width: 100 }}
                 editable={editable}
                 onChangeText={(newData) => changeData(newData)}
-                value={Data}
+                value={String(Data)} // Use state variable here
             />
-            {/* <Pressable
-                onPress={() => {
-                    setEditable(!editable);
-                }}
-            >
-                <Text>⚙️</Text>
-            </Pressable> */}
         </View>
     );
 };
