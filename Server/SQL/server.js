@@ -177,6 +177,36 @@ app.get("/getData", (req, res) => {
                 });
         });
 });
+app.post("/setRow", (req, res) => {
+    // Update or insert a row in the database with the data from the request body
+    const { habitName, target, effort, routine, count } = req.body;
+    console.log("setRow", habitName, target, effort, routine, count);
+
+    let sql = `UPDATE ${dbName}.${tableName} SET habitName = ?, target = ?, effort = ?, routine = ?, count = ? WHERE currentDate = CURDATE()`;
+    db.query(sql, [habitName, target, effort, routine, count], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Error updating row in database");
+        } else {
+            if (result.affectedRows === 0) {
+                // If no row with currentDate = CURDATE() was found, insert a new row
+                sql = `INSERT INTO ${dbName}.${tableName} (currentDate, habitName, target, effort, routine, count) VALUES (CURDATE(), ?, ?, ?, ?, ?)`;
+                db.query(sql, [habitName, target, effort, routine, count], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send("Error inserting row into database");
+                    } else {
+                        console.log("Row inserted successfully", result);
+                        res.status(200).send("Row inserted successfully");
+                    }
+                });
+            } else {
+                console.log("Row updated successfully", result);
+                res.status(200).send("Row updated successfully");
+            }
+        }
+    });
+});
 
 // DEPRECATED: Get current date. output = [{CURRENT_DATE: "2024-05-08T22:00:00.000Z"}]
 app.get("/getDate", (req, res) => {
