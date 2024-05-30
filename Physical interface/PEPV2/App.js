@@ -74,6 +74,7 @@ export default function App() {
                 <Button
                     title="Load data"
                     onPress={() => {
+                        setHabitName(nameTemp);
                         setLoadingScreen(false);
                     }}
                 ></Button>

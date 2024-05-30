@@ -149,18 +149,8 @@ app.get("/getData", (req, res) => {
                     } else {
                         // Convert the result to an object with the date as key
                         const data = result.reduce((acc, row) => {
-                            const date = new Date(row.currentDate).toISOString();
-                            const options = {
-                                weekday: "long",
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                second: "2-digit",
-                                timeZoneName: "short",
-                            };
-                            const dateString = date.toString();
+                            const date = new Date(row.currentDate);
+                            const dateString = `${date.getUTCFullYear()}-${date.getUTCMonth()}-${date.getUTCDate()}`;
                             acc[dateString] = row;
                             return acc;
                         }, {});
