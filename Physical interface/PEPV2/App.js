@@ -16,29 +16,32 @@ export default function App() {
     });
     const [dataBase, setDatabase] = useState("habitdb"); //must be lowercase
     const [tableName, setTableName] = useState("user1");
-    const [habitName, setHabitName] = useState("Pushups");
-    const [nameTemp, setNameTemp] = useState("Pushups");
+    const [habitName, setHabitName] = useState("Exercise");
+    const [nameTemp, setNameTemp] = useState("Exercise");
     const [habitDataTemp, setHabitDataTemp] = useState(habitData);
-    const [loading, setLoading] = useState(true);
-
+    const [loadingScreen, setLoadingScreen] = useState(true);
+    useEffect(() => {
+        setHabitDataTemp(habitData);
+    }, [habitData]);
     // Loader data hver gang name ændres
     useEffect(() => {
-        if (habitName === "") {
-            console.log("name is empty!", habitName);
-            return;
+        if (!loadingScreen) {
+            if (habitName === "") {
+                console.log("name is empty!", habitName);
+                return;
+            }
+            // console.log("Activating fetchData");
+            // const fetchData = async () => {
+            //     console.log("Fetching data");
+            //     await DataHandler.getAllData(habitName, tableName, dataBase, setHabitData, "http://hvejsel.dk:5000");
+            //     console.log("Data fetched");
+            // };
+            // fetchData();
+            DataHandler.getAllData(habitName, tableName, dataBase, setHabitData /*"http://hvejsel.dk:5000"*/);
         }
-        console.log("Activating fetchData");
-        const fetchData = async () => {
-            console.log("Fetching data");
-            setLoading(true);
-            await DataHandler.getAllData(habitName, tableName, dataBase, setHabitData);
-            setLoading(false);
-            console.log("Data fetched");
-        };
-        fetchData();
-    }, [habitName]);
+    }, [loadingScreen]);
 
-    if (loading) {
+    if (loadingScreen) {
         return (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                 <Text>{[dataBase, " ,", tableName, " ,", habitName]}</Text>
@@ -64,22 +67,30 @@ export default function App() {
                     placeholder={nameTemp}
                     placeholderTextColor={"#aaa"}
                     onChangeText={setNameTemp}
-                    onSubmitEditing={() => setHabitName(nameTemp)}
+                    onSubmitEditing={() => {
+                        setHabitName(nameTemp);
+                    }}
                 ></TextInput>
+                <Button
+                    title="Load data"
+                    onPress={() => {
+                        setLoadingScreen(false);
+                    }}
+                ></Button>
             </View>
         );
     }
 
     return (
         <View>
-            <Button title="Go back" onPress={() => setLoading(true)}></Button>
+            <Button title="Go back" onPress={() => setLoadingScreen(true)}></Button>
             <View style={styles.container}>
                 <View style={{ alignItems: "center" }}>
-                    <Text>Raw habit data</Text>
+                    <Text>Habit data</Text>
 
                     <View style={{ borderColor: "tomato", borderWidth: 2, padding: 10 }}>
-                        <Text>habit name: {habitData.name}</Text>
-                        <Text>History:</Text>
+                        <Text>Habit name: {habitData.name}</Text>
+                        <Text>Week:</Text>
                         {Object.entries(habitData.count).map(([key, value]) => (
                             <View key={key} style={{ paddingLeft: 20, flexDirection: "row" }}>
                                 <Text style={{ width: 40 }}>Day {key}</Text>
@@ -87,10 +98,10 @@ export default function App() {
                                 <Text> {value}</Text>
                             </View>
                         ))}
-                        <Text>target: {habitData.target}</Text>
-                        <Text>streak: {habitData.streak.count}</Text>
-                        <Text>routine: {habitData.routine}</Text>
-                        <Text>effort: {habitData.effort}</Text>
+                        <Text>Target: {habitData.target}</Text>
+                        <Text>Streak: {habitData.streak.count}</Text>
+                        <Text>Routine: {habitData.routine}</Text>
+                        <Text>Effort: {habitData.effort}</Text>
                     </View>
                 </View>
                 <View style={{ alignItems: "center" }}>
@@ -101,7 +112,8 @@ export default function App() {
                     title={"Save changes"}
                     onPress={() => {
                         setHabitData(habitDataTemp);
-                        DataHandler.postCount(name, habitData.count);
+                        setHabitDataTemp(habitDataTemp);
+                        DataHandler.setRow(habitDataTemp);
                     }}
                 ></Button>
             </View>

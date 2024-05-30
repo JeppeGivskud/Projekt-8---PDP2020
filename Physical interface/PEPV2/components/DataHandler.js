@@ -25,34 +25,14 @@ export const getAllData = async (habitName, tableName, dataBase, setHabitData, I
         }
     };
     const getPreviousWeekdays2 = () => {
-        const One = new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
-        const Two = new Date(new Date().setHours(0, 0, 0, 0) - 24 * 60 * 60 * 1000).toISOString();
-        const Three = new Date(new Date().setHours(0, 0, 0, 0) - 2 * 24 * 60 * 60 * 1000).toISOString();
-        const Four = new Date(new Date().setHours(0, 0, 0, 0) - 3 * 24 * 60 * 60 * 1000).toISOString();
-        const Five = new Date(new Date().setHours(0, 0, 0, 0) - 4 * 24 * 60 * 60 * 1000).toISOString();
-        const Six = new Date(new Date().setHours(0, 0, 0, 0) - 5 * 24 * 60 * 60 * 1000).toISOString();
-        const Seven = new Date(new Date().setHours(0, 0, 0, 0) - 6 * 24 * 60 * 60 * 1000).toISOString();
-        return [One, Two, Three, Four, Five, Six, Seven];
-    };
-    // Kommer fra habit puck V1
-    const getPreviousWeekdays = () => {
-        //5/18/2024, 22:00:00:
-        //Wed May 29 2024 00:00:00 GMT+0200 (Central European Summer Time)
-        const today = new Date();
-        const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        const weekdays = [];
-
-        for (let i = 0; i <= today.getDay() - 1; i++) {
-            const previousDay = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
-            previousDay.setHours(0, 0, 0, 0); // Set the time to 00:00:00
-            if (daysOfWeek[previousDay.getDay()] !== "Sunday") {
-                weekdays.push(`${previousDay.toDateString()} ${previousDay.toTimeString()}`);
-            }
-            if (daysOfWeek[previousDay.getDay()] === "Monday") {
-                break;
-            }
-        }
-        return weekdays.reverse();
+        const One = new Date(new Date().setHours(23, 59, 59, 999) + 1).toISOString();
+        const Two = new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
+        const Three = new Date(new Date().setHours(0, 0, 0, 0) - 24 * 60 * 60 * 1000).toISOString();
+        const Four = new Date(new Date().setHours(0, 0, 0, 0) - 2 * 24 * 60 * 60 * 1000).toISOString();
+        const Five = new Date(new Date().setHours(0, 0, 0, 0) - 3 * 24 * 60 * 60 * 1000).toISOString();
+        const Six = new Date(new Date().setHours(0, 0, 0, 0) - 4 * 24 * 60 * 60 * 1000).toISOString();
+        const Seven = new Date(new Date().setHours(0, 0, 0, 0) - 5 * 24 * 60 * 60 * 1000).toISOString();
+        return [Seven, Six, Five, Four, Three, Two, One];
     };
 
     // Kommer fra habit puck V1
@@ -66,26 +46,28 @@ export const getAllData = async (habitName, tableName, dataBase, setHabitData, I
             5: 0,
             6: 0,
         };
-        // const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
+        //The keys are the dates of the previous 7 days
+        //The history are the dates of the current week
+        //How do i make sure that the previous days are put into the correct place in the historyCounts
+        //I could take the current day (e.g. 4) be the most recent day in the keys
         const Keys = getPreviousWeekdays2();
         console.log("Keys", Keys);
         console.log("data", data);
-        for (let i = 0; i < Keys.length; i++) {
-            console.log("a datapoint:", data[Keys[i]]);
-            console.log("should be", Object.keys(data));
-            if (data[Keys[i]]) {
-                historyCounts[i] = data[Keys[i]].count;
+        const today = (new Date().getDay() + 6) % 7;
+        for (let i = today; i >= 0; i--) {
+            let key = Keys.pop();
+            console.log("data for this day", Keys, key, data[key]);
+
+            if (data[key]) {
+                historyCounts[i] = data[key].count;
             } else {
                 historyCounts[i] = 0;
             }
         }
-        console.log("historyCounts", historyCounts);
         return historyCounts;
     };
-
     // Kommer fra habit puck V1
     const calculateStreak = async (data) => {
-        console.log("habitHistory", data);
         //Checks two things at a time. The streak length and the days which have been omissed.
         //Once a non omission has been found the omissions stop changing
         //The streak survives 5 days
@@ -140,6 +122,30 @@ export const getAllData = async (habitName, tableName, dataBase, setHabitData, I
     var data = await fetchData(habitName);
     var habitObject = await createHabitObject(data);
     setHabitData(habitObject);
+};
+// setRow. Tager i mod habitData og opdaterer rækken i databasen med de nye data
+export const setRow = async (habitData) => {
+    const today = (new Date().getDay() + 6) % 7;
+    const data = {
+        habitName: habitData.name,
+        target: parseInt(habitData.target),
+        effort: parseInt(habitData.effort),
+        routine: habitData.routine,
+        count: parseInt(habitData.count[today]),
+    };
+    console.log("Updating row...", habitData);
+    console.log("Data to be posted", data);
+
+    fetch(`${IP}/setRow`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+        .then((response) => response.text())
+        .catch((error) => console.error("Error:", error));
+    console.log("Row updated...");
 };
 
 // postCount. Tager i mod habitData og poster dagens count til databasen

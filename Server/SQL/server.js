@@ -19,7 +19,7 @@ const tableName = "User1";
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "Pass",
+    password: "Luffe2008",
 });
 
 // Check if table exists and create if not

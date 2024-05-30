@@ -39,19 +39,17 @@ export default function RenderData({ habitData, setHabitData }) {
             effort: newData,
         }));
     };
+    const today = (new Date().getDay() + 6) % 7;
 
     return (
         <View style={{ borderColor: "tomato", borderWidth: 2 }}>
             <EditableData Name={"HabitName: "} Data={habitData.name} setData={changeName}></EditableData>
-            {Object.entries(habitData.count).map(([key, value]) => (
-                <View key={key} style={{ paddingLeft: 20, flexDirection: "row" }}>
-                    <EditableData
-                        Name={"Day " + key + ":"}
-                        Data={habitData.count[key]}
-                        setData={(newData) => changeCount(Number(key), newData)}
-                    ></EditableData>
-                </View>
-            ))}
+            <EditableData
+                Name={"Count:"}
+                Data={habitData.count[today]}
+                setData={(newData) => changeCount(today, newData)}
+            ></EditableData>
+
             <EditableData Name={"Target: "} Data={habitData.target} setData={changeTarget}></EditableData>
             <EditableData Name={"Streak: "} Data={habitData.streak.count} setData={changeStreak}></EditableData>
             <EditableData Name={"Routine: "} Data={habitData.routine} setData={changeRoutine}></EditableData>
