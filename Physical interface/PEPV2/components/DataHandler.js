@@ -2,8 +2,6 @@
 const IP = `http://localhost:3000`;
 const todayIndex = (new Date().getDay() + 6) % 7
 
-// TODO: Send korrekt data objekt til RenderDataScreen
-
 export const getAllData = async (name, setHabitData) => {
     habitName = name;
     // henter al data fra database

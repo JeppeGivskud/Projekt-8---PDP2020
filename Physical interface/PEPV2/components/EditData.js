@@ -33,12 +33,9 @@ export default function EditData({ habitData, setHabitData }) {
         console.log(habitData);
     }, [habitData]);
 
-    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
     return (
         <View style={styles.container}>
             <View style={styles.textFieldsContainer}>
-
                 <Text style={styles.title}>Edit todays count and effort</Text>
 
                 {/* Count input felt */}
@@ -47,6 +44,7 @@ export default function EditData({ habitData, setHabitData }) {
                     <TextInput
                         style={styles.textField}
                         placeholder={habitData.count[todayIndex]}
+                        placeholderTextColor={"#aaa"}
                         onChangeText={(text) => setCountTemp(Number(text))}
                     />
                 </View>
@@ -57,6 +55,7 @@ export default function EditData({ habitData, setHabitData }) {
                     <TextInput
                         style={styles.textField}
                         placeholder={habitData.effort}
+                        placeholderTextColor={"#aaa"}
                         onChangeText={(text) => setEffortTemp(Number(text))}
                     />
                 </View>
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        pading: 50,
+        padding: 50,
     },
 
     nameInputFieldContainer: {
