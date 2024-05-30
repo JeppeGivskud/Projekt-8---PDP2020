@@ -66,47 +66,115 @@ app.get("/", (req, res) => {
     console.log("Somebody said hi!");
 });
 
+function checkIfEmptyToday(dataBase, tableName, habitName) {
+    // Check if there is an entry for today, if not create one using the data for a previous day (up to 30 days)
+    // This is to ensure that there is always an entry for today
+    // If there are no entries at all, create a new habit
+    return new Promise((resolve, reject) => {
+        db.query(
+            `SELECT COUNT(*) AS count FROM ${dataBase}.${tableName} WHERE habitName = '${habitName}' AND currentDate = CURDATE()`,
+            (err, result) => {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                } else {
+                    const count = result[0].count;
+                    if (count === 0) {
+                        console.log("Creating empty entry...");
+                        db.query(
+                            //This quiry takes the previous days data and copies it to the current day.
+                            //This is basically the SELECT values FROM table WHERE the habitname is correct and there exists an entry.
+                            `INSERT INTO ${dataBase}.${tableName} (currentDate, habitName, target, routine) 
+                            SELECT CURDATE(), habitName, target, routine 
+                            FROM ${dataBase}.${tableName} 
+                            WHERE habitName = '${habitName}' 
+                            AND EXISTS (
+                                SELECT 1 
+                                FROM ${dataBase}.${tableName} 
+                                WHERE habitName = '${habitName}' 
+                                AND currentDate BETWEEN DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND CURDATE()                            ) 
+                            ORDER BY id DESC 
+                            LIMIT 1`,
+                            (err, result) => {
+                                if (err) {
+                                    reject(err);
+                                    console.log(err);
+                                } else if (result.affectedRows === 0) {
+                                    console.log("Creating new habit in system...");
+                                    db.query(
+                                        `INSERT INTO ${dataBase}.${tableName} (currentDate, habitName) VALUES (CURDATE(), '${habitName}')`,
+                                        (err, result) => {
+                                            if (err) {
+                                                reject(err);
+                                                console.log(err);
+                                            } else {
+                                                console.log("Empty new habit created...");
+                                                resolve();
+                                            }
+                                        }
+                                    );
+                                } else {
+                                    console.log("Empty entry created...");
+                                    resolve();
+                                }
+                            }
+                        );
+                    } else {
+                        console.log("Entry already exists...");
+                        resolve();
+                    }
+                }
+            }
+        );
+    });
+}
+
 app.get("/getData", (req, res) => {
     const { habitName, tableName, dataBase } = req.query;
     console.log("getData", habitName, tableName, dataBase);
-
-    new Promise((resolve, reject) => {
-        let sql = `SELECT * FROM ${dataBase}.${tableName} WHERE habitName = '${habitName}'`;
-        console.log(sql);
-        db.query(sql, (err, result) => {
-            if (err) {
-                reject(err);
-                console.log(err);
-            } else {
-                // Convert the result to an object with the date as key
-                const data = result.reduce((acc, row) => {
-                    const date = new Date(row.currentDate).toISOString();
-                    console.log("date", date);
-                    const options = {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        second: "2-digit",
-                        timeZoneName: "short",
-                    };
-                    const dateString = date.toString();
-                    acc[dateString] = row;
-                    return acc;
-                }, {});
-                resolve(data);
-            }
-        });
-    })
-        .then((data) => {
-            console.log("works");
-            console.log(data);
-            res.json(data); // Return the data to the client
-        })
+    checkIfEmptyToday(dbName, tableName, habitName)
         .catch((err) => {
-            res.send(err);
+            // Handle error
+        })
+        .then(() => {
+            // Code to execute after creating empty entry
+
+            new Promise((resolve, reject) => {
+                let sql = `SELECT * FROM ${dataBase}.${tableName} WHERE habitName = '${habitName}'`;
+                console.log(sql);
+                db.query(sql, (err, result) => {
+                    if (err) {
+                        reject(err);
+                        console.log(err);
+                    } else {
+                        // Convert the result to an object with the date as key
+                        const data = result.reduce((acc, row) => {
+                            const date = new Date(row.currentDate).toISOString();
+                            const options = {
+                                weekday: "long",
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                second: "2-digit",
+                                timeZoneName: "short",
+                            };
+                            const dateString = date.toString();
+                            acc[dateString] = row;
+                            return acc;
+                        }, {});
+                        resolve(data);
+                    }
+                });
+            })
+                .then((data) => {
+                    console.log(Object.keys(data).length + " entries sent");
+                    res.json(data); // Return the data to the client
+                })
+                .catch((err) => {
+                    res.send(err);
+                });
         });
 });
 

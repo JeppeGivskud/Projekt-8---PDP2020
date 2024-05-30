@@ -31,7 +31,7 @@ export default function App() {
         const fetchData = async () => {
             console.log("Fetching data");
             setLoading(true);
-            await DataHandler.getAllData(habitName, tableName, dataBase, setHabitData, "http://hvejsel.dk:5000");
+            await DataHandler.getAllData(habitName, tableName, dataBase, setHabitData);
             setLoading(false);
             console.log("Data fetched");
         };
@@ -71,37 +71,40 @@ export default function App() {
     }
 
     return (
-        <View style={styles.container}>
-            <View style={{ alignItems: "center" }}>
-                <Text>Raw habit data</Text>
+        <View>
+            <Button title="Go back" onPress={() => setLoading(true)}></Button>
+            <View style={styles.container}>
+                <View style={{ alignItems: "center" }}>
+                    <Text>Raw habit data</Text>
 
-                <View style={{ borderColor: "tomato", borderWidth: 2, padding: 10 }}>
-                    <Text>habit name: {habitData.name}</Text>
-                    <Text>History:</Text>
-                    {Object.entries(habitData.count).map(([key, value]) => (
-                        <View key={key} style={{ paddingLeft: 20, flexDirection: "row" }}>
-                            <Text style={{ width: 40 }}>Day {key}</Text>
-                            <Text>:</Text>
-                            <Text> {value}</Text>
-                        </View>
-                    ))}
-                    <Text>target: {habitData.target}</Text>
-                    <Text>streak: {habitData.streak.count}</Text>
-                    <Text>routine: {habitData.routine}</Text>
-                    <Text>effort: {habitData.effort}</Text>
+                    <View style={{ borderColor: "tomato", borderWidth: 2, padding: 10 }}>
+                        <Text>habit name: {habitData.name}</Text>
+                        <Text>History:</Text>
+                        {Object.entries(habitData.count).map(([key, value]) => (
+                            <View key={key} style={{ paddingLeft: 20, flexDirection: "row" }}>
+                                <Text style={{ width: 40 }}>Day {key}</Text>
+                                <Text>:</Text>
+                                <Text> {value}</Text>
+                            </View>
+                        ))}
+                        <Text>target: {habitData.target}</Text>
+                        <Text>streak: {habitData.streak.count}</Text>
+                        <Text>routine: {habitData.routine}</Text>
+                        <Text>effort: {habitData.effort}</Text>
+                    </View>
                 </View>
+                <View style={{ alignItems: "center" }}>
+                    <Text style={{ paddingTop: 10 }}>Edit habit data</Text>
+                    <RenderData habitData={habitDataTemp} setHabitData={setHabitDataTemp}></RenderData>
+                </View>
+                <Button
+                    title={"Save changes"}
+                    onPress={() => {
+                        setHabitData(habitDataTemp);
+                        DataHandler.postCount(name, habitData.count);
+                    }}
+                ></Button>
             </View>
-            <View style={{ alignItems: "center" }}>
-                <Text style={{ paddingTop: 10 }}>Edit habit data</Text>
-                <RenderData habitData={habitDataTemp} setHabitData={setHabitDataTemp}></RenderData>
-            </View>
-            <Button
-                title={"Save changes"}
-                onPress={() => {
-                    setHabitData(habitDataTemp);
-                    DataHandler.postCount(name, habitData.count);
-                }}
-            ></Button>
         </View>
     );
 }
