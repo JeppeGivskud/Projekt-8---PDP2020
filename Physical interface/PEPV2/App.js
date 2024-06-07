@@ -17,7 +17,7 @@ export default function App() {
     const [nameTemp, setNameTemp] = useState("");
     const [loading, setLoading] = useState(true);
 
-    // Loader data hver gang name ændres
+    // Loades data every time name changes
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);

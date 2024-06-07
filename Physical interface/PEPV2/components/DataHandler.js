@@ -4,7 +4,8 @@ const todayIndex = (new Date().getDay() + 6) % 7
 
 export const getAllData = async (name, setHabitData) => {
     habitName = name;
-    // henter al data fra database
+
+    // request all data from database
     const fetchData = async (habitName) => {
         try {
             console.log(habitName);
@@ -63,7 +64,7 @@ export const getAllData = async (name, setHabitData) => {
         return historyCounts;
     };
 
-    // Regne streak og omissions
+    // Regner streak og omissions
     const calculateStreak = async (data) => {
         console.log("habitHistory", data);
         //Checks two things at a time. The streak length and the days which have been omissed.
@@ -101,7 +102,7 @@ export const getAllData = async (name, setHabitData) => {
             streak: {},
         };
 
-        // Output er en string med dagens dato med format "Mon Mar 01 2021 00:00:00 GMT+0200 (Central European Standard Time)"
+        // Output is string like "Mon Mar 01 2021 00:00:00 GMT+0200 (Central European Standard Time)"
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const todayString = today.toString();
@@ -121,7 +122,7 @@ export const getAllData = async (name, setHabitData) => {
         return habitObject;
     };
 
-    // Output er getAllData funktionen 
+    // Output af getAllData funktionen 
     var data = await fetchData(habitName);
     var habitObject = await createHabitObject(data);
     setHabitData(habitObject);
