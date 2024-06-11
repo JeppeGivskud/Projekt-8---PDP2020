@@ -136,7 +136,7 @@ export const setRow = async (habitData) => {
         routine: habitData.routine,
         count: parseInt(habitData.count[today]),
     };
-    console.log("Updating row...", habitData);
+    console.log("Sending new values for today to: ", IP);
     console.log("Data to be posted", data);
 
     fetch(`${IP}/setRow`, {
@@ -147,8 +147,12 @@ export const setRow = async (habitData) => {
         body: JSON.stringify(data),
     })
         .then((response) => response.text())
-        .catch((error) => console.error("Error:", error));
-    console.log("Row updated...");
+        .then((responseText) => {
+            console.log("Message:", responseText);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 };
 
 // postCount. Tager i mod habitData og poster dagens count til databasen
