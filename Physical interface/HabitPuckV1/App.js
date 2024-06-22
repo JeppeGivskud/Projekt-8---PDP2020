@@ -105,7 +105,6 @@ export default function App() {
 
     // Log the current count whenever encoder changes and update the count or effortCount
     useEffect(() => {
-        console.log("Current counts", encoderValue, count, effortCount);
         if (currentScreen.Overview) {
             setCount(FloorValue(encoderValue));
         } else if (currentScreen.Effort) {
@@ -127,6 +126,7 @@ export default function App() {
                 });
             }
         }
+        console.log({ encoderValue, count, effortCount });
     }, [encoderValue]);
 
     // Update the screen whenever the button is pressed
@@ -138,9 +138,11 @@ export default function App() {
                 if (prevScreen.Overview) {
                     Database.postCount(habitName, count);
                     newScreen = { Overview: false, Effort: true, Done: false };
+                    setEncoderValue(effortCount);
                 } else if (prevScreen.Effort) {
                     console.log("Effort count", effortCount);
                     Database.postEffort(habitName, effortCount);
+                    setEncoderValue(count);
 
                     if (countRef.current < target) {
                         console.log("Count is less than target", count, target);
@@ -158,6 +160,7 @@ export default function App() {
                     }
                 } else if (prevScreen.Done) {
                     newScreen = { Overview: true, Effort: false, Done: false };
+                    setEncoderValue(count);
                 }
 
                 console.log("Switching screen to", newScreen);
