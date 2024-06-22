@@ -7,26 +7,39 @@ const readline = require("readline");
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 
+var count = 0;
+// Listen for 'j' key press
+process.stdin.on("keypress", (str, key) => {
+    if (key.name === "j") {
+        count--;
+        io.sockets.emit("encoder", count);
+    }
+});
 // Listen for 'k' key press
 process.stdin.on("keypress", (str, key) => {
     if (key.name === "k") {
-        io.sockets.emit("pressed", "We Pressin Now");
+        setTimeout(() => {
+            io.sockets.emit("pressed", "We Pressin Now");
+        }, 200);
     }
 });
-// Listen for 'k' key press
+// Listen for 'l' key press
 process.stdin.on("keypress", (str, key) => {
-    if (key.name === "j") {
-        var rando = Math.floor(Math.random() * 100) + 1;
-        io.sockets.emit("encoder", rando);
+    console.log("Count is currently", count);
+    if (key.name === "l") {
+        count++;
+        io.sockets.emit("encoder", count);
     }
 });
-// Listen for 'h' key press
+
+// Listen for 's' key press
 process.stdin.on("keypress", (str, key) => {
-    if (key.name === "h") {
-        console.log("h key pressed");
-        io.sockets.emit("getCount", "getCount");
+    if (key.name === "s") {
+        console.log("Exiting the program...");
+        process.exit(0);
     }
 });
+
 // Add messages when sockets open and close connections
 io.on("connection", (socket) => {
     console.log(`[${socket.id}] socket connected`);
@@ -34,8 +47,9 @@ io.on("connection", (socket) => {
         console.log(`[${socket.id}] socket disconnected - ${reason}`);
     });
     socket.emit("getCount", "getCount");
-    socket.on("sendCount", (count) => {
-        console.log("sendCount", count);
+    socket.on("sendCount", (Count) => {
+        count = Count;
+        console.log(`[${Count}] is nice`);
         console.log(`[${count}] is nice`);
     });
 });
