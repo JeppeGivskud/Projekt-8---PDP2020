@@ -26,10 +26,11 @@ class Button:
                 print("Button pressed")
 
     def send(self, sio):
+        """This function will run in a separate event thread. It will send a message to the client when the button is pressed. The function uses an infinite loop to keep the thread alive."""
         while True:
             with self.lock:
                 if self.changed:
-                    sio.emit("pressed", "we prssed the button")
+                    sio.emit("pressed", "pressed")
                     sio.emit("getCount", "getCount")
                     print("sent pressed")
                     self.changed = False
@@ -92,11 +93,11 @@ class Encoder:
                 self.changed = True
 
     def send(self, sio):
-        """Function for sending the encoder value to the client. This function will run in a separate event thread. It will send the encoder value to the client when the value has changed."""
+        """Function for sending the encoder value to the client. This function will run in a separate event thread. It will send the encoder value to the client when the value has changed. The function uses an infinite loop to keep the thread alive."""
         while True:
             with self.lock:
                 if self.changed:
-                    sio.emit("encoder", self.counter)
+                    sio.emit("encoder", self.counter)  # when the value has changed, send the new value to the client. TODO maybe change to let the client handle the value change.
                     print("send_encoder: sent ", self.counter)
                     self.changed = False
             eventlet.sleep(0.001)
@@ -114,9 +115,7 @@ class Server:
             button (Button object): Pass the button object to the server.
             encoder (Encoder object): Pass the encoder object to the server.
         """
-        self.sio = socketio.Server(
-            async_mode="eventlet", cors_allowed_origins=["http://localhost:8081", "http://hvejsel.dk:8080"]
-        )
+        self.sio = socketio.Server(async_mode="eventlet", cors_allowed_origins=["http://localhost:8081", "http://hvejsel.dk:8080"])
         self.app = socketio.WSGIApp(self.sio)
         self.button = button
         self.encoder = encoder
