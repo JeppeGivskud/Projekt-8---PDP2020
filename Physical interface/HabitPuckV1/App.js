@@ -119,6 +119,8 @@ export default function App() {
 
         if (currentScreen.Effort) {
             if (encoderValue < -3) {
+                setEncoderValue(count);
+                socket.emit("sendCount", count);
                 setCurrentScreen({
                     Overview: true,
                     Effort: false,
