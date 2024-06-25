@@ -114,7 +114,7 @@ class Encoder:
                 print("Direction -> ", self.counter)
 
             elif switch_A == 1 and switch_B == 1:
-                direction = "Counterclockwise"
+                direction = "counterclockwise"
                 self.counter.update_counter(direction)
                 print("Direction <- ", self.counter)
             else:
