@@ -32,7 +32,7 @@ export default function App() {
     const [target, setTarget] = useState(100);
     const [effortCount, setEffortCount] = useState(0);
     const [pressed, setPressed] = useState(false);
-    const [habitColor, setHabitColor] = useState("007AFF");
+    const [habitColor, setHabitColor] = useState("#007AFF");
     //Database
     const [encoderValue, setEncoderValue] = useState(0);
 
