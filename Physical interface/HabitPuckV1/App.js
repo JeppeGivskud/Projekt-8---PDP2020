@@ -41,15 +41,15 @@ export default function App() {
     // const [historyCounts, setHistoryCounts] = useState(History.getHistory(History.dummyDatasimple));
     // const [streak, setStreak] = useState(History.calculateStreak(History.dummyDatasimple));
     const [historyCounts, setHistoryCounts] = useState({
-        0: 0,
-        1: 0,
-        2: 0,
+        0: 100,
+        1: 70,
+        2: 80,
         3: 0,
         4: 0,
         5: 0,
         6: 0,
     });
-    const [streak, setStreak] = useState({ streak: 2, omissions: 0 });
+    const [streak, setStreak] = useState({ streak: 4, omissions: 0 });
 
     const [currentScreen, setCurrentScreen] = useState({
         Overview: true,
@@ -64,33 +64,31 @@ export default function App() {
 
     // Get all data and set state countHistory and streak
     useEffect(() => {
-        Database.getAllData(habitName)
-            .then((data) => {
-                History.getHistory(data)
-                    .then((history) => {
-                        console.log("history = ", history);
-                        console.log("data = ", data);
-                        setHistoryCounts(history);
-                        setLoadingCounts(false);
-
-                        const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
-                        const week = History.getPreviousWeekdays();
-                        setCount(history[todaysday]);
-                        console.log("effort", history[todaysday]);
-                        setEffortCount(data[week[todaysday]].effort);
-                        console.log("effort", data[week[todaysday]].effort);
-                    })
-                    .catch((error) => console.error(error));
-
-                History.calculateStreak(data)
-                    .then((streak) => {
-                        console.log("streak = ", streak);
-                        setStreak(streak);
-                        setLoadingStreak(false);
-                    })
-                    .catch((error) => console.error(error));
-            })
-            .catch((error) => console.error(error));
+        // Database.getAllData(habitName)
+        //     .then((data) => {
+        //         History.getHistory(data)
+        //             .then((history) => {
+        //                 console.log("history = ", history);
+        //                 console.log("data = ", data);
+        //                 setHistoryCounts(history);
+        //                 setLoadingCounts(false);
+        //                 const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
+        //                 const week = History.getPreviousWeekdays();
+        //                 setCount(history[todaysday]);
+        //                 console.log("effort", history[todaysday]);
+        //                 setEffortCount(data[week[todaysday]].effort);
+        //                 console.log("effort", data[week[todaysday]].effort);
+        //             })
+        //             .catch((error) => console.error(error));
+        //         History.calculateStreak(data)
+        //             .then((streak) => {
+        //                 console.log("streak = ", streak);
+        //                 setStreak(streak);
+        //                 setLoadingStreak(false);
+        //             })
+        //             .catch((error) => console.error(error));
+        //     })
+        //     .catch((error) => console.error(error));
     }, []);
 
     // Update the ref's value whenever count changes
