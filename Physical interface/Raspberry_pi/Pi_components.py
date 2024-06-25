@@ -31,7 +31,7 @@ class Button:
             with self.lock:
                 if self.changed:
                     sio.emit("pressed", "pressed")
-                    sio.emit("getCount", "getCount")
+                    # sio.emit("getCount", "getCount")
                     print("sent pressed")
                     self.changed = False
             eventlet.sleep(0.001)
