@@ -13,8 +13,8 @@ class Counter:
         self.last_update_time = None
         self.last_direction = None
         self.step_size = 1
-        self.max_step_size = 5  # Maximum step size
-        self.acceleration_timeframe = 2  # Seconds within which acceleration occurs
+        self.max_step_size = 4  # Maximum step size
+        self.acceleration_timeframe = 0.2  # Seconds within which acceleration occurs
 
     def update_counter(self, direction):
         current_time = time.time()
@@ -30,7 +30,7 @@ class Counter:
         # Update counter based on direction
         if direction == "clockwise":
             self.counter = min(100, self.counter + self.step_size)
-            print("Direction -> ", self.counter)
+            print("Direction -> ", self. counter)
         elif direction == "counterclockwise":  # Ensure consistent casing
             self.counter = max(-5, self.counter - self.step_size)
             print("Direction <- ", self.counter)
