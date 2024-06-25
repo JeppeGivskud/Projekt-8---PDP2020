@@ -1,4 +1,4 @@
-INSERT INTO habits (currentDate, habitName, count, target, effort, routine) VALUES
+INSERT INTO user1 (currentDate, habitName, count, target, effort, routine) VALUES
 ('2024-05-29', 'Pushups', 0, 10, 5, 'Morning'),
 ('2024-05-28', 'Pushups', 10, 10, 5, 'Morning'),
 ('2024-05-27', 'Pushups', 20, 10, 5, 'Morning'),
