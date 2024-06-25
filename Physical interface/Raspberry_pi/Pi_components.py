@@ -86,7 +86,7 @@ class Encoder:
         """
         self.pin_A = pin_A
         self.pin_B = pin_B
-        self.counter = Counter
+        self.counter = Counter()
         self.changed = False
         self.lock = threading.Lock()
         GPIO.setup(self.pin_A, GPIO.IN)
