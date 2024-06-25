@@ -4,6 +4,43 @@ import threading
 import socketio
 import eventlet
 
+import time
+
+class Counter:
+    def __init__(self):
+        self.counter = 0
+        self.last_update_time = None
+        self.last_direction = None
+        self.step_size = 1
+        self.max_step_size = 5  # Maximum step size
+        self.acceleration_timeframe = 2  # Seconds within which acceleration occurs
+
+    def update_counter(self, direction):
+        current_time = time.time()
+
+        # Check if direction is the same and within the timeframe
+        if direction == self.last_direction and self.last_update_time and current_time - self.last_update_time <= self.acceleration_timeframe:
+            # Increase step size with acceleration, up to a maximum
+            self.step_size = min(self.step_size + 1, self.max_step_size)
+        else:
+            # Reset step size
+            self.step_size = 1
+
+        # Update counter based on direction
+        if direction == "clockwise":
+            self.counter = min(100, self.counter + self.step_size)
+            print("Direction -> ", self.counter)
+        elif direction == "counterclockwise":  # Ensure consistent casing
+            self.counter = max(-5, self.counter - self.step_size)
+            print("Direction <- ", self.counter)
+
+        # Update last update time and direction
+        self.last_update_time = current_time
+        self.last_direction = direction
+
+        # Placeholder for the lock and changed flag logic
+        # with self.lock:
+        #     self.changed = True
 
 class Button:
     def __init__(self, pin):
@@ -47,7 +84,7 @@ class Encoder:
         """
         self.pin_A = pin_A
         self.pin_B = pin_B
-        self.counter = 0
+        self.counter = counter
         self.changed = False
         self.lock = threading.Lock()
         GPIO.setup(self.pin_A, GPIO.IN)
@@ -71,24 +108,16 @@ class Encoder:
             # Determine direction of rotation
             if switch_A == 1 and switch_B == 0:
                 direction = "clockwise"
+                counter( direction)
+                print("Direction -> ", self.counter)
+
             elif switch_A == 1 and switch_B == 1:
                 direction = "Counterclockwise"
+                counter( direction)
+                print("Direction <- ", self.counter)
             else:
                 return  # No rotation
 
-            # Update counter based on direction
-            if direction == "clockwise":
-                if self.counter < 100:
-                    self.counter += 1
-                else:
-                    self.counter = 100
-                print("Direction -> ", self.counter)
-            elif direction == "Counterclockwise":
-                if self.counter > -5:
-                    self.counter -= 1
-                else:
-                    self.counter = -5
-                print("Direction <- ", self.counter)
             with self.lock:
                 self.changed = True
 
