@@ -33,7 +33,7 @@ export default function ProgressBar({ count, target, habitColor }) {
             </View>
             <View style={[styles.Absolute, { transform: [{ rotate: rotationtext }] }]}>
                 <CircularProgressBase
-                    value={count === 0 ? 1 : count}
+                    value={count === 0 ? 0.1 : count}
                     radius={250 / 2}
                     duration={200}
                     activeStrokeWidth={40}
