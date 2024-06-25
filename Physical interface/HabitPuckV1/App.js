@@ -188,7 +188,7 @@ export default function App() {
             }
         });
         socket.on("encoder", (data) => {
-            if (data < target && data > -5) setEncoderValue(data);
+            if (data < target + 1 && data > -5) setEncoderValue(data);
         });
         socket.on("pressed", (data) => {
             setPressed(true);
