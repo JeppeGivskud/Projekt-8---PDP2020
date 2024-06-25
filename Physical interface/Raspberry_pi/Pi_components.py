@@ -6,6 +6,7 @@ import eventlet
 
 import time
 
+
 class Counter:
     def __init__(self):
         self.counter = 0
@@ -41,6 +42,7 @@ class Counter:
         # Placeholder for the lock and changed flag logic
         # with self.lock:
         #     self.changed = True
+
 
 class Button:
     def __init__(self, pin):
@@ -84,7 +86,7 @@ class Encoder:
         """
         self.pin_A = pin_A
         self.pin_B = pin_B
-        self.counter = counter
+        self.counter = Counter
         self.changed = False
         self.lock = threading.Lock()
         GPIO.setup(self.pin_A, GPIO.IN)
@@ -108,12 +110,12 @@ class Encoder:
             # Determine direction of rotation
             if switch_A == 1 and switch_B == 0:
                 direction = "clockwise"
-                counter( direction)
+                self.counter(direction)
                 print("Direction -> ", self.counter)
 
             elif switch_A == 1 and switch_B == 1:
                 direction = "Counterclockwise"
-                counter( direction)
+                self.counter(direction)
                 print("Direction <- ", self.counter)
             else:
                 return  # No rotation
@@ -163,7 +165,8 @@ class Server:
     def set_count(self, sid, data):
         self.encoder.set_counter(data)
         print("recieved setCount: ", data)
-       #  self.sio.emit("encoder", self.encoder.counter)
+
+    #  self.sio.emit("encoder", self.encoder.counter)
 
     def listen(self):
         eventlet.wsgi.server(eventlet.listen(("", 3000)), self.app)
