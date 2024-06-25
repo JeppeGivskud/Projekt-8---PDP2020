@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useRef, useState } from "react";
-import { Button, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import RenderData from "./components/RenderData";
 import * as DataHandler from "./components/DataHandler";
 import { ActivityIndicator } from "react-native";
@@ -37,7 +37,7 @@ export default function App() {
             //     console.log("Data fetched");
             // };
             // fetchData();
-            DataHandler.getAllData(habitName, tableName, dataBase, setHabitData /*"http://hvejsel.dk:5000"*/);
+            DataHandler.getAllData(habitName, tableName, dataBase, setHabitData, "http://hvejsel.dk:5000");
         }
     }, [loadingScreen]);
 
@@ -83,41 +83,45 @@ export default function App() {
     }
 
     return (
-        <View>
-            <Button title="Go back" onPress={() => setLoadingScreen(true)}></Button>
-            <View style={styles.container}>
-                <View style={{ alignItems: "center" }}>
-                    <Text>Habit data</Text>
+        <View style={{ flex: 1 }}>
+            <SafeAreaView>
+                <ScrollView>
+                    <Button title="Go back" onPress={() => setLoadingScreen(true)}></Button>
+                    <View style={styles.container}>
+                        <View style={{ alignItems: "center" }}>
+                            <Text>Habit data</Text>
 
-                    <View style={{ borderColor: "tomato", borderWidth: 2, padding: 10 }}>
-                        <Text>Habit name: {habitData.name}</Text>
-                        <Text>Week:</Text>
-                        {Object.entries(habitData.count).map(([key, value]) => (
-                            <View key={key} style={{ paddingLeft: 20, flexDirection: "row" }}>
-                                <Text style={{ width: 40 }}>Day {key}</Text>
-                                <Text>:</Text>
-                                <Text> {value}</Text>
+                            <View style={{ borderColor: "tomato", borderWidth: 2, padding: 10 }}>
+                                <Text>Habit name: {habitData.name}</Text>
+                                <Text>Week:</Text>
+                                {Object.entries(habitData.count).map(([key, value]) => (
+                                    <View key={key} style={{ paddingLeft: 20, flexDirection: "row" }}>
+                                        <Text style={{ width: 40 }}>Day {key}</Text>
+                                        <Text>:</Text>
+                                        <Text> {value}</Text>
+                                    </View>
+                                ))}
+                                <Text>Target: {habitData.target}</Text>
+                                <Text>Streak: {habitData.streak.count}</Text>
+                                <Text>Routine: {habitData.routine}</Text>
+                                <Text>Effort: {habitData.effort}</Text>
                             </View>
-                        ))}
-                        <Text>Target: {habitData.target}</Text>
-                        <Text>Streak: {habitData.streak.count}</Text>
-                        <Text>Routine: {habitData.routine}</Text>
-                        <Text>Effort: {habitData.effort}</Text>
+                        </View>
+                        <View style={{ alignItems: "center" }}>
+                            <Text style={{ paddingTop: 10 }}>Edit habit data</Text>
+                            <RenderData habitData={habitDataTemp} setHabitData={setHabitDataTemp}></RenderData>
+                        </View>
+                        <Button
+                            title={"Save changes"}
+                            onPress={() => {
+                                setHabitData(habitDataTemp);
+                                setHabitDataTemp(habitDataTemp);
+                                DataHandler.setRow(habitDataTemp);
+                            }}
+                        ></Button>
                     </View>
-                </View>
-                <View style={{ alignItems: "center" }}>
-                    <Text style={{ paddingTop: 10 }}>Edit habit data</Text>
-                    <RenderData habitData={habitDataTemp} setHabitData={setHabitDataTemp}></RenderData>
-                </View>
-                <Button
-                    title={"Save changes"}
-                    onPress={() => {
-                        setHabitData(habitDataTemp);
-                        setHabitDataTemp(habitDataTemp);
-                        DataHandler.setRow(habitDataTemp);
-                    }}
-                ></Button>
-            </View>
+                </ScrollView>
+            </SafeAreaView>
         </View>
     );
 }
@@ -126,7 +130,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         gap: 10,
-        flexDirection: "row",
         backgroundColor: "#fff",
         alignItems: "center",
         justifyContent: "center",

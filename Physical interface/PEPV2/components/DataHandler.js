@@ -55,7 +55,9 @@ export const getAllData = async (habitName, tableName, dataBase, setHabitData, I
         };
         // const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
         const Keys = getPreviousWeekdays();
+        console.log("Keys", Keys);
         for (i = 0; i < Keys.length; i++) {
+            console.log("Keys[i]", Keys[i], habitHistory[Keys[i]]);
             if (habitHistory[Keys[i]]) {
                 historyCounts[i] = habitHistory[Keys[i]].count;
             } else {
@@ -134,7 +136,7 @@ export const setRow = async (habitData) => {
         routine: habitData.routine,
         count: parseInt(habitData.count[today]),
     };
-    console.log("Updating row...", habitData);
+    console.log("Sending new values for today to: ", IP);
     console.log("Data to be posted", data);
 
     fetch(`${IP}/setRow`, {
@@ -145,8 +147,12 @@ export const setRow = async (habitData) => {
         body: JSON.stringify(data),
     })
         .then((response) => response.text())
-        .catch((error) => console.error("Error:", error));
-    console.log("Row updated...");
+        .then((responseText) => {
+            console.log("Message:", responseText);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 };
 
 // postCount. Tager i mod habitData og poster dagens count til databasen
