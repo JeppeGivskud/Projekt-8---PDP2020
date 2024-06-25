@@ -110,12 +110,12 @@ class Encoder:
             # Determine direction of rotation
             if switch_A == 1 and switch_B == 0:
                 direction = "clockwise"
-                self.counter(direction)
+                self.counter.update_counter(direction)
                 print("Direction -> ", self.counter)
 
             elif switch_A == 1 and switch_B == 1:
                 direction = "Counterclockwise"
-                self.counter(direction)
+                self.counter.update_counter(direction)
                 print("Direction <- ", self.counter)
             else:
                 return  # No rotation
@@ -128,14 +128,14 @@ class Encoder:
         while True:
             with self.lock:
                 if self.changed:
-                    sio.emit("encoder", self.counter)  # when the value has changed, send the new value to the client. TODO maybe change to let the client handle the value change.
-                    print("send_encoder: sent ", self.counter)
+                    sio.emit("encoder", self.counter.counter)  # when the value has changed, send the new value to the client. TODO maybe change to let the client handle the value change.
+                    print("send_encoder: sent ", self.counter.counter)
                     self.changed = False
             eventlet.sleep(0.001)
 
     def set_counter(self, value):
         with self.lock:
-            self.counter = value
+            self.counter.counter = value
 
 
 class Server:
