@@ -134,7 +134,7 @@ class Server:
     def set_count(self, sid, data):
         self.encoder.set_counter(data)
         print("recieved setCount: ", data)
-        self.sio.emit("encoder", self.encoder.counter)
+       #  self.sio.emit("encoder", self.encoder.counter)
 
     def listen(self):
         eventlet.wsgi.server(eventlet.listen(("", 3000)), self.app)
