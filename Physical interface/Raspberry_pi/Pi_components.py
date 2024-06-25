@@ -30,7 +30,7 @@ class Counter:
         # Update counter based on direction
         if direction == "clockwise":
             self.counter = min(100, self.counter + self.step_size)
-            print("Direction -> ", self. counter)
+            print("Direction -> ", self.counter)
         elif direction == "counterclockwise":  # Ensure consistent casing
             self.counter = max(-5, self.counter - self.step_size)
             print("Direction <- ", self.counter)
@@ -111,12 +111,12 @@ class Encoder:
             if switch_A == 1 and switch_B == 0:
                 direction = "clockwise"
                 self.counter.update_counter(direction)
-                print("Direction -> ", self.counter)
+                # print("Direction -> ", self.counter)
 
             elif switch_A == 1 and switch_B == 1:
                 direction = "counterclockwise"
                 self.counter.update_counter(direction)
-                print("Direction <- ", self.counter)
+                # print("Direction <- ", self.counter)
             else:
                 return  # No rotation
 
