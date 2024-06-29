@@ -10,6 +10,7 @@ There is also an app because why not and also configuration should not be made o
 The device can turn clockwise and counterclockwise and be pushed.
 
 A demo can be found here: https://jeppegivskud.github.io/Projekt-8-PDP2020/
-https://github.com/JeppeGivskud/Projekt-8-PDP2020/blob/main/IT3%20Flow%20chart.png
+
+Diagrams:
 ![alt text](https://github.com/JeppeGivskud/Projekt-8-PDP2020/blob/main/IT3%20Flow%20chart.png?raw=true)
 ![alt text](https://github.com/JeppeGivskud/Projekt-8-PDP2020/blob/main/Poster.png?raw=true)
