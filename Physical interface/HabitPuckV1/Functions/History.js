@@ -54,6 +54,7 @@ export const dummyData = {
         routine: "Morning",
     },
 };
+
 export function getPreviousWeekdays() {
     const today = new Date();
     const daysOfWeek = [
@@ -82,6 +83,8 @@ export function getPreviousWeekdays() {
 
     return weekdays.reverse();
 }
+
+
 export async function getHistory(habitHistory) {
     var historyCounts = {
         0: 0,

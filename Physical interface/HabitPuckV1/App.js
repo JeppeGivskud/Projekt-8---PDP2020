@@ -12,7 +12,9 @@ import DoneScreen from "./Components/Done";
 //Websocket
 import io from "socket.io-client";
 const socketEndpoint = "http://localhost:3000";
-
+const socket = io(socketEndpoint, {
+    transports: ["websocket"],
+});
 //Code for starting the server
 //git pull; yarn expo export -p web ;yarn http-server ./dist -a 192.168.1.173 --port 8080
 //TODO: Implement variable target (progress bars and floor and maybe more)
@@ -30,7 +32,7 @@ export default function App() {
     const [target, setTarget] = useState(100);
     const [effortCount, setEffortCount] = useState(0);
     const [pressed, setPressed] = useState(false);
-    const [habitColor, setHabitColor] = useState("#FF2C55");
+    const [habitColor, setHabitColor] = useState("#007AFF");
     //Database
     const [encoderValue, setEncoderValue] = useState(0);
 
@@ -39,15 +41,15 @@ export default function App() {
     // const [historyCounts, setHistoryCounts] = useState(History.getHistory(History.dummyDatasimple));
     // const [streak, setStreak] = useState(History.calculateStreak(History.dummyDatasimple));
     const [historyCounts, setHistoryCounts] = useState({
-        0: 0,
-        1: 0,
-        2: 0,
+        0: 100,
+        1: 70,
+        2: 80,
         3: 0,
         4: 0,
         5: 0,
         6: 0,
     });
-    const [streak, setStreak] = useState({ streak: 2, omissions: 0 });
+    const [streak, setStreak] = useState({ streak: 4, omissions: 0 });
 
     const [currentScreen, setCurrentScreen] = useState({
         Overview: true,
@@ -62,33 +64,31 @@ export default function App() {
 
     // Get all data and set state countHistory and streak
     useEffect(() => {
-        Database.getAllData(habitName)
-            .then((data) => {
-                History.getHistory(data)
-                    .then((history) => {
-                        console.log("history = ", history);
-                        console.log("data = ", data);
-                        setHistoryCounts(history);
-                        setLoadingCounts(false);
-
-                        const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
-                        const week = History.getPreviousWeekdays();
-                        setCount(history[todaysday]);
-                        console.log("effort", history[todaysday]);
-                        setEffortCount(data[week[todaysday]].effort);
-                        console.log("effort", data[week[todaysday]].effort);
-                    })
-                    .catch((error) => console.error(error));
-
-                History.calculateStreak(data)
-                    .then((streak) => {
-                        console.log("streak = ", streak);
-                        setStreak(streak);
-                        setLoadingStreak(false);
-                    })
-                    .catch((error) => console.error(error));
-            })
-            .catch((error) => console.error(error));
+        // Database.getAllData(habitName)
+        //     .then((data) => {
+        //         History.getHistory(data)
+        //             .then((history) => {
+        //                 console.log("history = ", history);
+        //                 console.log("data = ", data);
+        //                 setHistoryCounts(history);
+        //                 setLoadingCounts(false);
+        //                 const todaysday = (new Date().getDay() + 6) % 7; // Shift Sunday to the end
+        //                 const week = History.getPreviousWeekdays();
+        //                 setCount(history[todaysday]);
+        //                 console.log("effort", history[todaysday]);
+        //                 setEffortCount(data[week[todaysday]].effort);
+        //                 console.log("effort", data[week[todaysday]].effort);
+        //             })
+        //             .catch((error) => console.error(error));
+        //         History.calculateStreak(data)
+        //             .then((streak) => {
+        //                 console.log("streak = ", streak);
+        //                 setStreak(streak);
+        //                 setLoadingStreak(false);
+        //             })
+        //             .catch((error) => console.error(error));
+        //     })
+        //     .catch((error) => console.error(error));
     }, []);
 
     // Update the ref's value whenever count changes
@@ -105,7 +105,6 @@ export default function App() {
 
     // Log the current count whenever encoder changes and update the count or effortCount
     useEffect(() => {
-        console.log("Current counts", encoderValue, count, effortCount);
         if (currentScreen.Overview) {
             setCount(FloorValue(encoderValue));
         } else if (currentScreen.Effort) {
@@ -120,6 +119,8 @@ export default function App() {
 
         if (currentScreen.Effort) {
             if (encoderValue < -3) {
+                setEncoderValue(count);
+                socket.emit("sendCount", count);
                 setCurrentScreen({
                     Overview: true,
                     Effort: false,
@@ -127,6 +128,7 @@ export default function App() {
                 });
             }
         }
+        console.log({ encoderValue, count, effortCount });
     }, [encoderValue]);
 
     // Update the screen whenever the button is pressed
@@ -136,11 +138,17 @@ export default function App() {
                 // Determine the new screen based on the previous screen
                 let newScreen;
                 if (prevScreen.Overview) {
+                    console.log("Overview count", count);
                     Database.postCount(habitName, count);
                     newScreen = { Overview: false, Effort: true, Done: false };
+                    setEncoderValue(effortCount);
+                    socket.emit("sendCount", effortCount);
                 } else if (prevScreen.Effort) {
                     console.log("Effort count", effortCount);
                     Database.postEffort(habitName, effortCount);
+
+                    setEncoderValue(count);
+                    socket.emit("sendCount", count);
 
                     if (countRef.current < target) {
                         console.log("Count is less than target", count, target);
@@ -157,7 +165,10 @@ export default function App() {
                         };
                     }
                 } else if (prevScreen.Done) {
+                    console.log("Done count", count);
                     newScreen = { Overview: true, Effort: false, Done: false };
+                    setEncoderValue(count);
+                    socket.emit("sendCount", count);
                 }
 
                 console.log("Switching screen to", newScreen);
@@ -169,21 +180,15 @@ export default function App() {
 
     const [hasConnection, setConnection] = useState(false);
     useEffect(() => {
-        const socket = io(socketEndpoint, {
-            transports: ["websocket"],
-        });
-
         socket.on("connect", () => setConnection(true));
         socket.on("disconnect", () => setConnection(false));
         socket.on("getCount", (data) => {
             if (currentScreenRef.current.Overview) {
-                socket.emit("sendCount", countRef.current);
-            } else if (currentScreenRef.current.Effort) {
-                socket.emit("sendCount", effortCountRef.current);
+                socket.emit("sendCount", encoderValue);
             }
         });
         socket.on("encoder", (data) => {
-            setEncoderValue(data);
+            if (data < target + 1 && data > -5) setEncoderValue(data);
         });
         socket.on("pressed", (data) => {
             setPressed(true);

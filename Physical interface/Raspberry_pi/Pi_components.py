@@ -4,6 +4,45 @@ import threading
 import socketio
 import eventlet
 
+import time
+
+
+class Counter:
+    def __init__(self):
+        self.counter = 0
+        self.last_update_time = None
+        self.last_direction = None
+        self.step_size = 1
+        self.max_step_size = 4  # Maximum step size
+        self.acceleration_timeframe = 0.2  # Seconds within which acceleration occurs
+
+    def update_counter(self, direction):
+        current_time = time.time()
+
+        # Check if direction is the same and within the timeframe
+        if direction == self.last_direction and self.last_update_time and current_time - self.last_update_time <= self.acceleration_timeframe:
+            # Increase step size with acceleration, up to a maximum
+            self.step_size = min(self.step_size + 1, self.max_step_size)
+        else:
+            # Reset step size
+            self.step_size = 1
+
+        # Update counter based on direction
+        if direction == "clockwise":
+            self.counter = min(100, self.counter + self.step_size)
+            print("Direction -> ", self.counter)
+        elif direction == "counterclockwise":  # Ensure consistent casing
+            self.counter = max(-5, self.counter - self.step_size)
+            print("Direction <- ", self.counter)
+
+        # Update last update time and direction
+        self.last_update_time = current_time
+        self.last_direction = direction
+
+        # Placeholder for the lock and changed flag logic
+        # with self.lock:
+        #     self.changed = True
+
 
 class Button:
     def __init__(self, pin):
@@ -26,11 +65,12 @@ class Button:
                 print("Button pressed")
 
     def send(self, sio):
+        """This function will run in a separate event thread. It will send a message to the client when the button is pressed. The function uses an infinite loop to keep the thread alive."""
         while True:
             with self.lock:
                 if self.changed:
-                    sio.emit("pressed", "we prssed the button")
-                    sio.emit("getCount", "getCount")
+                    sio.emit("pressed", "pressed")
+                    # sio.emit("getCount", "getCount")
                     print("sent pressed")
                     self.changed = False
             eventlet.sleep(0.001)
@@ -46,7 +86,7 @@ class Encoder:
         """
         self.pin_A = pin_A
         self.pin_B = pin_B
-        self.counter = 0
+        self.counter = Counter()
         self.changed = False
         self.lock = threading.Lock()
         GPIO.setup(self.pin_A, GPIO.IN)
@@ -70,40 +110,32 @@ class Encoder:
             # Determine direction of rotation
             if switch_A == 1 and switch_B == 0:
                 direction = "clockwise"
+                self.counter.update_counter(direction)
+                # print("Direction -> ", self.counter)
+
             elif switch_A == 1 and switch_B == 1:
-                direction = "Counterclockwise"
+                direction = "counterclockwise"
+                self.counter.update_counter(direction)
+                # print("Direction <- ", self.counter)
             else:
                 return  # No rotation
 
-            # Update counter based on direction
-            if direction == "clockwise":
-                if self.counter < 100:
-                    self.counter += 1
-                else:
-                    self.counter = 100
-                print("Direction -> ", self.counter)
-            elif direction == "Counterclockwise":
-                if self.counter > -5:
-                    self.counter -= 1
-                else:
-                    self.counter = -5
-                print("Direction <- ", self.counter)
             with self.lock:
                 self.changed = True
 
     def send(self, sio):
-        """Function for sending the encoder value to the client. This function will run in a separate event thread. It will send the encoder value to the client when the value has changed."""
+        """Function for sending the encoder value to the client. This function will run in a separate event thread. It will send the encoder value to the client when the value has changed. The function uses an infinite loop to keep the thread alive."""
         while True:
             with self.lock:
                 if self.changed:
-                    sio.emit("encoder", self.counter)
-                    print("send_encoder: sent ", self.counter)
+                    sio.emit("encoder", self.counter.counter)  # when the value has changed, send the new value to the client. TODO maybe change to let the client handle the value change.
+                    print("send_encoder: sent ", self.counter.counter)
                     self.changed = False
             eventlet.sleep(0.001)
 
     def set_counter(self, value):
         with self.lock:
-            self.counter = value
+            self.counter.counter = value
 
 
 class Server:
@@ -114,9 +146,7 @@ class Server:
             button (Button object): Pass the button object to the server.
             encoder (Encoder object): Pass the encoder object to the server.
         """
-        self.sio = socketio.Server(
-            async_mode="eventlet", cors_allowed_origins=["http://localhost:8081", "http://hvejsel.dk:8080"]
-        )
+        self.sio = socketio.Server(async_mode="eventlet", cors_allowed_origins=["http://localhost:8081", "http://hvejsel.dk:8080"])
         self.app = socketio.WSGIApp(self.sio)
         self.button = button
         self.encoder = encoder
@@ -135,7 +165,8 @@ class Server:
     def set_count(self, sid, data):
         self.encoder.set_counter(data)
         print("recieved setCount: ", data)
-        self.sio.emit("encoder", self.encoder.counter)
+
+    #  self.sio.emit("encoder", self.encoder.counter)
 
     def listen(self):
         eventlet.wsgi.server(eventlet.listen(("", 3000)), self.app)
