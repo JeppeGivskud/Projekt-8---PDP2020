@@ -1,16 +1,11 @@
 # Projekt 8 - PDP2020
 
-This repository will contain all code related to the building of a habit tracker
+This repository contains a lot of stuff, most of it is us trying to learn how to build react native applications.
 
-There will be:sd
+The project which this repository supports relates to the formation of long term habits.
+The idea is that a physical device is better than an application as it can be placed in the context where the habit is to be learned. This allows a user to over time associate the context with the habit which means they grow away from our system and become independent.
 
-1. A react native program
-2. A server client thing
-3. A Arduino thing
+There is also an app because why not and also configuration should not be made on the device.
+The device can turn clockwise and counterclockwise and be pushed.
 
-Maybe normal react?
-- Ostehaps
-1. Ost
-
-TODO: beslut om vi skal bruge React eller React Native
-
+A demo can be found here:
