@@ -8,4 +8,4 @@ There is a physical habit interface which is rendered on a raspberry pi. The phy
 There is also an app because why not and also configuration should not be made on the device.
 The device can turn clockwise and counterclockwise and be pushed.
 
-A demo can be found here:
+A demo can be found here: https://jeppegivskud.github.io/Projekt-8-PDP2020/
