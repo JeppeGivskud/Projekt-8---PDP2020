@@ -29,7 +29,7 @@
         "plugins": ["expo-router"],
         "experiments": {
             "typedRoutes": true,
-            "baseUrl": "/expo-gh-pages"
+            "baseUrl": "/Projekt-8-PDP2020"
         }
     }
 }
