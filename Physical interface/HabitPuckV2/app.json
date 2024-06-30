@@ -28,8 +28,8 @@
         },
         "plugins": ["expo-router"],
         "experiments": {
-            "typedRoutes": true,
-            "baseUrl": "/expo-gh-pages"
+            "typedRoutes": true
+            // "baseUrl": "/expo-gh-pages"
         }
     }
 }
